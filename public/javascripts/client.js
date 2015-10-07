@@ -2,7 +2,7 @@ var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload:
 
 function preload() {
 
-    game.load.spritesheet('dude', 'images/dude.png', 32, 48);
+    game.load.spritesheet('player', 'images/playerTest.png', 32, 32);
     game.load.image('background', 'images/background2.png');
     game.load.image('ball', 'images/ball.png');
 
@@ -37,17 +37,18 @@ function create() {
 
     game.physics.arcade.gravity.y = 300;
 
-    player = game.add.sprite(32, 320, 'dude');
+    player = game.add.sprite(32, 320, 'player');
+    player.scale.setTo(2,2);
     game.physics.enable(player, Phaser.Physics.ARCADE);
 
     player.body.collideWorldBounds = true;
     player.body.gravity.y = 1000;
     player.body.maxVelocity.y = 500;
-    player.body.setSize(20, 32, 5, 16);
+    player.body.setSize(32, 32, 2, 12);
 
-    player.animations.add('left', [0, 1, 2, 3], 10, true);
-    player.animations.add('turn', [4], 20, true);
-    player.animations.add('right', [5, 6, 7, 8], 10, true);
+    player.animations.add('right', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 15, true);
+//    player.animations.add('turn', [4], 20, true);
+    player.animations.add('left', [24,23,22,21,20,19,18,17,16,15,13], 15, true);
 
     leftButton = game.input.keyboard.addKey(Phaser.Keyboard.A);
     rightButton = game.input.keyboard.addKey(Phaser.Keyboard.D);
@@ -106,7 +107,7 @@ function controlHandler(){
     
      if (leftButton.isDown)
     {
-        player.body.velocity.x = -150;
+        player.body.velocity.x = -200;
 
         if (facing != 'left')
         {
@@ -116,7 +117,7 @@ function controlHandler(){
     }
     else if (rightButton.isDown)
     {
-        player.body.velocity.x = 150;
+        player.body.velocity.x = 200;
 
         if (facing != 'right')
         {
@@ -132,11 +133,11 @@ function controlHandler(){
 
             if (facing == 'left')
             {
-                player.frame = 0;
+                player.frame = 25;
             }
             else
             {
-                player.frame = 5;
+                player.frame = 0;
             }
 
             facing = 'idle';
