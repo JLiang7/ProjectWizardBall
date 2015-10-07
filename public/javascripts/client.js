@@ -18,7 +18,7 @@ var jumpTimer = 0;
 var cursors;
 var jumpButton;
 var jump
-var bg;
+var level;
 var leftButton;
 var rightButton;
 var leftClick;
@@ -28,7 +28,12 @@ function create() {
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    bg = game.add.tileSprite(0, 0, 800, 600, 'background');
+    
+    level = new Level();
+    level.setBackgroundImage('background');
+
+
+    game.add.tileSprite(0, 0, 800, 600, level.getBackgroundImage());
 
     game.physics.arcade.gravity.y = 300;
 
