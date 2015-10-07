@@ -1,6 +1,6 @@
 function Level(levelData){
 	var platforms = [];
-	var backgroundImage = levelData;
+	var backgroundImage;
 	var balls = [];
 	var ballSpawnLocations = [];
 	var playerSpawnLocations = [];
@@ -14,8 +14,8 @@ function Level(levelData){
 		this.backgroundImage = sprite;
 	}
 
-	this.addBall = function(ball){
-		this.balls.add(ball);
+	this.setBalls = function(balls){
+		this.balls = balls;
 	}
 
 	this.setBallSpawnLocations = function(locations){

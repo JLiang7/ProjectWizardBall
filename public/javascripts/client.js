@@ -55,11 +55,10 @@ function create() {
     leftClick = game.input.activePointer.leftButton;
 
 
-    balls = game.add.group();
-    balls.enableBody = true;
-    balls.physicsBodyType = Phaser.Physics.ARCADE;
-
-    balls.createMultiple(10,'ball');
+    level.setBalls(game.add.group());
+    level.getBalls().enableBody = true;
+    level.getBalls().physicsBodyType = Phaser.Physics.ARCADE;
+    level.getBalls().createMultiple(10,'ball');
 
 
 
@@ -86,17 +85,17 @@ function render () {
 }
 
 function throwBall(){
-    if (game.time.now > nextThrow && balls.countDead() > 0)
+    if (game.time.now > nextThrow && level.getBalls().countDead() > 0)
     {
         nextThrow = game.time.now + fireRate;
 
-        var ball = balls.getFirstDead();
+        var ball = level.getBalls().getFirstDead();
         
 
         ball.reset(player.x,player.y);
         game.physics.arcade.moveToPointer(ball,300);
         ball.body.collideWorldBounds = true;
-        ball.body.bounce.setTo(.4,.4);
+        ball.body.bounce.setTo(.3,.5);
     }
 }
 
