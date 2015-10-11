@@ -3,6 +3,6 @@
    		"background":"images/background2.png",
    		"ball":"images/ball.png",
    		"player":"images/playerTest.png",
-   		"music":"audio/battle_music.mid"
+   		"bgmusic":"audio/world_map.ogg"
    	}
 }

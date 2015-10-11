@@ -22,20 +22,6 @@ WizardBall.play = function(game){
 
 WizardBall.play.prototype = {
     preload: function() {
-        //Read from json file to get dependencies
-        levelData = $.parseJSON(
-           $.ajax({
-                   url: "json/levelData.json", 
-                   async: false, 
-                   dataType: 'json'
-                }
-            ).responseText
-        );
-
-        this.game.load.spritesheet('player',levelData.test_level.player, 32, 32);
-        this.game.load.image('background', levelData.test_level.background);
-        this.game.load.image('ball', levelData.test_level.ball);
-        this.game.load.audio('bgmusic',"audio/world_map.ogg");
 
     },
     
@@ -47,13 +33,12 @@ WizardBall.play.prototype = {
         nextThrow = 0;
         facing = 'left';
         jumpTimer = 0;
-        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    //    this.game.physics.startSystem(Phaser.Physics.ARCADE);
     //    filter = this.game.add.filter('Plasma',800,600);
         
         level = new Level();
         level.setBackgroundImage('background',1,true);
         level.setMusic(this.game.add.audio('bgmusic'));
-        level.getMusic().setT
         level.getMusic().play();
 
 
@@ -94,7 +79,7 @@ WizardBall.play.prototype = {
         // this.game.debug.text(this.game.time.physicsElapsed, 32, 32);
         // this.game.debug.body(player);
         this.game.debug.bodyInfo(player, 16, 24);
-         this.game.debug.text("Left Button: " + leftButton.isDown, 300, 132);
+        this.game.debug.text("Left Button: " + leftButton.isDown, 300, 132);
         this.game.debug.text("Middle Button: " + this.game.input.activePointer.middleButton.isDown, 300, 196);
 
     },
