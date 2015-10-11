@@ -1,0 +1,7 @@
+{
+   "test_level": {
+   		"background":"images/background2.png",
+   		"ball":"images/ball.png",
+   		"player":"images/playerTest.png"
+   	}
+}

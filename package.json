@@ -9,6 +9,7 @@
   "author": "OhOfOne",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "jquery": "^2.1.4"
   }
 }

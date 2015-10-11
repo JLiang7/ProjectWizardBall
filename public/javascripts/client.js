@@ -1,10 +1,20 @@
 var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+var levelData;
 
 function preload() {
+    //Read from json file to get dependencies
+    levelData = $.parseJSON(
+       $.ajax({
+               url: "json/levelData.json", 
+               async: false, 
+               dataType: 'json'
+            }
+        ).responseText
+    );
 
-    game.load.spritesheet('player', 'images/playerTest.png', 32, 32);
-    game.load.image('background', 'images/background2.png');
-    game.load.image('ball', 'images/ball.png');
+    game.load.spritesheet('player',levelData.test_level.player, 32, 32);
+    game.load.image('background', levelData.test_level.background);
+    game.load.image('ball', levelData.test_level.ball);
 
 }
 //put in own class?
@@ -14,6 +24,7 @@ var nextThrow = 0;
 var facing = 'left';
 var jumpTimer = 0;
 //
+var filter;
 
 var cursors;
 var jumpButton;
@@ -27,10 +38,11 @@ var balls;
 function create() {
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
-
+//    filter = game.add.filter('Plasma',800,600);
     
     level = new Level();
     level.setBackgroundImage('background');
+
 
 
     game.add.tileSprite(0, 0, 800, 600, level.getBackgroundImage());
