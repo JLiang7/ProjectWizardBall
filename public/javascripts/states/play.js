@@ -42,7 +42,7 @@ WizardBall.play.prototype = {
         level.getMusic().play();
 
 
-        this.game.add.tileSprite(0, 0, 800, 600, level.getBackgroundImage());
+        this.game.add.tileSprite(0, 0, 1024, 576, level.getBackgroundImage());
 
         this.game.physics.arcade.gravity.y = 300;
 
@@ -53,7 +53,7 @@ WizardBall.play.prototype = {
         player.body.collideWorldBounds = true;
         player.body.gravity.y = 1000;
         player.body.maxVelocity.y = 500;
-        player.body.setSize(32, 32, 2, 12);
+        player.body.setSize(32, 32,0, 12);
 
         player.animations.add('right', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 15, true);
     //    player.animations.add('turn', [4], 20, true);

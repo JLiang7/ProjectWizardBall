@@ -1,6 +1,6 @@
 {
    "test_level": {
-   		"background":"images/background2.png",
+   		"background":"images/anime_city.jpg",
    		"ball":"images/ball.png",
    		"player":"images/playerTest.png",
    		"bgmusic":"audio/world_map.ogg"
