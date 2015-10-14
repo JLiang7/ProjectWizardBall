@@ -42,7 +42,7 @@ WizardBall.play.prototype = {
         level.getMusic().play();
 
 
-        this.game.add.tileSprite(0, 0, 1024, 576, level.getBackgroundImage());
+        this.game.add.tileSprite(0,0,1024,576,level.getBackgroundImage());
 
         this.game.physics.arcade.gravity.y = 300;
 

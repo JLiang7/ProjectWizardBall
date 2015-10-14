@@ -4,5 +4,22 @@
    		"ball":"images/ball.png",
    		"player":"images/playerTest.png",
    		"bgmusic":"audio/world_map.ogg"
-   	}
+   	},
+
+   	"character_select": {
+   		"background" : "images/CharacterSelectBackground.png",
+   		"accent1" : "images/asset1.png",
+   		"accent2" : "images/asset2.png",
+   		"character_splash" : "images/placeholderSplash.png",
+   		"text_color" : ""
+   	},
+
+      "special":{
+         "trans_yellow" : "images/transYellow.png",
+         "trans_green" : "images/transGreen.png",
+         "trans_red" : "images/transRed.png",
+         "trans_purple" : "images/transPurple.png"
+      }
+
+
 }

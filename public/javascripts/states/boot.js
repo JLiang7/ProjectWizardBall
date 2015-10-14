@@ -6,16 +6,16 @@ WizardBall.boot = function(){};
 
 WizardBall.boot.prototype = {
 	preload : function(){
-		this.load.image('logo',"images/icon.jpg");
+		this.load.image('logo',"images/loadingBG.png");
 		this.load.image("loader", "images/loader.png");
 	},
 
 	create : function(){
 		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-		this.scale.minWidth = 200;
-		this.scale.minHeight = 150;
-		this.scale.maxWidth = 1200;
-		this.scale.maxHeight = 800;
+		this.scale.minWidth = 640;
+		this.scale.minHeight = 360;
+		this.scale.maxWidth = 1280;
+		this.scale.maxHeight = 720;
 
 		this.scale.pageAlignHorizontally = true;
 
