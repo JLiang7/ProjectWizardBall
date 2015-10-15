@@ -41,7 +41,7 @@ WizardBall.charSelect.prototype = {
 		var style2 = { font: "50px Arial", fill: "#dde0ff", align: "left"};
 
 
-		background = this.game.add.sprite(0,0,'selectBackground');
+		background = this.game.add.sprite(0,0,'purpleBar');
 		accent1 = this.game.add.sprite(600,0, 'accent1');
 		
 		charSplash = this.game.add.sprite(120,40,'characterSplash');

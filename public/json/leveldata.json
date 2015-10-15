@@ -5,6 +5,9 @@
    		"player":"images/playerTest.png",
    		"bgmusic":"audio/world_map.ogg"
    	},
+      "title_screen" : {
+         "background" : "images/titleScreen.png"
+         },
 
    	"character_select": {
    		"background" : "images/CharacterSelectBackground.png",

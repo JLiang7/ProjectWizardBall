@@ -22,9 +22,14 @@ WizardBall.preload.prototype = {
             ).responseText
         );
 
+		this.loadTitleResources();
 		this.loadPlayResources();
 		this.loadTransitionEffects();
 		this.loadCharacterSelectResources();
+	},
+
+	loadTitleResources: function(){
+		this.game.load.image('titleScreen', levelData.title_screen.background);
 	},
 
 	loadPlayResources : function(){
@@ -50,6 +55,6 @@ WizardBall.preload.prototype = {
 	},
 
 	create: function(){
-		this.state.start("CharacterSelect");
+		this.state.start("TitleScreen");
 	}
 };
