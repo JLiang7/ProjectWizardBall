@@ -33,7 +33,7 @@ WizardBall.preload.prototype = {
 	},
 
 	loadPlayResources : function(){
-		this.game.load.spritesheet('player',levelData.test_level.player, 32, 32);
+		this.game.load.spritesheet('player',levelData.test_level.player, 140, 210);
         this.game.load.image('background', levelData.test_level.background);
         this.game.load.image('ball', levelData.test_level.ball);
         this.game.load.audio('bgmusic',levelData.test_level.bgmusic);
@@ -55,6 +55,6 @@ WizardBall.preload.prototype = {
 	},
 
 	create: function(){
-		this.state.start("TitleScreen");
+		this.state.start("Play");
 	}
 };

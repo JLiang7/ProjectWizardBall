@@ -37,27 +37,29 @@ WizardBall.play.prototype = {
     //    filter = this.game.add.filter('Plasma',800,600);
         
         level = new Level();
-        level.setBackgroundImage('background',1,true);
+        level.setBackgroundImage('greenBar',1,true);
         level.setMusic(this.game.add.audio('bgmusic'));
         level.getMusic().play();
 
 
-        this.game.add.tileSprite(0,0,1024,576,level.getBackgroundImage());
+        this.game.add.tileSprite(0,0,1280,720,level.getBackgroundImage());
 
         this.game.physics.arcade.gravity.y = 300;
 
-        player = this.game.add.sprite(32, 320, 'player');
-        player.scale.setTo(2,2);
+        player = this.game.add.sprite(210,3400, 'player');
+        player.scale.setTo(.5,.5);
         this.game.physics.enable(player, Phaser.Physics.ARCADE);
 
         player.body.collideWorldBounds = true;
         player.body.gravity.y = 1000;
         player.body.maxVelocity.y = 500;
-        player.body.setSize(32, 32,0, 12);
+        player.body.setSize(140,210,0, 12);
 
-        player.animations.add('right', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 15, true);
+        player.animations.add('left', [0,1,2, 3, 4, 5, 6, 7], 12, true);
     //    player.animations.add('turn', [4], 20, true);
-        player.animations.add('left', [24,23,22,21,20,19,18,17,16,15,13], 15, true);
+        player.animations.add('right', [16,17,18,19,20,21,22,23], 12, true);
+        player.animations.add('throwRight',[13,12],12,false);
+        player.animations.add('throwLeft',[10,11],12,false);
 
         leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
         rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
@@ -70,6 +72,8 @@ WizardBall.play.prototype = {
         level.getBalls().physicsBodyType = Phaser.Physics.ARCADE;
         level.getBalls().createMultiple(10,'ball');
 
+        player.running = 0;
+
 
 
     },
@@ -78,9 +82,9 @@ WizardBall.play.prototype = {
 
         // this.game.debug.text(this.game.time.physicsElapsed, 32, 32);
         // this.game.debug.body(player);
-        this.game.debug.bodyInfo(player, 16, 24);
-        this.game.debug.text("Left Button: " + leftButton.isDown, 300, 132);
-        this.game.debug.text("Middle Button: " + this.game.input.activePointer.middleButton.isDown, 300, 196);
+    //    this.game.debug.bodyInfo(player, 16, 24);
+    //    this.game.debug.text("Left Button: " + leftButton.isDown, 300, 132);
+    //    this.game.debug.text("Middle Button: " + this.game.input.activePointer.middleButton.isDown, 300, 196);
 
     },
 
@@ -102,52 +106,80 @@ WizardBall.play.prototype = {
     controlHandler: function(){
         if(leftClick.isDown){
             this.throwBall();
-        }
-        
-         if (leftButton.isDown)
+            if(player.frame == 8 || facing == 'leftJump' || facing == 'throwLeft'){
+                player.animations.play('throwLeft');
+                facing = 'throwLeft';
+            }else{
+                player.animations.play('throwRight');
+                facing = 'throwRight';
+            }
+        }else if (leftButton.isDown)
         {
             player.body.velocity.x = -200;
-
-            if (facing != 'left')
+            if(player.body.velocity.y != 0){
+                if(facing != 'leftJump'){
+                    facing = 'leftJump';
+                    player.frame = 9;
+                }
+            }else if (facing != 'left')
             {
                 player.animations.play('left');
                 facing = 'left';
             }
+            player.running = 1;
         }
         else if (rightButton.isDown)
         {
             player.body.velocity.x = 200;
 
-            if (facing != 'right')
+            if(player.body.velocity.y != 0){
+                if(facing != 'rightJump'){
+                    facing = 'rightJump';
+                    player.frame = 14;
+                }
+            }else if (facing != 'right')
             {
                 player.animations.play('right');
                 facing = 'right';
+                player.running = 1;
             }
-        }
-        else
-        {
-            if (facing != 'idle')
-            {
-                player.animations.stop();
 
-                if (facing == 'left')
-                {
-                    player.frame = 25;
-                }
-                else
-                {
-                    player.frame = 0;
-                }
-
-                facing = 'idle';
-            }
         }
-        
-        if (jumpButton.isDown && player.body.onFloor() && this.game.time.now > jumpTimer)
+        else if (jumpButton.isDown && player.body.onFloor() && this.game.time.now > jumpTimer)
         {
             player.body.velocity.y = -500;
             jumpTimer = this.game.time.now + 750;
+            if(facing == 'left' || player.frame == 8){
+                facing = 'leftJump';
+                player.frame = 9;
+            }else{
+                facing = 'rightJump';
+                player.frame = 14;
+            }
+        }else{
+            if(player.body.velocity.y == 0 && player.running != 0){
+                if (facing != 'idle' || facing != 'throwLeft'||facing != 'throwRight')
+                {
+                    player.animations.stop();
+
+                    if (facing == 'left' || facing == 'leftJump' || facing == 'throwLeft')
+                    {
+                     player.frame = 8;
+                    }
+                    else
+                    {
+                        player.frame = 15;
+                    }
+
+                    facing = 'idle';
+                    player.running = 0;
+                }
+            }
         }
+        
+        
+
+        
     },
 
     update: function(){
