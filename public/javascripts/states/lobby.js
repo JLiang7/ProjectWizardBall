@@ -8,7 +8,7 @@ var WizardBall = WizardBall || {};
 
  var initialSlotYOffset = 130; 
  var slotXOffset = 40; 
- var lobbySlotDistance = 60; 
+ var lobbySlotDistance = 100; 
  
  
  var textXOffset = 260; 
@@ -28,34 +28,35 @@ var WizardBall = WizardBall || {};
  
  
  	create: function() { 
+ 		this.game.stage.backgroundColor = '#DDDDDD';
  		this.stateSettings = { 
  			empty: { 
- 				outFrame: 1, 
- 				overFrame: 0, 
+ 				outFrame: 2, 
+ 				overFrame: 1, 
  				text: "Host Game ",
  				callback: this.hostGameAction 
  			}, 
  			joinable: { 
- 				outFrame: 1, 
- 				overFrame: 0, 
+ 				outFrame: 2, 
+ 				overFrame: 1, 
  				text: "Join Game ", 
  				callback: this.joinGameAction 
  			}, 
  			prejoinable: { 
- 				outFrame: 1, 
- 				overFrame: 0, 
+ 				outFrame: 2, 
+ 				overFrame: 1, 
  				text: "Game is being set up... ", 
  				callback: null 
  			}, 
  			inprogress: { 
- 				outFrame: 1, 
- 				overFrame: 0, 
+ 				outFrame: 2, 
+ 				overFrame: 1, 
  				text: "Game in Progress ", 
  				callback: null 
  			}, 
  			full: { 
- 				outFrame: 1, 
- 				overFrame: 0, 
+ 				outFrame: 2, 
+ 				overFrame: 1, 
  				text: "Game Full ", 
  				callback: null 
  			} 
@@ -109,7 +110,7 @@ var WizardBall = WizardBall || {};
  
  
  			var slotYOffset = initialSlotYOffset + i * lobbySlotDistance; 
- 			this.slots[i] = this.game.add.button(slotXOffset, slotYOffset, buttonTextures, callback, null, settings.overFrame, settings.outFrame); 
+ 			this.slots[i] = this.game.add.button(slotXOffset, slotYOffset, "buttonTextures", callback, null, settings.overFrame, settings.outFrame); 
 // 			this.slots[i].setDownSound(buttonClickSound); 
  			 
  			var text = this.game.add.text(slotXOffset + textXOffset, slotYOffset + textYOffset, settings.text); 
@@ -125,7 +126,7 @@ var WizardBall = WizardBall || {};
  	hostGameAction: function(gameID) { 
  		socket.emit("host game", {gameID: gameID}); 
  		socket.removeAllListeners(); 
- 		this.game.state.start("StageSelect", true, false, gameID); //
+ 	//	this.game.state.start("StageSelect", true, false, gameID); //
  	}, 
  
  

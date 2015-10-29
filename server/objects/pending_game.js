@@ -15,28 +15,28 @@ var PendingGame = function() {
  
  
 PendingGame.prototype = { 
- 	function getPlayerIds() { 
+ 	getPlayerIds : function() { 
  		return Object.keys(this.players); 
 	}, 
  
  
- 	function getNumPlayers() { 
+ 	getNumPlayers : function() { 
  		return Object.keys(this.players).length; 
  	}, 
  
  
- 	function removePlayer(id) { 
+ 	removePlayer : function(id) { 
  		this.colors[colorIndices[this.players[id].color]].available = true; 
  		delete this.players[id]; 
  	}, 
  
  
- 	function addPlayer(id) { 
+ 	addPlayer : function(id) { 
  		this.players[id] = {color: this.claimFirstAvailableColor()}; 
  	}, 
  
 
- 	function claimFirstAvailableColor() { 
+ 	claimFirstAvailableColor : function() { 
  		for(var i = 0; i < this.colors.length; i++) { 
  			var color = this.colors[i]; 
  			if(color.available) { 

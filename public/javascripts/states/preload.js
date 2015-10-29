@@ -26,6 +26,7 @@ WizardBall.preload.prototype = {
 		this.loadPlayResources();
 		this.loadTransitionEffects();
 		this.loadCharacterSelectResources();
+		this.loadLobbyResources();
 	},
 
 	loadTitleResources: function(){

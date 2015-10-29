@@ -1,4 +1,4 @@
-var Maps = require('./data/map_info');
+var Maps = require('../public/javascripts/data/map_info');
 
 var PendingGame = require('./objects/pending_game');
 
@@ -61,7 +61,7 @@ var Lobby = {
  	 
  		if(pendingGame.getNumPlayers() >= Maps[pendingGame.mapID].spawnLocations.length) { 
  			pendingGame.state = "full"; 
- 			broadcastSlotStateUpdate(data.gameId, "full"); 
+ 			broadcastStateUpdate(data.gameId, "full"); 
  		} 
 
 	},
@@ -71,12 +71,12 @@ var Lobby = {
 	}
 };
 
-broadcastSlotStateUpdate : function(gameID, newState) { 
+function broadcastStateUpdate(gameID, newState) { 
  	io.in(lobbyID).emit("update slot", {gameID: gameID, newState: newState}); 
  }; 
  
  
- leavePendingGame : function() { 
+ function leavePendingGame() { 
 	var lobbySlot = lobbies[this.gameID]; 
  
  
