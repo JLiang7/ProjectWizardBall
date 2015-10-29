@@ -22,7 +22,13 @@
          "trans_green" : "images/transGreen.png",
          "trans_red" : "images/transRed.png",
          "trans_purple" : "images/transPurple.png"
-      }
+      },
 
+      "lobby":{
+         "button_textures" : "images/buttonTextures.png",
+         "button_width" : "446",
+         "button_height" : "87",
+         "button_num" : "2"
+      }
 
 }

@@ -1,7 +1,9 @@
- var Lobby = function() {}; 
+var WizardBall = WizardBall || {};
+
+ WizardBall.lobby = function() {}; 
  
  
- var TextConfigurer = require("./util/text_configurer"); 
+ //var TextConfigurer = require("./util/text_configurer"); 
  
 
  var initialSlotYOffset = 130; 
@@ -16,57 +18,57 @@
  var headerYOffset = 70; 
  
  
- module.exports = Lobby; 
+ //module.exports = Lobby; 
  
  
- Lobby.prototype = { 
+ WizardBall.lobby.prototype = { 
  	init: function(rbts) { 
- 		repeatingBombTilesprite = rbts; 
+// 		repeatingBombTilesprite = rbts; 
  	}, 
  
  
  	create: function() { 
  		this.stateSettings = { 
  			empty: { 
- 				outFrame: "lobby/slots/game_slot_01.png", 
- 				overFrame: "lobby/slots/game_slot_02.png", 
+ 				outFrame: 1, 
+ 				overFrame: 0, 
  				text: "Host Game ",
  				callback: this.hostGameAction 
  			}, 
  			joinable: { 
- 				outFrame: "lobby/slots/game_slot_03.png", 
- 				overFrame: "lobby/slots/game_slot_04.png", 
+ 				outFrame: 1, 
+ 				overFrame: 0, 
  				text: "Join Game ", 
  				callback: this.joinGameAction 
  			}, 
- 			pre-joinable: { 
- 				outFrame: "lobby/slots/game_slot_05.png", 
- 				overFrame: "lobby/slots/game_slot_05.png", 
+ 			prejoinable: { 
+ 				outFrame: 1, 
+ 				overFrame: 0, 
  				text: "Game is being set up... ", 
  				callback: null 
  			}, 
  			inprogress: { 
- 				outFrame: "lobby/slots/game_slot_05.png", 
- 				overFrame: "lobby/slots/game_slot_05.png", 
+ 				outFrame: 1, 
+ 				overFrame: 0, 
  				text: "Game in Progress ", 
  				callback: null 
  			}, 
  			full: { 
- 				outFrame: "lobby/slots/game_slot_05.png", 
- 				overFrame: "lobby/slots/game_slot_05.png", 
+ 				outFrame: 1, 
+ 				overFrame: 0, 
  				text: "Game Full ", 
  				callback: null 
  			} 
  		}; 
  
  
- 		repeatingBombTilesprite.doNotDestroy = true; 
+// 		repeatingBombTilesprite.doNotDestroy = true; 
  
  
 // 		this.backdrop = game.add.image(12.5, 12.5, TEXTURES, "lobby/lobby_backdrop.png"); 
- 		this.header = game.add.text(game.camera.width / 2, headerYOffset, "Lobby"); 
+ 		this.header = this.game.add.text(this.game.camera.width / 2, headerYOffset, "Lobby"); 
  		this.header.anchor.setTo(.5, .5); 
- 		TextConfigurer.configureText(this.header, "white", 32); 
+ //		TextConfigurer.configureText(this.header, "white", 32); 
  
  
  		this.slots = []; 
@@ -107,11 +109,11 @@
  
  
  			var slotYOffset = initialSlotYOffset + i * lobbySlotDistance; 
- 			this.slots[i] = game.add.button(slotXOffset, slotYOffset, TEXTURES, callback, null, settings.overFrame, settings.outFrame); 
- 			this.slots[i].setDownSound(buttonClickSound); 
+ 			this.slots[i] = this.game.add.button(slotXOffset, slotYOffset, buttonTextures, callback, null, settings.overFrame, settings.outFrame); 
+// 			this.slots[i].setDownSound(buttonClickSound); 
  			 
- 			var text = game.add.text(slotXOffset + textXOffset, slotYOffset + textYOffset, settings.text); 
- 			TextConfigurer.configureText(text, "white", 18); 
+ 			var text = this.game.add.text(slotXOffset + textXOffset, slotYOffset + textYOffset, settings.text); 
+ 	//		TextConfigurer.configureText(text, "white", 18); 
  			text.anchor.setTo(.5, .5); 
  
  
@@ -123,13 +125,13 @@
  	hostGameAction: function(gameID) { 
  		socket.emit("host game", {gameID: gameID}); 
  		socket.removeAllListeners(); 
- 		game.state.start("StageSelect", true, false, gameID); //
+ 		this.game.state.start("StageSelect", true, false, gameID); //
  	}, 
  
  
  	joinGameAction: function(gameID) { 
  		socket.removeAllListeners(); 
- 		game.state.start("PendingGame", true, false, null, gameID); 
+ 		this.game.state.start("PendingGame", true, false, null, gameID); 
  	}, 
  
  

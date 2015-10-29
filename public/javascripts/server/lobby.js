@@ -8,46 +8,46 @@ var lobbies = [];
 
 
 var Lobby = {
-	function getLobbies(){
+	getLobbies: function(){
 		return lobbies;
 	},
 
-	function getLobbyID(){
+	getLobbyID: function(){
 		return lobbyID;
 	},
 
-	function getTotalNumOfLobbies(){
+	getTotalNumOfLobbies: function(){
 		return totalNumOfLobbies;
 	},
 
-	function broadcastStateUpdate(gameID, newState){
+	broadcastStateUpdate: function(gameID, newState){
 		broadcastStateUpdate(gameID,newState);
 	},
 
-	function initialize(){
+	initialize: function(){
 		for(var i = 0; i < totalNumOfLobbies; i ++){
 			lobbies.push(new PendingGame());
 		}
 	},
 
-	function onEnter(data){
+	onEnter: function(data){
 		this.join(lobbyID);
 		io.in(lobbyID).emit("add slots", lobbies);
 	},
 
-	function onHost(data){
-		lobbies[data.gameID].state = "pre-joinable";
+	onHost: function(data){
+		lobbies[data.gameID].state = "prejoinable";
 		this.gameID = data.gameID;
-		broadcastStateUpdate(data.gameID, "pre-joinable");
+		broadcastStateUpdate(data.gameID, "prejoinable");
 	},
 
-	function onStageSelect(data){
+	onStageSelect: function(data){
 		lobbies[this.gameID].state = "joinable";
 		lobbies[this.gameID].mapID = data.mapID;
 		broadcastStateUpdate(this.gameID,"joinable");
 	},
 
-	function onEnterLobby(data){
+	onEnterLobby: function(data){
 		var pendingGame = lobbySlots[data.gameID]; 
  	 
  		this.leave(lobbyID); 
@@ -66,17 +66,17 @@ var Lobby = {
 
 	},
 
-	function onLeaveLobby(data){
+	onLeaveLobby: function(data){
 		leaveLobby.call(this);
 	}
 };
 
-function broadcastSlotStateUpdate(gameID, newState) { 
+broadcastSlotStateUpdate : function(gameID, newState) { 
  	io.in(lobbyID).emit("update slot", {gameID: gameID, newState: newState}); 
  }; 
  
  
- function leavePendingGame() { 
+ leavePendingGame : function() { 
 	var lobbySlot = lobbies[this.gameID]; 
  
  

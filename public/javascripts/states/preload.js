@@ -54,7 +54,11 @@ WizardBall.preload.prototype = {
 		this.game.load.image("characterSplash", levelData.character_select.character_splash);
 	},
 
+	loadLobbyResources : function(){
+		this.game.load.spritesheet('buttonTextures', levelData.lobby.button_textures,levelData.lobby.button_width,levelData.lobby.button_height,levelData.lobby.button_num);
+	},
+
 	create: function(){
-		this.state.start("Play");
+		this.state.start("Lobby");
 	}
 };
