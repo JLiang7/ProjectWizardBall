@@ -9,10 +9,11 @@ WizardBall.setup = function(){};
 var xOffset = 40;
 var yOffset = 50;
 
-var thumbnailXOffset = 255;
-var thumbnailYOffset = 150;
+var thumbnailXOffset = 1280/2;
+var thumbnailYOffset = 720/2;
 
 var stageNameYOffset = 328;
+var previewDim = 500;
 
 var repeatingBombTilesprite;
 
@@ -31,15 +32,20 @@ WizardBall.setup.prototype = {
 		//var selectionWindow = this.game.add.image(xOffset, yOffset, "", "/public/images/transRed.png");
 		this.selectedStageIndex = 0;
 		var initialStage = stages[this.selectedStageIndex];
-
-		this.leftButton = this.game.add.button(150, 180, 'leftButton', this.leftSelect, this, 1,0);
-		this.rightButton = this.game.add.button(250, 180, 'rightButton', this.rightSelect, this,1,0);
-		this.okButton = this.game.add.button(350, 350, 'okButton', this.confirmStageSelection, this,1,0);
+		this.thumbnail = this.game.add.sprite(thumbnailXOffset, thumbnailYOffset, 'levelPreview');
+		this.thumbnail.anchor.setTo(.5,.5);
+		
+		this.leftButton = this.game.add.button(thumbnailXOffset - (previewDim/2) - 100, thumbnailYOffset - (thumbnailYOffset/2), 'leftButton', this.leftSelect, this, 1,0);
+		//this.leftButton.anchor.setTo(.5,.5);
+		this.rightButton = this.game.add.button(thumbnailXOffset + (previewDim/2), thumbnailYOffset - (thumbnailYOffset/2), 'rightButton', this.rightSelect, this,1,0);
+		//this.rightButton.anchor.setTo(.5,.5);
+		this.okButton = this.game.add.button(thumbnailXOffset + (previewDim/2), thumbnailYOffset + (previewDim/2) , 'okButton', this.confirmStageSelection, this,1,0);
+		//this.okButton.anchor.setTo(.5,.5);
 		//this.leftButton.setDownSound(buttonClickSound);
 		//this.rightButton.setDownSound(buttonClickSound);
 		//this.okButton.setDownSound(buttonClickSound);
 
-		//this.thumbnail = this.game.add.image(thumbnailXOffset, thumbnailYOffset, 'purpleBar', initialStage.thumbnailKey);
+		
 
 		// Display title
 		this.text = this.game.add.text(this.game.camera.width / 2, stageNameYOffset, initialStage.name);

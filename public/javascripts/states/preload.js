@@ -57,6 +57,7 @@ WizardBall.preload.prototype = {
 	},
 
 	loadLobbyResources : function(){
+		this.game.load.image('levelPreview', levelData.lobby.level_preview);
 		this.game.load.spritesheet('buttonTextures', levelData.lobby.button_textures,levelData.lobby.button_width,levelData.lobby.button_height);
 
 	},

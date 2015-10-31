@@ -26,6 +26,7 @@
 
       "lobby":{
          "button_textures" : "images/buttonTextures.png",
+         "level_preview" : "images/level1_preview.png",
          "button_width" : 446,
          "button_height" : 87
       },
