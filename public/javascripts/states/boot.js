@@ -11,6 +11,7 @@ WizardBall.boot.prototype = {
 	},
 
 	create : function(){
+		this.game.kineticScrolling = this.game.add.plugin(Phaser.Plugin.KineticScrolling);
 		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		this.scale.minWidth = 640;
 		this.scale.minHeight = 360;

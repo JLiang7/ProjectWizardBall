@@ -28,6 +28,7 @@ var WizardBall = WizardBall || {};
  
  
  	create: function() { 
+
  		this.game.stage.backgroundColor = '#DDDDDD';
  		this.stateSettings = { 
  			empty: { 
@@ -126,13 +127,13 @@ var WizardBall = WizardBall || {};
  	hostGameAction: function(gameID) { 
  		socket.emit("host game", {gameID: gameID}); 
  		socket.removeAllListeners(); 
- 		this.game.state.start("Setup", true, false, gameID); //
+ 		WizardBall.game.state.start("Setup"); 
  	}, 
  
  
  	joinGameAction: function(gameID) { 
  		socket.removeAllListeners(); 
- 		this.game.state.start("PendingGame", true, false, null, gameID); 
+ 		WizardBall.game.state.start("PendingGame"); 
  	}, 
  
  
