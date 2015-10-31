@@ -31,31 +31,31 @@ var WizardBall = WizardBall || {};
  		this.game.stage.backgroundColor = '#DDDDDD';
  		this.stateSettings = { 
  			empty: { 
- 				outFrame: 2, 
+ 				outFrame: 0, 
  				overFrame: 1, 
  				text: "Host Game ",
  				callback: this.hostGameAction 
  			}, 
  			joinable: { 
- 				outFrame: 2, 
+ 				outFrame: 0, 
  				overFrame: 1, 
  				text: "Join Game ", 
  				callback: this.joinGameAction 
  			}, 
  			prejoinable: { 
- 				outFrame: 2, 
+ 				outFrame: 0, 
  				overFrame: 1, 
  				text: "Game is being set up... ", 
  				callback: null 
  			}, 
  			inprogress: { 
- 				outFrame: 2, 
+ 				outFrame: 0, 
  				overFrame: 1, 
  				text: "Game in Progress ", 
  				callback: null 
  			}, 
  			full: { 
- 				outFrame: 2, 
+ 				outFrame: 0, 
  				overFrame: 1, 
  				text: "Game Full ", 
  				callback: null 

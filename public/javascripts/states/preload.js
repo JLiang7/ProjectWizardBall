@@ -27,6 +27,7 @@ WizardBall.preload.prototype = {
 		this.loadTransitionEffects();
 		this.loadCharacterSelectResources();
 		this.loadLobbyResources();
+		this.loadSetupResources();
 	},
 
 	loadTitleResources: function(){
@@ -56,8 +57,14 @@ WizardBall.preload.prototype = {
 	},
 
 	loadLobbyResources : function(){
-		this.game.load.spritesheet('buttonTextures', levelData.lobby.button_textures,levelData.lobby.button_width,levelData.lobby.button_height,levelData.lobby.button_num);
-	//	this.game.scrollView = this.game.plugins.add(Phaser.Plugin.KineticScrolling);
+		this.game.load.spritesheet('buttonTextures', levelData.lobby.button_textures,levelData.lobby.button_width,levelData.lobby.button_height);
+
+	},
+
+	loadSetupResources : function(){
+		this.game.load.spritesheet('leftButton', levelData.setup.left_button, levelData.setup.lr_button_width,levelData.setup.lr_button_height);
+		this.game.load.spritesheet('rightButton', levelData.setup.right_button, levelData.setup.lr_button_width,levelData.setup.lr_button_height);
+		this.game.load.spritesheet('okButton', levelData.setup.ok_button, levelData.setup.ok_button_width,levelData.setup.ok_button_height);
 	},
 
 	create: function(){
