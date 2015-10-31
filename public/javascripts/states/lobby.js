@@ -28,7 +28,6 @@ var WizardBall = WizardBall || {};
  
  
  	create: function() { 
-
  		this.game.stage.backgroundColor = '#DDDDDD';
  		this.stateSettings = { 
  			empty: { 

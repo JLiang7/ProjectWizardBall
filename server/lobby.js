@@ -3,7 +3,7 @@ var Maps = require('../public/javascripts/data/map_info');
 var PendingGame = require('./objects/pending_game');
 
 var lobbyID = -1;
-var totalNumOfLobbies = 10;
+var totalNumOfLobbies = 5;
 var lobbies = [];
 
 
