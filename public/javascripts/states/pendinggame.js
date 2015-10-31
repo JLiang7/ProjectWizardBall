@@ -10,7 +10,7 @@ var yOffset = 50;
 
 var buttonXOffset = 330;
 var startGameButtonYOffset = 400;
-var leaveButtonYOffset = 450;
+var leaveButtonYOffset = 500;
 
 var characterSquareStartingX = 330;
 var characterSquareStartingY = 80;
@@ -37,11 +37,11 @@ WizardBall.pendinggame.prototype = {
 	create: function() {
 		socket.emit("enter pending game", {gameID: this.gameID});
 
-		var backdrop = this.game.add.image(xOffset, yOffset, 'ball', "/public/images/ball.png"); // TEXTURE, backdrop image
-		this.startGameButton = this.game.add.button(buttonXOffset, startGameButtonYOffset, 'accent1', null, this, //TEXTURE
-			"/public/images/Start01.png", "/public/images/Start01.png"); //Start game button 3 both times
-		this.leaveGameButton = this.game.add.button(buttonXOffset, leaveButtonYOffset, 'ball', this.leaveGameAction, null, // TEXTURES
-			"/public/images/CharSlot01.png", "/public/images/Leave01.png"); // leave game button 2, 1
+		var backdrop = this.game.add.image(xOffset, yOffset, 'background', "/public/images/ball.png"); // TEXTURE, backdrop image
+		this.startGameButton = this.game.add.button(buttonXOffset, startGameButtonYOffset, 'StartButton', null, this, //TEXTURE
+			1, 0); //Start game button 3 both times
+		this.leaveGameButton = this.game.add.button(buttonXOffset, leaveButtonYOffset, 'LeaveButton', this.leaveGameAction, null, // TEXTURES
+			1, 0); // leave game button 2, 1
 
 		//this.leaveGameButton.setDownSound(buttonClickSound);
 		
@@ -71,7 +71,7 @@ WizardBall.pendinggame.prototype = {
 
 		for(var i = 0; i < numCharacterSquares; i++) {
 			var frame = i < numOpenings ? "/public/images/CharSlot01.png" : "/public/images/CharSlot02.png"; //character square 1 , 2
-			characterSquares[i] = this.game.add.sprite(xOffset, yOffset, 'ball', frame); //Textures
+			characterSquares[i] = this.game.add.sprite(xOffset, yOffset, 'CharacterSlot', frame); //Textures
 			if(i % 2 == 0) {
 				xOffset += characterSquareXDistance;
 			} else {
@@ -89,7 +89,7 @@ WizardBall.pendinggame.prototype = {
 		for(var playerId in data.players) {
 			var color = data.players[playerId].color;
 			this.characterImages[playerId] = this.game.add.image(this.characterSquares[this.numPlayersInGame].position.x + characterOffsetX, 
-				this.characterSquares[this.numPlayersInGame].position.y + characterOffsetY, 'ball', "/public/images/CharSlot01.png" ); // Texture, head+color+.png
+				this.characterSquares[this.numPlayersInGame].position.y + characterOffsetY, 'CharacterSlot', "/public/images/CharSlot01.png" ); // Texture, head+color+.png
 			this.numPlayersInGame++;
 		}
 
@@ -105,7 +105,7 @@ WizardBall.pendinggame.prototype = {
 		var index = this.numPlayersInGame - 1;
 
 		this.characterImages[data.id] = this.game.add.image(this.characterSquares[index].position.x + characterOffsetX,
-		 this.characterSquares[index].position.y + characterOffsetY, 'ball', "lobby/bomberman_head/bomberman_head_" +  data.color + ".png"); // Texture, head+color+.png
+		 this.characterSquares[index].position.y + characterOffsetY, 'CharacterSlot', "lobby/bomberman_head/bomberman_head_" +  data.color + ".png"); // Texture, head+color+.png
 
 		// Activate start game button if this is the second player to join the this.game.
 		if(this.numPlayersInGame == 2) {
@@ -115,7 +115,7 @@ WizardBall.pendinggame.prototype = {
 
 	activateStartGameButton: function() {
 		this.minPlayerMessage.visible = false;
-		this.startGameButton.setFrames("lobby/buttons/start_game_button_01.png", "/public/images/Start01.png"); //Start button 2 , 1
+		this.startGameButton.setFrames("/public/images/Start01.png", "/public/images/Start01.png"); //Start button 2 , 1
 		this.startGameButton.onInputUp.removeAll();
 		this.startGameButton.onInputUp.add(this.startGameAction, this);
 	//	this.startGameButton.setDownSound(buttonClickSound);
@@ -123,7 +123,7 @@ WizardBall.pendinggame.prototype = {
 
 	deactivateStartGameButton: function() {
 		this.minPlayerMessage.visible = true;
-		this.startGameButton.setFrames("lobby/buttons/start_game_button_03.png", "lobby/buttons/start_game_button_03.png"); //Start button 3 for both
+		this.startGameButton.setFrames( "/public/images/Leave01.png", "/public/images/Leave01.png"); //Start button 3 for both
 		this.startGameButton.onInputUp.removeAll();
 	//	this.startGameButton.setDownSound(null);
 	},
@@ -149,7 +149,7 @@ WizardBall.pendinggame.prototype = {
 	leaveGameAction: function() {
 		socket.emit("leave pending game");
 		socket.removeAllListeners();
-		this.game.state.start("Lobby", true, false, repeatingBombTilesprite);
+		this.game.state.start("Lobby", true, false, null); //4th parameter rtbs
 	},
 
 	startGame: function(data) {

@@ -48,7 +48,7 @@ var Lobby = {
 	},
 
 	onEnterLobby: function(data){
-		var pendingGame = lobbySlots[data.gameID]; 
+		var pendingGame = lobbies[data.gameID]; 
  	 
  		this.leave(lobbyID); 
  		this.join(data.gameID); 

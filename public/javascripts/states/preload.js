@@ -28,6 +28,7 @@ WizardBall.preload.prototype = {
 		this.loadCharacterSelectResources();
 		this.loadLobbyResources();
 		this.loadSetupResources();
+		this.loadPendingGameResources();
 	},
 
 	loadTitleResources: function(){
@@ -67,7 +68,13 @@ WizardBall.preload.prototype = {
 		this.game.load.spritesheet('okButton', levelData.setup.ok_button, levelData.setup.ok_button_width,levelData.setup.ok_button_height);
 	},
 
+	loadPendingGameResources : function() {
+		this.game.load.spritesheet('StartButton', levelData.pendinggame.start_button, levelData.pendinggame.sl_button_width, levelData.pendinggame.sl_button_height);
+		this.game.load.spritesheet('LeaveButton', levelData.pendinggame.leave_button, levelData.pendinggame.sl_button_width, levelData.pendinggame.sl_button_height);
+		this.game.load.spritesheet('CharacterSlot', levelData.pendinggame.character_slot, levelData.pendinggame.characterslot_button_width, levelData.pendinggame.characterslot_button_height);
+	},
+
 	create: function(){
-		this.state.start("PendingGame");
+		this.state.start("Lobby");
 	}
 };
