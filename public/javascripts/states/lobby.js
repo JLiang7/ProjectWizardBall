@@ -126,7 +126,7 @@ var WizardBall = WizardBall || {};
  	hostGameAction: function(gameID) { 
  		socket.emit("host game", {gameID: gameID}); 
  		socket.removeAllListeners(); 
- 	//	this.game.state.start("StageSelect", true, false, gameID); //
+ 		this.game.state.start("Setup", true, false, gameID); //
  	}, 
  
  
