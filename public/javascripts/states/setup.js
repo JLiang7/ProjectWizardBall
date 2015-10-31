@@ -17,8 +17,8 @@ var stageNameYOffset = 328;
 var repeatingBombTilesprite;
 
 var stages = [
-	{name: "Stage 1", thumbnailKey: "/public/images/anime_city.png", tilemapName: "levelOne", maxPlayers: 4, size: "W.e"},
-	{name: "Stage 2", thumbnailKey: "/public/images/ball.png", tilemapName: "levelTwo", maxPlayers: 4, size: "W.e"}
+	{name: "Stage 1", thumbnailKey: "thumbnailOne", tilemapName: "levelOne", maxPlayers: 4, size: "W.e"},
+	{name: "Stage 2", thumbnailKey: "thumbnailTwo", tilemapName: "levelTwo", maxPlayers: 4, size: "W.e"}
 ];
 
 WizardBall.setup.prototype = {
@@ -28,19 +28,18 @@ WizardBall.setup.prototype = {
 	},
 
 	create: function() {
-		var selectionWindow = this.game.add.image(xOffset, yOffset, "", "/public/images/transRed.png");
+		//var selectionWindow = this.game.add.image(xOffset, yOffset, "", "/public/images/transRed.png");
 		this.selectedStageIndex = 0;
 		var initialStage = stages[this.selectedStageIndex];
 
-		this.leftButton = this.game.add.button(150, 180, 'greenBar', this.leftSelect, this, "/public/images/transYellow.png", "/public/images/ball.png");
-		this.rightButton = this.game.add.button(250, 180, 'yellowBar', this.rightSelect, this, "/public/images/transPurple.png", "/public/images/ball.png");
-		this.okButton = this.game.add.button(350, 350, 'purpleBar', this.confirmStageSelection, this, "/public/images/transGreen.png", "/public/images/ball.png");
-
+		this.leftButton = this.game.add.button(150, 180, 'leftButton', this.leftSelect, this, 1,0);
+		this.rightButton = this.game.add.button(250, 180, 'rightButton', this.rightSelect, this,1,0);
+		this.okButton = this.game.add.button(350, 350, 'okButton', this.confirmStageSelection, this,1,0);
 		//this.leftButton.setDownSound(buttonClickSound);
 		//this.rightButton.setDownSound(buttonClickSound);
 		//this.okButton.setDownSound(buttonClickSound);
 
-		this.thumbnail = this.game.add.image(thumbnailXOffset, thumbnailYOffset, 'purpleBar', initialStage.thumbnailKey);
+		//this.thumbnail = this.game.add.image(thumbnailXOffset, thumbnailYOffset, 'purpleBar', initialStage.thumbnailKey);
 
 		// Display title
 		this.text = this.game.add.text(this.game.camera.width / 2, stageNameYOffset, initialStage.name);
@@ -85,7 +84,7 @@ WizardBall.setup.prototype = {
 		this.text.setText(newStage.name);
 		this.numPlayersText.setText("Max # of players:   " + newStage.maxPlayers);
 		this.stageSizeText.setText("Map size:   " + newStage.size);
-		this.thumbnail.loadTexture('purpleBar', newStage.thumbnailKey);
+		//this.thumbnail.loadTexture('purpleBar', newStage.thumbnailKey);
 	},
 
 	configureText: function(text, color, size) {

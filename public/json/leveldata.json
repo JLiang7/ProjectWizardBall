@@ -26,9 +26,18 @@
 
       "lobby":{
          "button_textures" : "images/buttonTextures.png",
-         "button_width" : "446",
-         "button_height" : "87",
-         "button_num" : "2"
+         "button_width" : 446,
+         "button_height" : 87
+      },
+
+      "setup": {
+         "left_button" : "images/leftButton.png",
+         "right_button" : "images/rightButton.png",
+         "ok_button" : "images/okButton.png",
+         "lr_button_width" : 100,
+         "lr_button_height" : 100,
+         "ok_button_width" : 100,
+         "ok_button_height" : 100
       }
 
 }
