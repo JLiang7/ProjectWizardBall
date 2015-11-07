@@ -103,7 +103,7 @@ WizardBall.pendinggame.prototype = {
 		this.numPlayersInGame++;
 		var index = this.numPlayersInGame - 1;
 		//DATA CAHNGED TO CAP id to ID
-		this.characterImages[data.Id] = this.game.add.image(this.characterSquares[index].position.x + characterOffsetX,
+		this.characterImages[data.id] = this.game.add.image(this.characterSquares[index].position.x + characterOffsetX,
 		 this.characterSquares[index].position.y + characterOffsetY, 'CharacterSlot', 1); // Texture, head+color+.png
 
 		// Activate start game button if this is the second player to join the this.game.
@@ -137,7 +137,7 @@ WizardBall.pendinggame.prototype = {
 		for(var playerId in this.characterImages) {
 			this.characterImages[playerId].destroy();
 		}
-		this.populateCharacterSquares(data.id);
+		this.populateCharacterSquares(data);
 	},
 
 	// When the "start" button is clicked, send a message to the server to initialize the this.game.
@@ -148,7 +148,7 @@ WizardBall.pendinggame.prototype = {
 	leaveGameAction: function() {
 		socket.emit("leave pending game");
 		socket.removeAllListeners();
-		this.game.state.start("Lobby", true, false, null); //4th parameter rtbs
+		this.game.state.start("Lobby", true, false); //4th parameter rtbs
 	},
 
 	startGame: function(data) {
