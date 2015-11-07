@@ -63,10 +63,10 @@ WizardBall.play.prototype = {
     //     player.animations.add('throwRight',[13,12],12,false);
     //     player.animations.add('throwLeft',[10,11],12,false);
 
-    //     leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
-    //     rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
-    //     jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
-    //     leftClick = this.game.input.activePointer.leftButton;
+         leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
+         rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+         jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+         leftClick = this.game.input.activePointer.leftButton;
 
 
         level.setBalls(this.game.add.group());
@@ -74,7 +74,7 @@ WizardBall.play.prototype = {
         level.getBalls().physicsBodyType = Phaser.Physics.ARCADE;
         level.getBalls().createMultiple(10,'ball');
 
-        player.running = 0;
+        //player.running = 0;
 
 
 

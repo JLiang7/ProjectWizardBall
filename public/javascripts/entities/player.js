@@ -6,7 +6,8 @@ var Player = function(x, y, id, game) {
 	this.spawnPoint = {x: x, y: y};
 	this.id = id;
 	this.facing = "left";
-	this.speed = DEFAULT_PLAYER_SPEED;
+	//this.speed = 0;
+    this.running = 0;
 	this.flying_speed = FLYING_SPEED;
 	this.game = game;
 
@@ -31,20 +32,19 @@ Player.prototype = Object.create(Phaser.Sprite.prototype);
 
 Player.prototype.handleInput = function() {
 
-	var moving = true;
+	//var moving = true;
 	var game = this.game;
-	var speed = this.speed;
+	//var speed = this.speed;
 	var flying_speed = this.flying_speed;
-	var facing = this.facing;
 
-    leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
-    rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
-    jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
-    leftClick = this.game.input.activePointer.leftButton;
+    //leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
+    //rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+    //jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+    //leftClick = this.game.input.activePointer.leftButton;
 
 
 	if (leftButton.isDown) { 
-   		player.body.velocity.x = -speed;
+   		player.body.velocity.x = -DEFAULT_PLAYER_SPEED;
         if (player.body.velocity.y != 0){
             if (facing != 'leftJump') {
                 facing = 'leftJump';
@@ -56,7 +56,7 @@ Player.prototype.handleInput = function() {
         }
         player.running = 1;
    	} else if (rightButton.isDown) { 
-   		player.body.velocity.x = speed;
+   		player.body.velocity.x = DEFAULT_PLAYER_SPEED;
         if (player.body.velocity.y != 0){
             if (facing != 'rightJump') {
                 facing = 'rightJump';
@@ -68,7 +68,7 @@ Player.prototype.handleInput = function() {
         }
         player.running = 1;
    	} else if (jumpButton.isDown) { 
-   		player.body.velocity.y = -speed;
+   		player.body.velocity.y = -DEFAULT_PLAYER_SPEED;
         if (facing == 'left' || player.frame == 8) {
             facing = 'leftJump';
             player.frame = 9;
@@ -87,8 +87,24 @@ Player.prototype.handleInput = function() {
         //     facing = 'throwRight';
         // }	
    	} else { 
-       moving = false; 
-   	//   this.freeze(); 
+       if(player.body.velocity.y == 0 && player.running != 0){
+                if (facing != 'idle' || facing != 'throwLeft'||facing != 'throwRight')
+                {
+                    player.animations.stop();
+
+                    if (facing == 'left' || facing == 'leftJump' || facing == 'throwLeft')
+                    {
+                     player.frame = 8;
+                    }
+                    else
+                    {
+                        player.frame = 15;
+                    }
+
+                    facing = 'idle';
+                    player.running = 0;
+                }
+            } 
   	} 
 
 };

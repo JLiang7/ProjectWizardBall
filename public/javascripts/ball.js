@@ -1,5 +1,9 @@
-function defaultBall(player) {
-	var speed;
+//var audioPlayer = require("../audio/audio_player");
+//var textureUtil = require("../images/texture_util");
+var WizardBall = WizardBall || {};
+
+var Ball = function(x, y, id) {
+	/*var speed;
 	var isLive=true;
 	var bounce=5;
 	var isVisible=true;
@@ -17,8 +21,9 @@ function defaultBall(player) {
 		if(bounce==0) {
 			
 		}
-	}
-
+	}*/
+	//Phaser.Sprite.call(this, )
+	this.id = id;
 
 
 }
