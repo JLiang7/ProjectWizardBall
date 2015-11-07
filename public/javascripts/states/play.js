@@ -5,7 +5,7 @@ WizardBall.play = function(game){
     var player;
     var fireRate = 100;
     var nextThrow = 0;
-    var facing = 'left';
+    var facing = 'right';
     var jumpTimer = 0;
     
     var filter;
@@ -31,7 +31,7 @@ WizardBall.play.prototype = {
 
         fireRate = 100;
         nextThrow = 0;
-        facing = 'left';
+        facing = 'idle';
         jumpTimer = 0;
     //    this.game.physics.startSystem(Phaser.Physics.ARCADE);
     //    filter = this.game.add.filter('Plasma',800,600);
@@ -75,9 +75,6 @@ WizardBall.play.prototype = {
         level.getBalls().createMultiple(10,'ball');
 
         //player.running = 0;
-
-
-
     },
 
     render: function() {
@@ -105,7 +102,7 @@ WizardBall.play.prototype = {
         }
     },
 
-    controlHandler: function(){
+    /*controlHandler: function(){
         if(leftClick.isDown){
             this.throwBall();
             if(player.frame == 8 || facing == 'leftJump' || facing == 'throwLeft'){
@@ -182,13 +179,12 @@ WizardBall.play.prototype = {
         
 
         
-    },
+    },*/
 
     update: function(){
 
-        // this.game.physics.arcade.collide(player, layer);
-
-        //player.body.velocity.x = 0;
+        //this.game.physics.arcade.collide(player, layer);
+        player.body.velocity.x = 0;
 
         //this.controlHandler();
         player.handleInput();
