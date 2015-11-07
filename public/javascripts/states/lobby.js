@@ -126,13 +126,13 @@ var WizardBall = WizardBall || {};
  	hostGameAction: function(gameID) { 
  		socket.emit("host game", {gameID: gameID}); 
  		socket.removeAllListeners(); 
- 		WizardBall.game.state.start("Setup"); 
+ 		WizardBall.game.state.start("Setup", true, false, gameID); 
  	}, 
  
  
  	joinGameAction: function(gameID) { 
  		socket.removeAllListeners(); 
- 		WizardBall.game.state.start("PendingGame"); 
+ 		WizardBall.game.state.start("PendingGame", true, false, null, gameID); 
  	}, 
  
  

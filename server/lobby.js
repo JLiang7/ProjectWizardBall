@@ -44,6 +44,7 @@ var Lobby = {
 	onStageSelect: function(data){
 		lobbies[this.gameID].state = "joinable";
 		lobbies[this.gameID].mapID = data.mapID;
+		console.log(data.mapID);
 		broadcastStateUpdate(this.gameID,"joinable");
 	},
 
@@ -53,11 +54,11 @@ var Lobby = {
  		this.leave(lobbyID); 
  		this.join(data.gameID); 
  	 
- 		pendingGame.addPlayer(this.ID); 
+ 		pendingGame.addPlayer(this.id); 
  		this.gameID = data.gameID; 
- 	 
+ 	 	console.log(this.id);
  		this.emit("show current players", {players: pendingGame.players}); 
- 		this.broadcast.to(data.gameID).emit("player joined", {id: this.ID, color: pendingGame.players[this.ID].color}); 
+ 		this.broadcast.to(data.gameID).emit("player joined", {id: this.id, color: pendingGame.players[this.id].color}); 
  	 
  		if(pendingGame.getNumPlayers() >= Maps[pendingGame.mapID].spawnLocations.length) { 
  			pendingGame.state = "full"; 
@@ -67,7 +68,7 @@ var Lobby = {
 	},
 
 	onLeaveLobby: function(data){
-		leaveLobby.call(this);
+		leavePendingGame.call(this);
 	}
 };
 
@@ -79,9 +80,9 @@ function broadcastStateUpdate(gameID, newState) {
  function leavePendingGame() { 
 	var lobbySlot = lobbies[this.gameID]; 
  
- 
+ 	console.log("Removing from game " + this.gameID);
  	this.leave(this.gameID); 
- 	lobbySlot.removePlayer(this.ID); 
+ 	lobbySlot.removePlayer(this.id); 
  	io.in(this.gameID).emit("player left", {players: lobbies.players}); 
  
  

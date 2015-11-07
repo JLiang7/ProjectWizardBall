@@ -46,9 +46,9 @@
          "leave_button" : "images/Leave01.png",
          "sl_button_width" : 200,
          "sl_button_height" : 100,
-         "character_slot" : "images/TChar01.png",
-         "characterslot_width" : 50,
-         "characterslot_height" : 50
+         "character_slot" : "images/character_frame.png",
+         "characterslot_width" : 200,
+         "characterslot_height" : 200
       }
 
 }

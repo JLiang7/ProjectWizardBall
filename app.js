@@ -26,7 +26,7 @@ function init(){
 
 function setEventHandlers(){
 	io.on("connection",function(client){
-		console.log("New Player Connected");
+		console.log("New player has connected: " + client.id);
 
 //		client.on("move player", onMovePlayer);
 //		client.on("disconnect", onClientDisconnect);
@@ -60,11 +60,11 @@ function onClientDisconnect() {
 	} else if(lobbySlots[this.gameID].state == "inprogress") {
 		var game = games[this.gameID];
 	
-		if(this.ID in game.players) {
-			console.log("deleting " + this.ID);
-			delete game.players[this.ID];
+		if(this.id in game.players) {
+			console.log("deleting " + this.id);
+			delete game.players[this.id];
 	
-			io.in(this.gameID).emit("remove player", {ID: this.ID});	
+			io.in(this.gameID).emit("remove player", {ID: this.id});	
 		}
 
 		if(game.numPlayers < 2) {
@@ -128,7 +128,7 @@ function onMovePlayer(data) {
 		return;
 	}
 
-	var movingPlayer = game.players[this.ID];
+	var movingPlayer = game.players[this.id];
 
 	// Moving player can be null if a player is killed and leftover movement signals come through.
 	if(!movingPlayer) {
@@ -143,7 +143,7 @@ function onMovePlayer(data) {
 
 function onPlaceBomb(data) {
 	var game = games[this.gameID];
-	var player = game.players[this.ID];
+	var player = game.players[this.id];
 
 	if(game === undefined || game.awaitingAcknowledgements || player.numBombsAlive >= player.bombCapacity) {
 		return;
@@ -185,7 +185,7 @@ function onPlaceBomb(data) {
 		return;
 	}
 
-	var player = games[this.gameID].players[this.ID];
+	var player = games[this.gameID].players[this.id];
 
 	if(powerup.powerupType === PowerupIDs.BOMB_STRENGTH) {
 		player.bombStrength++;
@@ -193,7 +193,7 @@ function onPlaceBomb(data) {
 		player.bombCapacity++;
 	}
 
-	io.in(this.gameID).emit("powerup acquired", {acquiringPlayerID: this.ID, powerupID: powerup.ID, powerupType: powerup.powerupType});
+	io.in(this.gameID).emit("powerup acquired", {acquiringPlayerID: this.id, powerupID: powerup.ID, powerupType: powerup.powerupType});
 };*/
 
 function handlePlayerDeath(deadPlayerIDs, gameID) {
@@ -256,7 +256,7 @@ function onReadyForRound() {
 		return;
 	}
 
-	game.acknowledgeRoundReadinessForPlayer(this.ID);
+	game.acknowledgeRoundReadinessForPlayer(this.id);
 
 	if(game.numRoundReadinessAcknowledgements >= game.numPlayers) {
 		game.awaitingAcknowledgements = false;
