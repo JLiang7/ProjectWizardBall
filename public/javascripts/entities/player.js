@@ -5,10 +5,11 @@ var Player = function(x, y, id, game) {
 	Phaser.Sprite.call(this, game, x, y, 'player');
 	this.spawnPoint = {x: x, y: y};
 	this.id = id;
-	this.facing = "left";
+	this.facing = "idle";
+    this.frame = 15;
 	//this.speed = 0;
     this.running = 0;
-	this.flying_speed = FLYING_SPEED;
+	//this.flying_speed = FLYING_SPEED;
 	this.game = game;
 	this.nextShot = 0;
 
@@ -46,9 +47,9 @@ Player.prototype.throwBall = function() {
 Player.prototype.handleInput = function() {
 
 	//var moving = true;
-	var game = this.game;
+	//var game = this.game;
 	//var speed = this.speed;
-	var flying_speed = this.flying_speed;
+	//var flying_speed = this.flying_speed;
 
     //leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
     //rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
@@ -80,7 +81,7 @@ Player.prototype.handleInput = function() {
                 facing = 'right';
         }
         player.running = 1;
-   	} else if (jumpButton.isDown) { 
+   	} else if (jumpButton.isDown && player.body.onFloor() && this.game.time.now > jumpTimer) { 
    		player.body.velocity.y = -DEFAULT_PLAYER_SPEED;
         if (facing == 'left' || player.frame == 8) {
             facing = 'leftJump';
@@ -106,7 +107,7 @@ Player.prototype.handleInput = function() {
 
                     if (facing == 'left' || facing == 'leftJump' || facing == 'throwLeft')
                     {
-                     player.frame = 8;
+                        player.frame = 8;
                     }
                     else
                     {
