@@ -84,7 +84,7 @@ WizardBall.pendinggame.prototype = {
 
 	populateCharacterSquares: function(data) {
 		this.numPlayersInGame = 0;
-
+		console.log("Number of Players " + data.players);
 		for(var playerId in data.players) {
 			var color = data.players[playerId].color;
 			this.characterImages[playerId] = this.game.add.image(this.characterSquares[this.numPlayersInGame].position.x + characterOffsetX, 

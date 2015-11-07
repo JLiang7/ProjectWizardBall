@@ -84,7 +84,7 @@ var WizardBall = WizardBall || {};
  
  		if(!socket.hasListeners("add slots")) { 
  			socket.on("add slots", this.addSlots.bind(this)); 
- 			socket.on("update slot", this.updateSlot.bind(this)); 
+ 			socket.on("update slot", this.updateSlot.bind(this));
  		} 
  	}, 
 
@@ -136,16 +136,17 @@ var WizardBall = WizardBall || {};
  	}, 
  
  
- 	updateSlot: function(updateInfo) { 
+ 	updateSlot: function(updateInfo) {
+ 		
  		var settings = this.stateSettings[updateInfo.newState]; 
- 		var ID = updateInfo.gameID; 
- 		var button = this.slots[ID]; 
+ 		var id = updateInfo.gameID; 
+ 		var button = this.slots[id]; 
  
  
  		this.labels[id].setText(settings.text); 
  		button.setFrames(settings.overFrame, settings.outFrame); 
  
  		button.onInputUp.removeAll(); 
- 		button.onInputUp.add(function() { return settings.callback(ID)}, this); 
+ 		button.onInputUp.add(function() { return settings.callback(id)}, this); 
  	} 
 }; 

@@ -44,7 +44,6 @@ var Lobby = {
 	onStageSelect: function(data){
 		lobbies[this.gameID].state = "joinable";
 		lobbies[this.gameID].mapID = data.mapID;
-		console.log(data.mapID);
 		broadcastStateUpdate(this.gameID,"joinable");
 	},
 
