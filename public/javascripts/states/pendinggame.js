@@ -86,7 +86,7 @@ WizardBall.pendinggame.prototype = {
 		this.numPlayersInGame = 0;
 
 		for(var playerId in data.players) {
-			var color = data.players[playerId].color;
+		//	var color = data.players[playerId].color;
 			this.characterImages[playerId] = this.game.add.image(this.characterSquares[this.numPlayersInGame].position.x + characterOffsetX, 
 				this.characterSquares[this.numPlayersInGame].position.y + characterOffsetY, 'CharacterSlot', 1 ); // Texture, head+color+.png
 			this.numPlayersInGame++;
@@ -102,8 +102,8 @@ WizardBall.pendinggame.prototype = {
 	playerJoined: function(data) {
 		this.numPlayersInGame++;
 		var index = this.numPlayersInGame - 1;
-
-		this.characterImages[data.id] = this.game.add.image(this.characterSquares[index].position.x + characterOffsetX,
+		//DATA CAHNGED TO CAP id to ID
+		this.characterImages[data.Id] = this.game.add.image(this.characterSquares[index].position.x + characterOffsetX,
 		 this.characterSquares[index].position.y + characterOffsetY, 'CharacterSlot', 1); // Texture, head+color+.png
 
 		// Activate start game button if this is the second player to join the this.game.
@@ -137,7 +137,7 @@ WizardBall.pendinggame.prototype = {
 		for(var playerId in this.characterImages) {
 			this.characterImages[playerId].destroy();
 		}
-		this.populateCharacterSquares(data);
+		this.populateCharacterSquares(data.id);
 	},
 
 	// When the "start" button is clicked, send a message to the server to initialize the this.game.
@@ -154,6 +154,6 @@ WizardBall.pendinggame.prototype = {
 	startGame: function(data) {
 	//	repeatingBombTilesprite.doNotDestroy = false;
 		socket.removeAllListeners();
-		this.game.state.start("Level", true, false, data.mapName, data.players, this.id);
+		this.game.state.start("Play", true, false, data.mapName, data.players, this.ID);
 	}
 }
