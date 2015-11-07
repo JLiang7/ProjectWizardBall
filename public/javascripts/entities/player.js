@@ -10,6 +10,7 @@ var Player = function(x, y, id, game) {
     this.running = 0;
 	this.flying_speed = FLYING_SPEED;
 	this.game = game;
+	this.nextShot = 0;
 
 	game.physics.enable(this, Phaser.Physics.ARCADE);
 
@@ -29,6 +30,18 @@ var Player = function(x, y, id, game) {
 };
 
 Player.prototype = Object.create(Phaser.Sprite.prototype); 
+
+Player.prototype.throwBall = function() {
+	 if (level.getBalls().countDead() > 0 && this.game.time.now > this.nextShot)
+        {
+        	this.nextShot = this.game.time.now + 300;
+            var ball = level.getBalls().getFirstDead();
+            ball.reset(player.x,player.y);
+            this.game.physics.arcade.moveToPointer(ball, 800);
+            ball.body.collideWorldBounds = true;
+            ball.body.bounce.setTo(.5,.5);
+        }
+}
 
 Player.prototype.handleInput = function() {
 
@@ -77,15 +90,14 @@ Player.prototype.handleInput = function() {
             player.frame = 14;
         }
    	} else if (leftClick.isDown) { 
-   		var x = 'hi';
-   	    // this.throwBall();
-        // if (player.frame == 8 || facing == 'leftJump' || facing == 'throwLeft') {
-        //     player.animations.play('throwLeft');
-        //     facing = 'throwLeft';
-        // } else {
-        //     player.animations.play('throwRight');
-        //     facing = 'throwRight';
-        // }	
+   	    this.throwBall();
+        if (player.frame == 8 || facing == 'leftJump' || facing == 'throwLeft') {
+            player.animations.play('throwLeft');
+            facing = 'throwLeft';
+        } else {
+            player.animations.play('throwRight');
+            facing = 'throwRight';
+        }	
    	} else { 
        if(player.body.velocity.y == 0 && player.running != 0){
                 if (facing != 'idle' || facing != 'throwLeft'||facing != 'throwRight')

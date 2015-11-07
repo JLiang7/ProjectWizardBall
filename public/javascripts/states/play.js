@@ -47,6 +47,7 @@ WizardBall.play.prototype = {
         this.game.physics.arcade.gravity.y = 300;
 
         player = new Player(210,3400,'player',this.game);
+        player.tint = 0xffffff;
 
     //     player = this.game.add.sprite(210,3400, 'player');
     //     player.scale.setTo(.5,.5);
@@ -72,7 +73,7 @@ WizardBall.play.prototype = {
         level.setBalls(this.game.add.group());
         level.getBalls().enableBody = true;
         level.getBalls().physicsBodyType = Phaser.Physics.ARCADE;
-        level.getBalls().createMultiple(10,'ball');
+        level.getBalls().createMultiple(1000,'ball');
 
         //player.running = 0;
 
