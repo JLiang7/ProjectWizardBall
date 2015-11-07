@@ -26,8 +26,6 @@ function init(){
 
 function setEventHandlers(){
 	io.on("connection",function(client){
-		console.log("New player has connected: " + client.id);
-
 //		client.on("move player", onMovePlayer);
 		client.on("disconnect", onClientDisconnect);
 //		client.on("place bomb", onPlaceBomb);
@@ -45,13 +43,11 @@ function setEventHandlers(){
 };
 
 function onClientDisconnect() {
-	console.log("On client disconnect");
 	if (this.gameID == null) {
 		return;
 	}
 
 	var lobbySlots = Lobby.getLobbies();
-	console.log("State of game : " + lobbySlots[this.gameID].state);
 	if (lobbySlots[this.gameID].state == "joinable" || lobbySlots[this.gameID].state == "full") {
 		Lobby.onLeavePendingGame.call(this);
 	} else if (lobbySlots[this.gameID].state == "prejoinable") {
@@ -62,7 +58,6 @@ function onClientDisconnect() {
 		var game = games[this.gameID];
 	
 		if(this.id in game.players) {
-			console.log("deleting " + this.id);
 			delete game.players[this.id];
 	
 			io.in(this.gameID).emit("remove player", {ID: this.id});	
@@ -161,7 +156,6 @@ function onPlaceBomb(data) {
 	player.numBombsAlive++;
 
 	var bombTimeoutID = setTimeout(function () {
-		console.log("detonatin with ", game.players);
 		var explosionData = bomb.detonate(game.map, player.bombStrength, game.players);
 		player.numBombsAlive--;
 
