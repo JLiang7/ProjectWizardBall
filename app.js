@@ -29,7 +29,7 @@ function setEventHandlers(){
 		console.log("New player has connected: " + client.id);
 
 //		client.on("move player", onMovePlayer);
-//		client.on("disconnect", onClientDisconnect);
+		client.on("disconnect", onClientDisconnect);
 //		client.on("place bomb", onPlaceBomb);
 //		client.on("register map", onRegisterMap);
 //		client.on("start game on server", onStartGame);
@@ -45,18 +45,19 @@ function setEventHandlers(){
 };
 
 function onClientDisconnect() {
+	console.log("On client disconnect");
 	if (this.gameID == null) {
 		return;
 	}
 
-	var lobbySlots = Lobby.getLobbySlots();
-
+	var lobbySlots = Lobby.getLobbies();
+	console.log("State of game : " + lobbySlots[this.gameID].state);
 	if (lobbySlots[this.gameID].state == "joinable" || lobbySlots[this.gameID].state == "full") {
 		Lobby.onLeavePendingGame.call(this);
 	} else if (lobbySlots[this.gameID].state == "prejoinable") {
 		lobbySlots[this.gameID].state = "empty";
 
-		Lobby.broadcastSlotStateUpdate(this.gameID, "empty");
+		Lobby.broadcastStateUpdate(this.gameID, "empty");
 	} else if(lobbySlots[this.gameID].state == "inprogress") {
 		var game = games[this.gameID];
 	
@@ -88,7 +89,7 @@ function terminateExistingGame(gameID) {
 
 	Lobby.getLobbySlots()[gameID] = new PendingGame();
 
-	Lobby.broadcastSlotStateUpdate(gameID, "empty");
+	Lobby.broadcastStateUpdate(gameID, "empty");
 };
 
 function onStartGame() {
@@ -99,7 +100,7 @@ function onStartGame() {
 	var pendingGame = lobbySlots[this.gameID];
 	lobbySlots[this.gameID].state = "inprogress";
 
-	Lobby.broadcastSlotStateUpdate(this.gameID, "inprogress");
+	Lobby.broadcastStateUpdate(this.gameID, "inprogress");
 
 	var IDs = pendingGame.getPlayerIDs();
 	
