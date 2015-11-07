@@ -46,25 +46,27 @@ WizardBall.play.prototype = {
 
         this.game.physics.arcade.gravity.y = 300;
 
-        player = this.game.add.sprite(210,3400, 'player');
-        player.scale.setTo(.5,.5);
-        this.game.physics.enable(player, Phaser.Physics.ARCADE);
+        player = new Player(210,3400,'player',this.game);
 
-        player.body.collideWorldBounds = true;
-        player.body.gravity.y = 1000;
-        player.body.maxVelocity.y = 500;
-        player.body.setSize(140,210,0, 12);
+    //     player = this.game.add.sprite(210,3400, 'player');
+    //     player.scale.setTo(.5,.5);
+    //     this.game.physics.enable(player, Phaser.Physics.ARCADE);
 
-        player.animations.add('left', [0,1,2, 3, 4, 5, 6, 7], 12, true);
-    //    player.animations.add('turn', [4], 20, true);
-        player.animations.add('right', [16,17,18,19,20,21,22,23], 12, true);
-        player.animations.add('throwRight',[13,12],12,false);
-        player.animations.add('throwLeft',[10,11],12,false);
+    //     player.body.collideWorldBounds = true;
+    //     player.body.gravity.y = 1000;
+    //     player.body.maxVelocity.y = 500;
+    //     player.body.setSize(140,210,0, 12);
 
-        leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
-        rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
-        jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
-        leftClick = this.game.input.activePointer.leftButton;
+    //     player.animations.add('left', [0,1,2, 3, 4, 5, 6, 7], 12, true);
+    // //    player.animations.add('turn', [4], 20, true);
+    //     player.animations.add('right', [16,17,18,19,20,21,22,23], 12, true);
+    //     player.animations.add('throwRight',[13,12],12,false);
+    //     player.animations.add('throwLeft',[10,11],12,false);
+
+    //     leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
+    //     rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+    //     jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+    //     leftClick = this.game.input.activePointer.leftButton;
 
 
         level.setBalls(this.game.add.group());
@@ -186,9 +188,9 @@ WizardBall.play.prototype = {
 
         // this.game.physics.arcade.collide(player, layer);
 
-        player.body.velocity.x = 0;
+        //player.body.velocity.x = 0;
 
-        this.controlHandler();
-
+        //this.controlHandler();
+        player.handleInput();
     }
 }
