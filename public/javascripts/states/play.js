@@ -123,7 +123,7 @@ WizardBall.play.prototype = {
                     facing = 'leftJump';
                     player.frame = 9;
                 }
-            }else if (facing != 'left')
+            } else if (facing != 'left')
             {
                 player.animations.play('left');
                 facing = 'left';
