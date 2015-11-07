@@ -22,7 +22,7 @@ var WizardBall = WizardBall || {};
  
  
  WizardBall.lobby.prototype = { 
- 	init: function(rbts) { 
+ 	init: function() { 
 // 		repeatingBombTilesprite = rbts; 
  	}, 
  

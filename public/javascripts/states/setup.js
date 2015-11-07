@@ -103,7 +103,6 @@ WizardBall.setup.prototype = {
 		var selectedStage = stages[this.selectedStageIndex];
 
 		socket.emit("select stage", {mapID: selectedStage.tilemapName});
-		console.log(selectedStage.tilemapName)
 		this.game.state.start("PendingGame", true, false, selectedStage.tilemapName, this.gameID, repeatingBombTilesprite);
 	}
 };

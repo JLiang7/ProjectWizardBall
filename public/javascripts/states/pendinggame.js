@@ -3,7 +3,7 @@ var WizardBall = WizardBall || {};
 
 WizardBall.pendinggame = function() {}
 
-//module.exports = PendingGame;
+
 
 var xOffset = 40;
 var yOffset = 50;
@@ -35,12 +35,12 @@ WizardBall.pendinggame.prototype = {
 	},
 
 	create: function() {
-		console.log(this.gameID);
+		
 		socket.emit("enter pending game", {gameID: this.gameID});
 
 		//var backdrop = this.game.add.image(xOffset, yOffset, 'background', "/public/images/ball.png"); // TEXTURE, backdrop image
 		this.startGameButton = this.game.add.button(startGameButtonXOffset, buttonYOffset, 'StartButton', null, this, //TEXTURE
-			1, 2); //Start game button 3 both times
+			1, 1); //Start game button 3 both times
 		this.leaveGameButton = this.game.add.button(leaveButtonXOffset,buttonYOffset, 'LeaveButton', this.leaveGameAction, null, // TEXTURES
 			1, 2); // leave game button 2, 1
 
@@ -84,7 +84,6 @@ WizardBall.pendinggame.prototype = {
 
 	populateCharacterSquares: function(data) {
 		this.numPlayersInGame = 0;
-		console.log("Number of Players " + data.players);
 		for(var playerId in data.players) {
 			var color = data.players[playerId].color;
 			this.characterImages[playerId] = this.game.add.image(this.characterSquares[this.numPlayersInGame].position.x + characterOffsetX, 
@@ -137,6 +136,7 @@ WizardBall.pendinggame.prototype = {
 		for(var playerId in this.characterImages) {
 			this.characterImages[playerId].destroy();
 		}
+
 		this.populateCharacterSquares(data);
 	},
 

@@ -55,7 +55,7 @@ var Lobby = {
  	 
  		pendingGame.addPlayer(this.id); 
  		this.gameID = data.gameID; 
- 	 	console.log(this.id);
+ 	 
  		this.emit("show current players", {players: pendingGame.players}); 
  		this.broadcast.to(data.gameID).emit("player joined", {id: this.id, color: pendingGame.players[this.id].color}); 
  	 
@@ -79,10 +79,10 @@ function broadcastStateUpdate(gameID, newState) {
  function leavePendingGame() { 
 	var lobbySlot = lobbies[this.gameID]; 
  
- 	console.log("Removing from game " + this.gameID);
+ 
  	this.leave(this.gameID); 
  	lobbySlot.removePlayer(this.id); 
- 	io.in(this.gameID).emit("player left", {players: lobbies.players}); 
+ 	io.in(this.gameID).emit("player left", {players: lobbySlot.players}); 
  
  
  	if(lobbySlot.getNumPlayers()== 0) { 
