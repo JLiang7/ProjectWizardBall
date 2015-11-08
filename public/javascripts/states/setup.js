@@ -29,20 +29,24 @@ WizardBall.setup.prototype = {
 	},
 
 	create: function() {
+		var phoneGraphicsAngle = 2;
 		//var selectionWindow = this.game.add.image(xOffset, yOffset, "", "/public/images/transRed.png");
 		background = this.game.add.sprite(0,0,'setupBackground');
 		phone = this.game.add.sprite(115,38, 'phoneGraphic');
-		phone.angle = 2;
+		phone.angle = phoneGraphicsAngle;
 		this.selectedStageIndex = 0;
 		var initialStage = stages[this.selectedStageIndex];
 //		this.thumbnail = this.game.add.sprite(thumbnailXOffset, thumbnailYOffset, 'levelPreview');
 //		this.thumbnail.anchor.setTo(.5,.5);
 		
-		this.leftButton = this.game.add.button(thumbnailXOffset - (previewDim/2) - 100, thumbnailYOffset - (thumbnailYOffset/2), 'leftButton', this.leftSelect, this, 1,0);
+		this.leftButton = this.game.add.button(110, 500, 'leftButton', this.leftSelect, this, 1,0);
+		this.leftButton.angle = phoneGraphicsAngle;
 		//this.leftButton.anchor.setTo(.5,.5);
-		this.rightButton = this.game.add.button(thumbnailXOffset + (previewDim/2), thumbnailYOffset - (thumbnailYOffset/2), 'rightButton', this.rightSelect, this,1,0);
+		this.rightButton = this.game.add.button(390,510, 'rightButton', this.rightSelect, this,1,0);
+		this.rightButton.angle = phoneGraphicsAngle;
 		//this.rightButton.anchor.setTo(.5,.5);
-		this.okButton = this.game.add.button(thumbnailXOffset + (previewDim/2), thumbnailYOffset + (previewDim/2) , 'okButton', this.confirmStageSelection, this,1,0);
+		this.okButton = this.game.add.button(255,505, 'okButton', this.confirmStageSelection, this,1,0);
+		this.okButton.angle = phoneGraphicsAngle;
 		//this.okButton.anchor.setTo(.5,.5);
 		//this.leftButton.setDownSound(buttonClickSound);
 		//this.rightButton.setDownSound(buttonClickSound);
@@ -51,8 +55,9 @@ WizardBall.setup.prototype = {
 		
 
 		// Display title
-		this.text = this.game.add.text(this.game.camera.width / 2, stageNameYOffset, initialStage.name);
-		this.configureText(this.text, "white", 28);
+		var style = { font: "50px Arial", fill: "#000000", align: "left"};
+		this.text = this.game.add.text(900, 100, initialStage.name,style);
+		this.configureText(this.text, "black", 50);
 		this.text.anchor.setTo(.5, .5);
 
 		// Display number of players
