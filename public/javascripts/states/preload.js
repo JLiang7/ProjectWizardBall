@@ -66,6 +66,8 @@ WizardBall.preload.prototype = {
 	},
 
 	loadSetupResources : function(){
+		this.game.load.image('levelPreview1',levelData.setup.level_preview1);
+		this.game.load.image('levelPreview2',levelData.setup.level_preview2);
 		this.game.load.image('setupBackground',levelData.setup.background);
 		this.game.load.image('phoneGraphic',levelData.setup.phone);
 		this.game.load.spritesheet('leftButton', levelData.setup.left_button, levelData.setup.lr_button_width,levelData.setup.lr_button_height);

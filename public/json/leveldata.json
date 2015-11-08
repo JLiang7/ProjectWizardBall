@@ -39,6 +39,8 @@
          "left_button" : "images/leftButton.png",
          "right_button" : "images/rightButton.png",
          "ok_button" : "images/okButton.png",
+         "level_preview1" : "images/level_preview1.png",
+         "level_preview2" : "images/level_preview2.png",
          "lr_button_width" : 100,
          "lr_button_height" : 100,
          "ok_button_width" : 100,
