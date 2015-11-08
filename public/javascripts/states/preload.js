@@ -60,10 +60,14 @@ WizardBall.preload.prototype = {
 	loadLobbyResources : function(){
 		this.game.load.image('levelPreview', levelData.lobby.level_preview);
 		this.game.load.spritesheet('buttonTextures', levelData.lobby.button_textures,levelData.lobby.button_width,levelData.lobby.button_height);
+		this.game.load.image('lobbyTriangle',levelData.lobby.lobby_triangle);
+		this.game.load.image('lobbyBar',levelData.lobby.lobby_bar);
 
 	},
 
 	loadSetupResources : function(){
+		this.game.load.image('setupBackground',levelData.setup.background);
+		this.game.load.image('phoneGraphic',levelData.setup.phone);
 		this.game.load.spritesheet('leftButton', levelData.setup.left_button, levelData.setup.lr_button_width,levelData.setup.lr_button_height);
 		this.game.load.spritesheet('rightButton', levelData.setup.right_button, levelData.setup.lr_button_width,levelData.setup.lr_button_height);
 		this.game.load.spritesheet('okButton', levelData.setup.ok_button, levelData.setup.ok_button_width,levelData.setup.ok_button_height);

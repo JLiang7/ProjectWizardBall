@@ -25,6 +25,8 @@
       },
 
       "lobby":{
+         "lobby_bar" : "images/lobby_bar.png",
+         "lobby_triangle" : "images/lobby_triangle.png",
          "button_textures" : "images/buttonTextures.png",
          "level_preview" : "images/level1_preview.png",
          "button_width" : 446,
@@ -32,6 +34,8 @@
       },
 
       "setup": {
+         "background" : "images/setup_bg.png",
+         "phone" : "images/phone_graphic.png",
          "left_button" : "images/leftButton.png",
          "right_button" : "images/rightButton.png",
          "ok_button" : "images/okButton.png",
