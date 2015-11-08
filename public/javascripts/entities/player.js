@@ -51,11 +51,7 @@ Player.prototype.handleInput = function() {
 	//var speed = this.speed;
 	//var flying_speed = this.flying_speed;
 
-    //leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
-    //rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
-    //jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
-    //leftClick = this.game.input.activePointer.leftButton;
-
+    if ( leftButton.isDown || rightButton.isDown || jumpButton.isDown || leftClick.isDown ) {
 
 	if (leftButton.isDown) { 
    		player.body.velocity.x = -DEFAULT_PLAYER_SPEED;
@@ -69,7 +65,9 @@ Player.prototype.handleInput = function() {
                 facing = 'left';
         }
         player.running = 1;
-   	} else if (rightButton.isDown) { 
+   	}
+
+    if (rightButton.isDown) { 
    		player.body.velocity.x = DEFAULT_PLAYER_SPEED;
         if (player.body.velocity.y != 0){
             if (facing != 'rightJump') {
@@ -77,11 +75,13 @@ Player.prototype.handleInput = function() {
                 player.frame = 14;
             } 
         } else if (facing != 'right') {
-                player.animations.play('right');
-                facing = 'right';
+            player.animations.play('right');
+            facing = 'right';
         }
         player.running = 1;
-   	} else if (jumpButton.isDown && player.body.onFloor() && this.game.time.now > jumpTimer) { 
+   	}
+
+    if (jumpButton.isDown) { 
    		player.body.velocity.y = -DEFAULT_PLAYER_SPEED;
         if (facing == 'left' || player.frame == 8) {
             facing = 'leftJump';
@@ -90,7 +90,9 @@ Player.prototype.handleInput = function() {
             facing = 'rightJump';
             player.frame = 14;
         }
-   	} else if (leftClick.isDown) { 
+   	}
+
+   	if (leftClick.isDown) { 
    	    this.throwBall();
         if (player.frame == 8 || facing == 'leftJump' || facing == 'throwLeft') {
             player.animations.play('throwLeft');
@@ -99,7 +101,11 @@ Player.prototype.handleInput = function() {
             player.animations.play('throwRight');
             facing = 'throwRight';
         }	
-   	} else { 
+   	}
+
+    }	
+
+    else { 
        if(player.body.velocity.y == 0 && player.running != 0){
                 if (facing != 'idle' || facing != 'throwLeft'||facing != 'throwRight')
                 {
