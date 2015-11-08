@@ -104,6 +104,7 @@ WizardBall.charSelect.prototype = {
 		this.game.add.tween(charSplash).to({alpha:1}, 100,Phaser.Easing.Linear.none).start();
 		this.game.add.tween(charDescText).to({alpha:1}, 600,Phaser.Easing.Linear.none).start();
 
+
 		this.option = 0;	
 	},
 
@@ -138,8 +139,15 @@ WizardBall.charSelect.prototype = {
 		this.game.add.tween(transPurple.scale).to({y:1}, 100,Phaser.Easing.Linear.none).start();
 		this.game.add.tween(transRed.scale).to({y:1}, 300,Phaser.Easing.Linear.none).start();
 		this.game.add.tween(transGreen.scale).to({y:1}, 500,Phaser.Easing.Linear.none).start();
-		this.game.add.tween(transYellow.scale).to({y:1}, 700,Phaser.Easing.Linear.none).start();
+		this.lastTween = this.game.add.tween(transYellow.scale).to({y:1}, 700,Phaser.Easing.Linear.none).start();
+		
+		this.lastTween.onComplete.add(this.lobbyGo,this);
 		this.option = 2;
+
+	},
+
+	lobbyGo : function(){
+		this.state.start("Lobby");
 	},
 
 	update : function(){;

@@ -6,16 +6,16 @@ var WizardBall = WizardBall || {};
  //var TextConfigurer = require("./util/text_configurer"); 
  
 
- var initialSlotYOffset = 130; 
+ var initialSlotYOffset = 200; 
  var slotXOffset = 40; 
  var lobbySlotDistance = 100; 
  
  
- var textXOffset = 260; 
- var textYOffset = 25; 
+ var textXOffset = 240; 
+ var textYOffset = 50; 
  
- 
- var headerYOffset = 70; 
+ var headerXOffset = 1100; 
+ var headerYOffset = 600; 
  
  
  //module.exports = Lobby; 
@@ -28,7 +28,9 @@ var WizardBall = WizardBall || {};
  
  
  	create: function() { 
- 		this.game.stage.backgroundColor = '#DDDDDD';
+ 		background = this.game.add.sprite(0,0,'yellowBar');
+ 		bar = this.game.add.sprite(50,0,'lobbyBar');
+ 		triangle = this.game.add.sprite(0,350,'lobbyTriangle');
  		this.stateSettings = { 
  			empty: { 
  				outFrame: 0, 
@@ -67,7 +69,8 @@ var WizardBall = WizardBall || {};
  
  
 // 		this.backdrop = game.add.image(12.5, 12.5, TEXTURES, "lobby/lobby_backdrop.png"); 
- 		this.header = this.game.add.text(this.game.camera.width / 2, headerYOffset, "Lobby"); 
+		var style = { font: "50px Arial", fill: "#000000", align: "left"};
+ 		this.header = this.game.add.text(headerXOffset, headerYOffset, "Lobby",style); 
  		this.header.anchor.setTo(.5, .5); 
  //		TextConfigurer.configureText(this.header, "white", 32); 
  
@@ -98,7 +101,8 @@ var WizardBall = WizardBall || {};
  			var callback = null; 
  			var state = gameData[i].state; 
  			var settings = this.stateSettings[state]; 
- 
+ 			var slantAngle = -20;
+ 			var progression = 25;
  
  			(function(n, fn) { 
  				if(fn != null) { 
@@ -110,15 +114,17 @@ var WizardBall = WizardBall || {};
  
  
  			var slotYOffset = initialSlotYOffset + i * lobbySlotDistance; 
- 			this.slots[i] = this.game.add.button(slotXOffset, slotYOffset, "buttonTextures", callback, null, settings.overFrame, settings.outFrame); 
-// 			this.slots[i].setDownSound(buttonClickSound); 
+ 			this.slots[i] = this.game.add.button(slotXOffset + (i*progression), slotYOffset, "buttonTextures", callback, null, settings.overFrame, settings.outFrame); 
+ 			this.slots[i].angle = slantAngle;
  			 
- 			var text = this.game.add.text(slotXOffset + textXOffset, slotYOffset + textYOffset, settings.text); 
+ 			var style = { font: "25px Arial", fill: "#000000", align: "left"}; 
+ 			var text = this.game.add.text(slotXOffset + textXOffset + (i*progression), slotYOffset - textYOffset, settings.text, style); 
  	//		TextConfigurer.configureText(text, "white", 18); 
  			text.anchor.setTo(.5, .5); 
  
  
- 			this.labels[i] = text; 
+ 			this.labels[i] = text;
+ 			this.labels[i].angle = slantAngle;
  		} 
  	}, 
  

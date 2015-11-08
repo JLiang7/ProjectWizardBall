@@ -30,10 +30,13 @@ WizardBall.setup.prototype = {
 
 	create: function() {
 		//var selectionWindow = this.game.add.image(xOffset, yOffset, "", "/public/images/transRed.png");
+		background = this.game.add.sprite(0,0,'setupBackground');
+		phone = this.game.add.sprite(115,38, 'phoneGraphic');
+		phone.angle = 2;
 		this.selectedStageIndex = 0;
 		var initialStage = stages[this.selectedStageIndex];
-		this.thumbnail = this.game.add.sprite(thumbnailXOffset, thumbnailYOffset, 'levelPreview');
-		this.thumbnail.anchor.setTo(.5,.5);
+//		this.thumbnail = this.game.add.sprite(thumbnailXOffset, thumbnailYOffset, 'levelPreview');
+//		this.thumbnail.anchor.setTo(.5,.5);
 		
 		this.leftButton = this.game.add.button(thumbnailXOffset - (previewDim/2) - 100, thumbnailYOffset - (thumbnailYOffset/2), 'leftButton', this.leftSelect, this, 1,0);
 		//this.leftButton.anchor.setTo(.5,.5);
@@ -53,12 +56,12 @@ WizardBall.setup.prototype = {
 		this.text.anchor.setTo(.5, .5);
 
 		// Display number of players
-		this.numPlayersText = this.game.add.text(145, 390, "Max # of players:   " + initialStage.maxPlayers);
+/*		this.numPlayersText = this.game.add.text(145, 390, "Max # of players:   " + initialStage.maxPlayers);
 		this.configureText(this.numPlayersText, "white", 18);
 
 		// Display stage size
 		this.stageSizeText = this.game.add.text(145, 420, "Map size:   " + initialStage.size);
-		this.configureText(this.stageSizeText, "white", 18);
+		this.configureText(this.stageSizeText, "white", 18);*/
 	},
 
 	leftSelect: function() {
