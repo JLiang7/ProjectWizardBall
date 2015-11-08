@@ -48,6 +48,8 @@
       },
 
       "pendinggame": {
+         "green_bar" : "images/green_bar.png",
+         "yellow_bar" : "images/yellow_bar.png",
          "start_button" : "images/Start01.png",
          "leave_button" : "images/Leave01.png",
          "sl_button_width" : 200,
