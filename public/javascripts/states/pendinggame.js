@@ -8,20 +8,22 @@ WizardBall.pendinggame = function() {}
 var xOffset = 40;
 var yOffset = 50;
 
-var buttonYOffset = 100;
-var startGameButtonXOffset = 600;
-var leaveButtonXOffset = 900;
+var buttonYOffset = 30;
+var startGameButtonXOffset = 1000;
+var leaveButtonXOffset = 1100;
 
 var characterSquareStartingX = 125;
 var characterSquareStartingY = 500;
 var characterSquareXDistance = 250;
 var characterSquareYDistance = 0;
 
+var buttonAngle = 17;
+
 var characterOffsetX = 4.5;
 var characterOffsetY = 4.5;
 
 var minPlayerMessageOffsetX = 80;
-var minPlayerMessageOffsetY = 400;
+var minPlayerMessageOffsetY = 300;
 
 var numCharacterSquares = 4;
 
@@ -37,12 +39,17 @@ WizardBall.pendinggame.prototype = {
 	create: function() {
 		
 		socket.emit("enter pending game", {gameID: this.gameID});
+		background = this.game.add.sprite(0,0,'redBar');
+		accent1 = this.game.add.sprite(600,0,'pendingYellowBar');
+		accent2 = this.game.add.sprite(470,0,'pendingGreenBar');
 
 		//var backdrop = this.game.add.image(xOffset, yOffset, 'background', "/public/images/ball.png"); // TEXTURE, backdrop image
 		this.startGameButton = this.game.add.button(startGameButtonXOffset, buttonYOffset, 'StartButton', null, this, //TEXTURE
 			1, 1); //Start game button 3 both times
-		this.leaveGameButton = this.game.add.button(leaveButtonXOffset,buttonYOffset, 'LeaveButton', this.leaveGameAction, null, // TEXTURES
+		this.startGameButton.angle = buttonAngle;
+		this.leaveGameButton = this.game.add.button(leaveButtonXOffset,600, 'LeaveButton', this.leaveGameAction, null, // TEXTURES
 			1, 2); // leave game button 2, 1
+		this.leaveGameButton.angle = 0;
 
 		//this.leaveGameButton.setDownSound(buttonClickSound);
 		
@@ -50,7 +57,8 @@ WizardBall.pendinggame.prototype = {
 		this.characterImages = [];
 		this.numPlayersInGame = 0;
 
-		this.minPlayerMessage = this.game.add.text(minPlayerMessageOffsetX, minPlayerMessageOffsetY, "Cannot start game without\nat least 2 players.")
+		var style = { font: "40px Arial", fill: "#000000", align: "left"};
+		this.minPlayerMessage = this.game.add.text(minPlayerMessageOffsetX, minPlayerMessageOffsetY, "Waiting for players...",style);
 	//	TextConfigurer.configureText(this.minPlayerMessage, "red", 17);
 		this.minPlayerMessage.visible = false;
 
@@ -113,7 +121,7 @@ WizardBall.pendinggame.prototype = {
 
 	activateStartGameButton: function() {
 		this.minPlayerMessage.visible = false;
-		this.startGameButton.setFrames(2, 1); //Start button 2 , 1
+		this.startGameButton.setFrames(2, 3); //Start button 2 , 1
 		this.startGameButton.onInputUp.removeAll();
 		this.startGameButton.onInputUp.add(this.startGameAction, this);
 	//	this.startGameButton.setDownSound(buttonClickSound);
