@@ -5,6 +5,7 @@ var THROW_COOLDOWN = 300;
 var CATCH_COOLDOWN = 300;
 var MIN_POWER = 100;
 var MAX_POWER = 1000;
+var CHARGE_RATE = 20;
 
 var Player = function(x, y, id, game) {
 	Phaser.Sprite.call(this, game, x, y, 'player');
@@ -118,7 +119,7 @@ Player.prototype.handleInput = function() {
         console.log("THROW");
    	    //this.throwBall();
         if (this.chargeThrow < MAX_POWER) {
-            this.chargeThrow += 20;
+            this.chargeThrow += CHARGE_RATE;
         }
         if (this.frame == 8 || facing == 'leftJump' || facing == 'throwLeft') {
             this.animations.play('throwLeft');
