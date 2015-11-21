@@ -10,6 +10,7 @@ var CHARGE_RATE = 20;
 var Player = function(x, y, id, game) {
 	Phaser.Sprite.call(this, game, x, y, 'player');
 	this.spawnPoint = {x: x, y: y};
+    this.uuid = id;
 	this.id = id;
 	this.facing = "idle";
     this.frame = 15;
@@ -29,7 +30,7 @@ var Player = function(x, y, id, game) {
 
     this.scale.setTo(.5,.5);
 
-    this.body.collideWorldBounds = true;
+    //this.body.collideWorldBounds = true;
     this.body.gravity.y = 1000;
     this.body.maxVelocity.y = 500;
     this.body.setSize(140,210,0, 12);
@@ -69,13 +70,16 @@ Player.prototype.catch = function() {
 
 Player.prototype.handleInput = function() {
 
-	//var moving = true;
+	var moving = false;
 	//var game = this.game;
 	//var speed = this.speed;
 	//var flying_speed = this.flying_speed;
 
+    
+
     if ( leftButton.isDown || rightButton.isDown || jumpButton.isDown || leftClick.isDown || catchButton.isDown) {
 
+        moving = true;
 	if (leftButton.isDown) { 
    		this.body.velocity.x = -DEFAULT_PLAYER_SPEED;
         if (this.body.velocity.y != 0){
@@ -162,8 +166,13 @@ Player.prototype.handleInput = function() {
                     facing = 'idle';
                     this.running = 0;
                 }
-            } 
-  	} 
+
+            }
+            moving = false; 
+  	}
+    if(moving){
+        socket.emit("move player", {x: this.position.x, y: this.position.y, facing: this.facing}); 
+    }
 
     if (!leftClick.isDown && this.chargeThrow > MIN_POWER) {
         this.throwBall();

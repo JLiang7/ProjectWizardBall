@@ -57,5 +57,23 @@
             "pool": "players"
          }
       }
-   }
+   },
+
+   "platforms" : {
+         "flat_large": {
+            "body_x" : 600,
+            "body_y" : 50,
+            "src_path" :"images/platform_large.png" 
+         },
+         "flat_medium": {
+            "body_x" : 450,
+            "body_y" : 50,
+            "src_path" :"images/platform_medium.png" 
+         },
+         "tile": {
+            "body_x" : 250,
+            "body_y" : 50,
+            "src_path" :"images/platform_tile.png" 
+         }
+      }
 }

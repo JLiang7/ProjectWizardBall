@@ -38,6 +38,10 @@ WizardBall.preload.prototype = {
         this.game.load.image('background', levelData.test_level.background);
         this.game.load.image('ball', levelData.test_level.ball);
         this.game.load.audio('bgmusic',levelData.test_level.bgmusic);
+        this.game.load.image('platform_large',levelData.platforms.flat_large.src_path);
+        this.game.load.image('platform_medium',levelData.platforms.flat_medium.src_path);
+        this.game.load.image('platform_tile',levelData.platforms.tile.src_path);
+        this.game.load.tilemap('levelOne', 'json/levelOne.json', null, Phaser.Tilemap.TILED_JSON)
 	},
 
 	loadTransitionEffects : function(){
@@ -60,6 +64,6 @@ WizardBall.preload.prototype = {
 	},
 
 	create: function(){
-		this.state.start("Play");
+		this.state.start("Lobby");
 	}
 };

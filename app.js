@@ -26,13 +26,11 @@ function init(){
 
 function setEventHandlers(){
 	io.on("connection",function(client){
-		console.log("New Player Connected");
-
-//		client.on("move player", onMovePlayer);
-//		client.on("disconnect", onClientDisconnect);
+		client.on("move player", onMovePlayer);
+		client.on("disconnect", onClientDisconnect);
 //		client.on("place bomb", onPlaceBomb);
 //		client.on("register map", onRegisterMap);
-//		client.on("start game on server", onStartGame);
+		client.on("start game on server", onStartGame);
 //		client.on("ready for round", onReadyForRound);
 		//client.on("powerup overlap", onPowerupOverlap);
 

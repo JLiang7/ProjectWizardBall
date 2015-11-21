@@ -1,5 +1,4 @@
 var WizardBall = WizardBall || {};
-
 WizardBall.play = function(game){
     var levelData;
     var player;
@@ -7,7 +6,6 @@ WizardBall.play = function(game){
     var nextThrow = 0;
     var facing = 'right';
     var jumpTimer = 0;
-    
     var filter;
 
     var cursors;
@@ -21,36 +19,46 @@ WizardBall.play = function(game){
 }
 
 WizardBall.play.prototype = {
+    
     preload: function() {
 
     },
     
 
     create: function(){
-
-
+        this.remotePlayers = {};
+        var uuid = this.uuid();
         fireRate = 100;
         nextThrow = 0;
         facing = 'idle';
         jumpTimer = 0;
-        dead = false;
 
+        
+       dead = false;
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
     //    filter = this.game.add.filter('Plasma',800,600);
         
-        level = new Level();
-        level.setBackgroundImage('greenBar',1,true);
-        level.setMusic(this.game.add.audio('bgmusic'));
-        level.getMusic().play();
+        this.level = new Level("levelOne");
+        this.level.setBackgroundImage('greenBar',1,true);
+        this.level.setMusic(this.game.add.audio('bgmusic'));
+        this.level.getMusic().play();
 
 
-        this.game.add.tileSprite(0,0,1280,720,level.getBackgroundImage());
+
+        this.game.add.tileSprite(0,0,1280,720,this.level.getBackgroundImage());
 
         this.game.physics.arcade.gravity.y = 300;
 
-        this.player = new Player(210,3400,'player',this.game);
+
+
+        this.player = new Player(500,200,uuid,this.game);
+
+//        this.player = new Player(210,3400,'player',this.game);
         this.opponent = new Player(300,3400,'opp',this.game);
+
         this.player.tint = 0xffffff;
+        console.log(uuid);
+        socket.emit("new player",{x:this.player.x,y:this.player.y,uuid:uuid});
 
         leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
         rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
@@ -58,6 +66,18 @@ WizardBall.play.prototype = {
         catchButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         leftClick = this.game.input.activePointer.leftButton; 
 
+
+        map = this.game.add.tilemap(this.level.getMap());
+
+        map.addTilesetImage('platform_tile','platform_tile');
+ //       map.addTilesetImage('medium_platform','platform_medium');
+ //       map.addTilesetImage('small_platform','platform_small');
+        this.layer = map.createLayer("Tile Layer 1");
+        this.layer.resizeWorld();
+        map.setCollisionBetween(1,20);
+
+
+       // layer.resizeWorld();
         // level.setBalls(this.game.add.group());
         // level.getBalls().enableBody = true;
         // level.getBalls().physicsBodyType = Phaser.Physics.ARCADE;
@@ -107,16 +127,112 @@ WizardBall.play.prototype = {
         console.log("ball collision");
     },
 
+    collided : function(){
+    //    console.log("COLLIDING");
+    },
+    uuid : function(){
+        var d = new Date().getTime();
+        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = (d + Math.random()*16)%16 | 0;
+            d = Math.floor(d/16);
+            return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+        });
+        return uuid;
+    },
+
+    onMovePlayer: function(data) {
+        if(player && data.id == player.id || this.gameFrozen) {
+            return;
+        }
+
+        var movingPlayer = this.remotePlayers[data.id];
+
+        if(movingPlayer.targetPosition) {
+            movingPlayer.animations.play(data.f);
+            movingPlayer.lastMoveTime = game.time.now;
+
+            if(data.x == movingPlayer.targetPosition.x && data.y == movingPlayer.targetPosition.y) {
+                return;
+            }
+
+            movingPlayer.position.x = movingPlayer.targetPosition.x;
+            movingPlayer.position.y = movingPlayer.targetPosition.y;
+
+            movingPlayer.distanceToCover = {x: data.x - movingPlayer.targetPosition.x, y: data.y - movingPlayer.targetPosition.y};
+            movingPlayer.distanceCovered = {x: 0, y:0};
+        }
+
+        movingPlayer.targetPosition = {x: data.x, y: data.y};
+    },
+
+
 
     update: function(){
 
         this.game.physics.arcade.collide(this.player,this.player.ball_group,this.handleCollision,null,this);
         this.game.physics.arcade.collide(this.player.ball_group,this.player.ball_group,this.handleBallCollision,null,this);
+
+        this.game.physics.arcade.collide([this.player,this.player.ball_group],this.layer,this.collided, null, this);
+//        this.game.physics.arcade.collide(this.ball_group,this.layer,this.collided, null, this);
+        //this.game.physics.arcade.collide(player, layer);
+        this.player.body.velocity.x = 0;
+
+        //this.controlHandler();
+        this.player.handleInput();
+        this.setEventHandlers();
+        socket.emit("update player",{x:this.player.x,y:this.player.y,uuid:this.uuid});
+
+        
+
+    },
+
+    onSocketDisconnect: function() {
+        this.broadcast.emit("remove player", {id: this.id});
+    },
+
+    initializePlayers: function() {
+        for(var i in this.players) {
+        var data = this.players[i];
+            if(data.id == this.playerId) {
+                player = new Player(data.x, data.y, data.id, WizardBall.game);
+            } else {
+                this.remotePlayers[data.id] = new RemotePlayer(data.x, data.y, data.id, WizardBall.game);
+            }
+        }
+    },
+
+    onRemovePlayer: function(data) {
+        var playerToRemove = this.remotePlayers[data.id];
+
+        if(playerToRemove.alive) {
+            playerToRemove.destroy();
+        }
+
+        delete this.remotePlayers[data.id];
+        delete this.players[data.id];
+    },
+
+
+
+    setEventHandlers: function(){
+        socket.on("disconnect",this.onClientDisconnect);
+        socket.on("m", this.onMovePlayer.bind(this));
+        socket.on("remove player",this.onRemovePlayer.bind(this));
+
         this.game.physics.arcade.collide(this.opponent,this.player.ball_group,this.handleCollision,null,this);
         this.player.body.velocity.x = 0;
 
         if (!dead) {
             this.player.handleInput();
         }
+
     }
 }
+var findPlayer = function(uid){
+    for(var i = 0; i <remotePlayers.length; i ++){
+        if(remotePlayers[i].uuid === uid)
+            return remotePlayers[i];
+    };
+
+    return;
+};
