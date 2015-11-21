@@ -4,27 +4,26 @@
    		"ball":"images/ball.png",
    		"player":"images/ao_running.png",
    		"bgmusic":"audio/world_map.ogg"
-   	},
-      "title_screen" : {
+   },
+   "title_screen" : {
          "background" : "images/titleScreen.png"
-         },
+   },
+   "character_select": {
+   	  "background" : "images/CharacterSelectBackground.png",
+   	  "accent1" : "images/asset1.png",
+   	  "accent2" : "images/asset2.png",
+   	  "character_splash" : "images/placeholderSplash.png",
+   	  "text_color" : ""
+   },
 
-   	"character_select": {
-   		"background" : "images/CharacterSelectBackground.png",
-   		"accent1" : "images/asset1.png",
-   		"accent2" : "images/asset2.png",
-   		"character_splash" : "images/placeholderSplash.png",
-   		"text_color" : ""
-   	},
-
-      "special":{
+   "special":{
          "trans_yellow" : "images/transYellow.png",
          "trans_green" : "images/transGreen.png",
          "trans_red" : "images/transRed.png",
          "trans_purple" : "images/transPurple.png"
-      },
+   },
 
-      "lobby":{
+   "lobby":{
          "lobby_bar" : "images/lobby_bar.png",
          "lobby_triangle" : "images/lobby_triangle.png",
          "button_textures" : "images/buttonTextures.png",
@@ -57,6 +56,53 @@
          "character_slot" : "images/character_frame.png",
          "characterslot_width" : 200,
          "characterslot_height" : 200
-      }
+         },
 
+   "groups":[
+      "players",
+      "balls"
+   ],
+
+   "prefabs":{
+      "ball_spawner":{
+         "type": "ball_spawner",
+         "position": {"x":0, "y":0},
+         "velocity": {"x":0, "y":0},
+         "properties": {
+            "texture": "",
+            "group": "spawners",
+            "pool" : "balls",
+            "spawn_time" : {"min": 1, "max": 3},
+            "frames":[20,21,23,35,38]
+         }
+      },
+      "player_spawner":{
+         "type": "player_spawner",
+         "position": {"x":0, "y":0},
+         "properties": {
+            "texture": "",
+            "group": "spawners",
+            "pool": "players"
+         }
+
+      }
+   },
+
+   "platforms" : {
+         "flat_large": {
+            "body_x" : 600,
+            "body_y" : 50,
+            "src_path" :"images/platform_large.png" 
+         },
+         "flat_medium": {
+            "body_x" : 450,
+            "body_y" : 50,
+            "src_path" :"images/platform_medium.png" 
+         },
+         "tile": {
+            "body_x" : 250,
+            "body_y" : 50,
+            "src_path" :"images/platform_tile.png" 
+         }
+      }
 }
