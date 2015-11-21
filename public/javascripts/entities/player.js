@@ -1,8 +1,10 @@
 var DEFAULT_PLAYER_SPEED = 300;
 var FLYING_SPEED = 250;
-var CATCH_WINDOW = 25;
+var CATCH_WINDOW = 50;
 var THROW_COOLDOWN = 300;
 var CATCH_COOLDOWN = 300;
+var MIN_POWER = 100;
+var MAX_POWER = 1000;
 
 var Player = function(x, y, id, game) {
 	Phaser.Sprite.call(this, game, x, y, 'player');
@@ -18,6 +20,7 @@ var Player = function(x, y, id, game) {
 	this.nextShot = 0;
     this.nextCatch = 0;
     this.ballCount = 3;
+    this.chargeThrow = 0;
 
 
 	//game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -50,7 +53,7 @@ Player.prototype.throwBall = function() {
             //var ball = level.getBalls().getFirstDead();
             var ball = this.ball_group.create(this.x,this.y,'ball');
             //ball.reset(this.x,this.y);
-            this.game.physics.arcade.moveToPointer(ball, 800);
+            this.game.physics.arcade.moveToPointer(ball, this.chargeThrow);
             ball.body.collideWorldBounds = true;
             ball.body.bounce.setTo(.5,.5);
         }
@@ -113,7 +116,10 @@ Player.prototype.handleInput = function() {
 
    	if (leftClick.isDown) { 
         console.log("THROW");
-   	    this.throwBall();
+   	    //this.throwBall();
+        if (this.chargeThrow < MAX_POWER) {
+            this.chargeThrow += 20;
+        }
         if (this.frame == 8 || facing == 'leftJump' || facing == 'throwLeft') {
             this.animations.play('throwLeft');
             facing = 'throwLeft';
@@ -138,7 +144,11 @@ Player.prototype.handleInput = function() {
     }	
 
     else { 
-       if(this.body.velocity.y == 0 && this.running != 0){
+        if (this.chargeThrow > MIN_POWER) {
+            this.throwBall();
+            this.chargeThrow = 0;
+        }
+        if(this.body.velocity.y == 0 && this.running != 0){
                 if (facing != 'idle' || facing != 'throwLeft'||facing != 'throwRight')
                 {
                     this.animations.stop();
