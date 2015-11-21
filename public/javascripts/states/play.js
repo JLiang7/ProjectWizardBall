@@ -55,7 +55,7 @@ WizardBall.play.prototype = {
         leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
         rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
         jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
-        catchButton = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
+        catchButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         leftClick = this.game.input.activePointer.leftButton; 
 
         // level.setBalls(this.game.add.group());

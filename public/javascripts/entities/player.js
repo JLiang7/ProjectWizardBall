@@ -145,10 +145,6 @@ Player.prototype.handleInput = function() {
     }	
 
     else { 
-        if (this.chargeThrow > MIN_POWER) {
-            this.throwBall();
-            this.chargeThrow = 0;
-        }
         if(this.body.velocity.y == 0 && this.running != 0){
                 if (facing != 'idle' || facing != 'throwLeft'||facing != 'throwRight')
                 {
@@ -168,6 +164,11 @@ Player.prototype.handleInput = function() {
                 }
             } 
   	} 
+
+    if (!leftClick.isDown && this.chargeThrow > MIN_POWER) {
+        this.throwBall();
+        this.chargeThrow = 0;
+    }
 
 };
 
