@@ -22,6 +22,15 @@ WizardBall.preload.prototype = {
             ).responseText
         );
 
+        platforms = $.parseJSON(
+           $.ajax({
+                   url: "json/platforms.json", 
+                   async: false, 
+                   dataType: 'json'
+                }
+            ).responseText
+        );
+
 		this.loadTitleResources();
 		this.loadPlayResources();
 		this.loadTransitionEffects();
@@ -38,6 +47,7 @@ WizardBall.preload.prototype = {
         this.game.load.image('background', levelData.test_level.background);
         this.game.load.image('ball', levelData.test_level.ball);
         this.game.load.audio('bgmusic',levelData.test_level.bgmusic);
+        this.game.load.image('platform_large',platforms.flat_large.src_path);
 	},
 
 	loadTransitionEffects : function(){

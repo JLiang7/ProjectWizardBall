@@ -43,6 +43,7 @@ WizardBall.play.prototype = {
         level.getMusic().play();
 
 
+
         this.game.add.tileSprite(0,0,1280,720,level.getBackgroundImage());
 
         this.game.physics.arcade.gravity.y = 300;
@@ -55,6 +56,7 @@ WizardBall.play.prototype = {
         jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
         leftClick = this.game.input.activePointer.leftButton;
 
+        this.game.add.image('platform_large', 600, 200);
 
         // level.setBalls(this.game.add.group());
         // level.getBalls().enableBody = true;
