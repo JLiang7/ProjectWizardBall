@@ -33,6 +33,7 @@ WizardBall.play.prototype = {
         nextThrow = 0;
         facing = 'idle';
         jumpTimer = 0;
+        dead = false;
 
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
     //    filter = this.game.add.filter('Plasma',800,600);
@@ -48,13 +49,14 @@ WizardBall.play.prototype = {
         this.game.physics.arcade.gravity.y = 300;
 
         this.player = new Player(210,3400,'player',this.game);
+        this.opponent = new Player(300,3400,'opp',this.game);
         this.player.tint = 0xffffff;
 
         leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
         rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
         jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
-        leftClick = this.game.input.activePointer.leftButton;
-
+        catchButton = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
+        leftClick = this.game.input.activePointer.leftButton; 
 
         // level.setBalls(this.game.add.group());
         // level.getBalls().enableBody = true;
@@ -74,7 +76,7 @@ WizardBall.play.prototype = {
             nextThrow = this.game.time.now + fireRate;
 
             var ball = this.ball_group.create(this.player.x,this.player.y,'ball');
-            ball.body.mass = 100;
+            ball.body.mass = 1000000;
 
             // var ball = level.getBalls().getFirstDead();
             
@@ -87,9 +89,17 @@ WizardBall.play.prototype = {
     },
 
     handleCollision: function(player,ball){
-        player.hp -= 1;
-        if (player.hp == 0) {
-            player.kill();
+        if (this.game.time.now < player.catchTime) {
+            player.ballCount++;
+            player.body.velocity.x = 0;
+        } else { 
+            player.hp -= 1;
+            if (player.hp == 0) {
+                if (player.id == 'player') {
+                dead = true; 
+                }
+                player.kill();
+            }
         }
         ball.kill();
     },
@@ -103,10 +113,11 @@ WizardBall.play.prototype = {
 
         this.game.physics.arcade.collide(this.player,this.player.ball_group,this.handleCollision,null,this);
         this.game.physics.arcade.collide(this.player.ball_group,this.player.ball_group,this.handleBallCollision,null,this);
-        //this.game.physics.arcade.collide(player, layer);
-        this.player.body.velocity.x = 0;
+        this.game.physics.arcade.collide(this.opponent,this.player.ball_group,this.handleCollision,null,this);
+        //this.player.body.velocity.x = 0;
 
-        //this.controlHandler();
-        this.player.handleInput();
+        if (!dead) {
+            this.player.handleInput();
+        }
     }
 }

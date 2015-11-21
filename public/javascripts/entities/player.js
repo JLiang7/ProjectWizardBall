@@ -1,5 +1,8 @@
 var DEFAULT_PLAYER_SPEED = 300;
 var FLYING_SPEED = 250;
+var CATCH_WINDOW = 25;
+var THROW_COOLDOWN = 300;
+var CATCH_COOLDOWN = 300;
 
 var Player = function(x, y, id, game) {
 	Phaser.Sprite.call(this, game, x, y, 'player');
@@ -9,10 +12,13 @@ var Player = function(x, y, id, game) {
     this.frame = 15;
 	//this.speed = 0;
     this.running = 0;
-    this.hp = 3;
+    this.hp = 1;
 	//this.flying_speed = FLYING_SPEED;
 	this.game = game;
 	this.nextShot = 0;
+    this.nextCatch = 0;
+    this.ballCount = 3;
+
 
 	//game.physics.enable(this, Phaser.Physics.ARCADE);
     game.physics.arcade.enable(this);
@@ -37,9 +43,10 @@ var Player = function(x, y, id, game) {
 Player.prototype = Object.create(Phaser.Sprite.prototype); 
 
 Player.prototype.throwBall = function() {
-	 if (this.game.time.now > this.nextShot)
+	 if (this.game.time.now > this.nextShot && this.ballCount > 0)
         {
-        	this.nextShot = this.game.time.now + 300;
+            this.ballCount--;
+        	this.nextShot = this.game.time.now + THROW_COOLDOWN;
             //var ball = level.getBalls().getFirstDead();
             var ball = this.ball_group.create(this.x,this.y,'ball');
             //ball.reset(this.x,this.y);
@@ -49,6 +56,13 @@ Player.prototype.throwBall = function() {
         }
 }
 
+Player.prototype.catch = function() {
+    if (this.game.time.now > this.nextCatch) {
+        this.nextCatch = this.game.time.now + CATCH_COOLDOWN;
+        this.catchTime = this.game.time.now + CATCH_WINDOW;
+    }
+}
+
 Player.prototype.handleInput = function() {
 
 	//var moving = true;
@@ -56,7 +70,7 @@ Player.prototype.handleInput = function() {
 	//var speed = this.speed;
 	//var flying_speed = this.flying_speed;
 
-    if ( leftButton.isDown || rightButton.isDown || jumpButton.isDown || leftClick.isDown ) {
+    if ( leftButton.isDown || rightButton.isDown || jumpButton.isDown || leftClick.isDown || catchButton.isDown) {
 
 	if (leftButton.isDown) { 
    		this.body.velocity.x = -DEFAULT_PLAYER_SPEED;
@@ -98,6 +112,7 @@ Player.prototype.handleInput = function() {
    	}
 
    	if (leftClick.isDown) { 
+        console.log("THROW");
    	    this.throwBall();
         if (this.frame == 8 || facing == 'leftJump' || facing == 'throwLeft') {
             this.animations.play('throwLeft');
@@ -107,6 +122,18 @@ Player.prototype.handleInput = function() {
             facing = 'throwRight';
         }	
    	}
+
+    if (catchButton.isDown) {
+        console.log("CATCH");
+        this.catch();
+        if (this.frame == 8 || facing == 'leftJump' || facing == 'throwLeft') {
+            this.animations.play('throwLeft');
+            facing = 'throwLeft';
+        } else {
+            this.animations.play('throwRight');
+            facing = 'throwRight';
+        }   
+    }
 
     }	
 
