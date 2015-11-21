@@ -91,7 +91,6 @@ WizardBall.play.prototype = {
     handleCollision: function(player,ball){
         if (this.game.time.now < player.catchTime) {
             player.ballCount++;
-            player.body.velocity.x = 0;
         } else { 
             player.hp -= 1;
             if (player.hp == 0) {
