@@ -52,13 +52,13 @@ Player.prototype.throwBall = function() {
 
 Player.prototype.handleInput = function() {
 
-	//var moving = true;
+	var moving = false;
 	//var game = this.game;
 	//var speed = this.speed;
 	//var flying_speed = this.flying_speed;
 
     if ( leftButton.isDown || rightButton.isDown || jumpButton.isDown || leftClick.isDown ) {
-
+    moving = true;
 	if (leftButton.isDown) { 
    		this.body.velocity.x = -DEFAULT_PLAYER_SPEED;
         if (this.body.velocity.y != 0){
@@ -129,9 +129,13 @@ Player.prototype.handleInput = function() {
                     facing = 'idle';
                     this.running = 0;
                 }
-            } 
-  	} 
 
+            }
+            moving = false; 
+  	}
+    if(moving){
+        socket.emit("move player", {x: this.position.x, y: this.position.y, facing: this.facing}); 
+    }
 };
 
  Player.prototype.freeze = function() { 

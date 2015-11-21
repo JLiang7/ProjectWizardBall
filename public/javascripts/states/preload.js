@@ -64,6 +64,6 @@ WizardBall.preload.prototype = {
 	},
 
 	create: function(){
-		this.state.start("Play");
+		this.state.start("Lobby");
 	}
 };

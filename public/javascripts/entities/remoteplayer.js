@@ -1,10 +1,13 @@
 var RemotePlayer = function(x,y,id,game){
 	Phaser.Sprite.call(this, game, x, y, 'player');
-	//this.spawnPoint = {x: x, y: y};
-    this.uuid = id;
+	this.spawnPoint = {x: x, y: y};
+    this.previousPosition = {x: x, y: y};
+    this.targetPosition;
+
 	this.id = id;
 	this.facing = "idle";
     this.frame = 15;
+    this.lastMoveTime = 0;
 	//this.speed = 0;
     this.running = 0;
     this.hp = 3;
@@ -12,8 +15,8 @@ var RemotePlayer = function(x,y,id,game){
 	this.game = game;
 	this.nextShot = 0;
 
-	//game.physics.enable(this, Phaser.Physics.ARCADE);
-    //game.physics.arcade.enable(this);
+	game.physics.enable(this, Phaser.Physics.ARCADE);
+    game.physics.arcade.enable(this);
 
     this.scale.setTo(.5,.5);
 
@@ -34,7 +37,35 @@ var RemotePlayer = function(x,y,id,game){
 
 RemotePlayer.prototype = Object.create(Phaser.Sprite.prototype); 
 
-RemotePlayer.prototype.updateCord = function(x,y){
-	this.x = x;
-	this.y = y;
+RemotePlayer.prototype.interpolate = function(lastFrameTime) {
+    if(this.distanceToCover && lastFrameTime) {
+        if((this.distanceCovered.x < Math.abs(this.distanceToCover.x) || this.distanceCovered.y < Math.abs(this.distanceToCover.y))) {
+          var fractionOfTimeStep = (game.time.now - lastFrameTime) / remotePlayerUpdateInterval;
+          var distanceCoveredThisFrameX = fractionOfTimeStep * this.distanceToCover.x;
+          var distanceCoveredThisFrameY = fractionOfTimeStep * this.distanceToCover.y;
+
+          this.distanceCovered.x += Math.abs(distanceCoveredThisFrameX);
+          this.distanceCovered.y += Math.abs(distanceCoveredThisFrameY);
+
+          this.position.x += distanceCoveredThisFrameX;
+          this.position.y += distanceCoveredThisFrameY;
+        } else {
+          this.position.x = this.targetPosition.x;
+          this.position.y = this.targetPosition.y;
+        }
+    }
 }
+
+RemotePlayer.prototype.reset = function() {
+  this.x = this.spawnPoint.x;
+  this.y = this.spawnPoint.y;
+  this.previousPosition = {x: this.x, y: this.y};
+  this.distanceToCover = null;
+  this.distanceCovered = null;
+  this.targetPosition = null
+  this.lastMoveTime = null;
+  
+  if(!this.alive) {
+    this.revive();
+  }
+};

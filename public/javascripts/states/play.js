@@ -17,16 +17,16 @@ WizardBall.play = function(game){
     var leftClick;
     var balls;
 }
-var remotePlayers = [];
 
 WizardBall.play.prototype = {
+    
     preload: function() {
 
     },
     
 
     create: function(){
-
+        this.remotePlayers = {};
         var uuid = this.uuid();
         fireRate = 100;
         nextThrow = 0;
@@ -126,6 +126,31 @@ WizardBall.play.prototype = {
         return uuid;
     },
 
+    onMovePlayer: function(data) {
+        if(player && data.id == player.id || this.gameFrozen) {
+            return;
+        }
+
+        var movingPlayer = this.remotePlayers[data.id];
+
+        if(movingPlayer.targetPosition) {
+            movingPlayer.animations.play(data.f);
+            movingPlayer.lastMoveTime = game.time.now;
+
+            if(data.x == movingPlayer.targetPosition.x && data.y == movingPlayer.targetPosition.y) {
+                return;
+            }
+
+            movingPlayer.position.x = movingPlayer.targetPosition.x;
+            movingPlayer.position.y = movingPlayer.targetPosition.y;
+
+            movingPlayer.distanceToCover = {x: data.x - movingPlayer.targetPosition.x, y: data.y - movingPlayer.targetPosition.y};
+            movingPlayer.distanceCovered = {x: 0, y:0};
+        }
+
+        movingPlayer.targetPosition = {x: data.x, y: data.y};
+    },
+
 
 
     update: function(){
@@ -139,29 +164,45 @@ WizardBall.play.prototype = {
 
         //this.controlHandler();
         this.player.handleInput();
-        this.tempNewPlayerListeners();
-
+        this.setEventHandlers();
         socket.emit("update player",{x:this.player.x,y:this.player.y,uuid:this.uuid});
 
         
 
     },
-    tempNewPlayerListeners : function(){
-        socket.on("new player", function(data){
-            if(findPlayer(data.uuid) == null && this.uuid != data.uuid){
- //               console.log(data.uuid);
-                remotePlayers.push(new RemotePlayer(data.x,data.y,data.uuid,WizardBall.game));
+
+    onSocketDisconnect: function() {
+        this.broadcast.emit("remove player", {id: this.id});
+    },
+
+    initializePlayers: function() {
+        for(var i in this.players) {
+        var data = this.players[i];
+            if(data.id == this.playerId) {
+                player = new Player(data.x, data.y, data.id, WizardBall.game);
+            } else {
+                this.remotePlayers[data.id] = new RemotePlayer(data.x, data.y, data.id, WizardBall.game);
             }
-            console.log(remotePlayers[0].uuid);
-        });
-        socket.on("update player", function(data){
-            foundPlayer = findPlayer(data.id);
-            if(foundPlayer != null){
-                    foundPlayer.x =data.x;
-                    foundPlayer.y =data.y;
-            }
-            
-        });
+        }
+    },
+
+    onRemovePlayer: function(data) {
+        var playerToRemove = this.remotePlayers[data.id];
+
+        if(playerToRemove.alive) {
+            playerToRemove.destroy();
+        }
+
+        delete this.remotePlayers[data.id];
+        delete this.players[data.id];
+    },
+
+
+
+    setEventHandlers: function(){
+        socket.on("disconnect",this.onClientDisconnect);
+        socket.on("m", this.onMovePlayer.bind(this));
+        socket.on("remove player",this.onRemovePlayer.bind(this));
     }
 }
 var findPlayer = function(uid){
