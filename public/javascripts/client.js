@@ -5,6 +5,7 @@ socket = io("http://localhost:3000");
 //game.state.add("Preload", preload);
 WizardBall.game.state.add("Boot", WizardBall.boot);
 WizardBall.game.state.add("Preload", WizardBall.preload);
+WizardBall.game.state.add("PendingGame", WizardBall.pendinggame);
 WizardBall.game.state.add("Lobby", WizardBall.lobby);
 WizardBall.game.state.add("TitleScreen",WizardBall.titlescreen);
 WizardBall.game.state.add("CharacterSelect", WizardBall.charSelect);

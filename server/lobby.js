@@ -3,7 +3,7 @@ var Maps = require('../public/javascripts/data/map_info');
 var PendingGame = require('./objects/pending_game');
 
 var lobbyID = -1;
-var totalNumOfLobbies = 10;
+var totalNumOfLobbies = 5;
 var lobbies = [];
 
 
@@ -48,16 +48,16 @@ var Lobby = {
 	},
 
 	onEnterLobby: function(data){
-		var pendingGame = lobbySlots[data.gameID]; 
+		var pendingGame = lobbies[data.gameID]; 
  	 
  		this.leave(lobbyID); 
  		this.join(data.gameID); 
  	 
- 		pendingGame.addPlayer(this.ID); 
+ 		pendingGame.addPlayer(this.id); 
  		this.gameID = data.gameID; 
  	 
  		this.emit("show current players", {players: pendingGame.players}); 
- 		this.broadcast.to(data.gameID).emit("player joined", {id: this.ID, color: pendingGame.players[this.ID].color}); 
+ 		this.broadcast.to(data.gameID).emit("player joined", {id: this.id, color: pendingGame.players[this.id].color}); 
  	 
  		if(pendingGame.getNumPlayers() >= Maps[pendingGame.mapID].spawnLocations.length) { 
  			pendingGame.state = "full"; 
@@ -67,7 +67,7 @@ var Lobby = {
 	},
 
 	onLeaveLobby: function(data){
-		leaveLobby.call(this);
+		leavePendingGame.call(this);
 	}
 };
 
@@ -81,8 +81,8 @@ function broadcastStateUpdate(gameID, newState) {
  
  
  	this.leave(this.gameID); 
- 	lobbySlot.removePlayer(this.ID); 
- 	io.in(this.gameID).emit("player left", {players: lobbies.players}); 
+ 	lobbySlot.removePlayer(this.id); 
+ 	io.in(this.gameID).emit("player left", {players: lobbySlot.players}); 
  
  
  	if(lobbySlot.getNumPlayers()== 0) { 

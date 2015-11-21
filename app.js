@@ -26,7 +26,9 @@ function init(){
 
 function setEventHandlers(){
 	io.on("connection",function(client){
+
 		client.on("move player", onMovePlayer);
+
 		client.on("disconnect", onClientDisconnect);
 //		client.on("place bomb", onPlaceBomb);
 //		client.on("register map", onRegisterMap);
@@ -47,22 +49,20 @@ function onClientDisconnect() {
 		return;
 	}
 
-	var lobbySlots = Lobby.getLobbySlots();
-
+	var lobbySlots = Lobby.getLobbies();
 	if (lobbySlots[this.gameID].state == "joinable" || lobbySlots[this.gameID].state == "full") {
-		Lobby.onLeavePendingGame.call(this);
+		Lobby.onLeaveLobby.call(this);
 	} else if (lobbySlots[this.gameID].state == "prejoinable") {
 		lobbySlots[this.gameID].state = "empty";
 
-		Lobby.broadcastSlotStateUpdate(this.gameID, "empty");
+		Lobby.broadcastStateUpdate(this.gameID, "empty");
 	} else if(lobbySlots[this.gameID].state == "inprogress") {
 		var game = games[this.gameID];
 	
-		if(this.ID in game.players) {
-			console.log("deleting " + this.ID);
-			delete game.players[this.ID];
+		if(this.id in game.players) {
+			delete game.players[this.id];
 	
-			io.in(this.gameID).emit("remove player", {ID: this.ID});	
+			io.in(this.gameID).emit("remove player", {ID: this.id});	
 		}
 
 		if(game.numPlayers < 2) {
@@ -86,7 +86,7 @@ function terminateExistingGame(gameID) {
 
 	Lobby.getLobbySlots()[gameID] = new PendingGame();
 
-	Lobby.broadcastSlotStateUpdate(gameID, "empty");
+	Lobby.broadcastStateUpdate(gameID, "empty");
 };
 
 function onStartGame() {
@@ -97,7 +97,7 @@ function onStartGame() {
 	var pendingGame = lobbySlots[this.gameID];
 	lobbySlots[this.gameID].state = "inprogress";
 
-	Lobby.broadcastSlotStateUpdate(this.gameID, "inprogress");
+	Lobby.broadcastStateUpdate(this.gameID, "inprogress");
 
 	var IDs = pendingGame.getPlayerIDs();
 	
@@ -126,7 +126,7 @@ function onMovePlayer(data) {
 		return;
 	}
 
-	var movingPlayer = game.players[this.ID];
+	var movingPlayer = game.players[this.id];
 
 	// Moving player can be null if a player is killed and leftover movement signals come through.
 	if(!movingPlayer) {
@@ -141,7 +141,7 @@ function onMovePlayer(data) {
 
 function onPlaceBomb(data) {
 	var game = games[this.gameID];
-	var player = game.players[this.ID];
+	var player = game.players[this.id];
 
 	if(game === undefined || game.awaitingAcknowledgements || player.numBombsAlive >= player.bombCapacity) {
 		return;
@@ -158,7 +158,6 @@ function onPlaceBomb(data) {
 	player.numBombsAlive++;
 
 	var bombTimeoutID = setTimeout(function () {
-		console.log("detonatin with ", game.players);
 		var explosionData = bomb.detonate(game.map, player.bombStrength, game.players);
 		player.numBombsAlive--;
 
@@ -183,7 +182,7 @@ function onPlaceBomb(data) {
 		return;
 	}
 
-	var player = games[this.gameID].players[this.ID];
+	var player = games[this.gameID].players[this.id];
 
 	if(powerup.powerupType === PowerupIDs.BOMB_STRENGTH) {
 		player.bombStrength++;
@@ -191,7 +190,7 @@ function onPlaceBomb(data) {
 		player.bombCapacity++;
 	}
 
-	io.in(this.gameID).emit("powerup acquired", {acquiringPlayerID: this.ID, powerupID: powerup.ID, powerupType: powerup.powerupType});
+	io.in(this.gameID).emit("powerup acquired", {acquiringPlayerID: this.id, powerupID: powerup.ID, powerupType: powerup.powerupType});
 };*/
 
 function handlePlayerDeath(deadPlayerIDs, gameID) {
@@ -254,7 +253,7 @@ function onReadyForRound() {
 		return;
 	}
 
-	game.acknowledgeRoundReadinessForPlayer(this.ID);
+	game.acknowledgeRoundReadinessForPlayer(this.id);
 
 	if(game.numRoundReadinessAcknowledgements >= game.numPlayers) {
 		game.awaitingAcknowledgements = false;
