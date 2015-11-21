@@ -1,5 +1,5 @@
 function Level(levelData){
-	var platforms = [];
+	var tilemap = levelData;
 	var backgroundImage;
 	var balls = [];
 	var ballSpawnLocations = [];
@@ -19,6 +19,10 @@ function Level(levelData){
 	}
 	this.getMusic = function(){
 		return this.music;
+	}
+
+	this.getMap = function(){
+		return tilemap;
 	}
 
 	this.setBalls = function(balls){

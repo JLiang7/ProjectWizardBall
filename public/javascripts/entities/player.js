@@ -4,6 +4,7 @@ var FLYING_SPEED = 250;
 var Player = function(x, y, id, game) {
 	Phaser.Sprite.call(this, game, x, y, 'player');
 	this.spawnPoint = {x: x, y: y};
+    this.uuid = id;
 	this.id = id;
 	this.facing = "idle";
     this.frame = 15;

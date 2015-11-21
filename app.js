@@ -26,8 +26,13 @@ function init(){
 
 function setEventHandlers(){
 	io.on("connection",function(client){
+		client.on('new player',function(data){
+			io.emit("new player" ,{x:data.x, y:data.y, uuid: data.uuid});
+		});
 		console.log("New Player Connected");
-
+		client.on('update player',function(data){
+			io.emit("update player",{x:data.x,y:data.y,uuid:data.uuid});
+		});
 //		client.on("move player", onMovePlayer);
 //		client.on("disconnect", onClientDisconnect);
 //		client.on("place bomb", onPlaceBomb);
