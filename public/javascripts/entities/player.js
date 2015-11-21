@@ -19,7 +19,7 @@ var Player = function(x, y, id, game) {
 
     this.scale.setTo(.5,.5);
 
-    this.body.collideWorldBounds = true;
+    //this.body.collideWorldBounds = true;
     this.body.gravity.y = 1000;
     this.body.maxVelocity.y = 500;
     this.body.setSize(140,210,0, 12);

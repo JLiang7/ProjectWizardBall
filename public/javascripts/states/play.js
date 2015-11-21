@@ -48,7 +48,7 @@ WizardBall.play.prototype = {
 
         this.game.physics.arcade.gravity.y = 300;
 
-        this.player = new Player(210,3400,'player',this.game);
+        this.player = new Player(500,200,'player',this.game);
         this.player.tint = 0xffffff;
 
         leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
@@ -56,8 +56,18 @@ WizardBall.play.prototype = {
         jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
         leftClick = this.game.input.activePointer.leftButton;
 
-        this.game.add.image('platform_large', 600, 200);
 
+
+        map = this.game.add.tilemap('levelOne');
+        map.addTilesetImage('platform_tile','platform_tile');
+ //       map.addTilesetImage('medium_platform','platform_medium');
+ //       map.addTilesetImage('small_platform','platform_small');
+        this.layer = map.createLayer("Tile Layer 1");
+        this.layer.resizeWorld();
+        map.setCollisionBetween(1,20);
+
+
+       // layer.resizeWorld();
         // level.setBalls(this.game.add.group());
         // level.getBalls().enableBody = true;
         // level.getBalls().physicsBodyType = Phaser.Physics.ARCADE;
@@ -100,15 +110,24 @@ WizardBall.play.prototype = {
         console.log("ball collision");
     },
 
+    collided : function(){
+        console.log("COLLIDING");
+    },
+
 
     update: function(){
 
         this.game.physics.arcade.collide(this.player,this.player.ball_group,this.handleCollision,null,this);
         this.game.physics.arcade.collide(this.player.ball_group,this.player.ball_group,this.handleBallCollision,null,this);
+        this.game.physics.arcade.collide([this.player,this.player.ball_group],this.layer,this.collided, null, this);
+//        this.game.physics.arcade.collide(this.ball_group,this.layer,this.collided, null, this);
         //this.game.physics.arcade.collide(player, layer);
         this.player.body.velocity.x = 0;
 
         //this.controlHandler();
         this.player.handleInput();
+
+        
+
     }
 }
