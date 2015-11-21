@@ -2,7 +2,9 @@
 
 var WizardBall = WizardBall || {};
 
-WizardBall.boot = function(){};
+WizardBall.boot = function(){
+	Phaser.State.call(this);
+};
 
 WizardBall.boot.prototype = {
 	preload : function(){
