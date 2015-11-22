@@ -151,6 +151,7 @@ WizardBall.pendinggame.prototype = {
 	// When the "start" button is clicked, send a message to the server to initialize the this.game.
 	startGameAction: function() {
 		socket.emit("start game on server");
+
 	},
 
 	leaveGameAction: function() {
@@ -162,6 +163,7 @@ WizardBall.pendinggame.prototype = {
 	startGame: function(data) {
 	//	repeatingBombTilesprite.doNotDestroy = false;
 		socket.removeAllListeners();
-		this.game.state.start("Play", true, false, data.mapName, data.players, this.ID);
+		console.log(data.players);
+		WizardBall.game.state.start("Play", true, false, data.mapID, data.players, this.id);
 	}
 }

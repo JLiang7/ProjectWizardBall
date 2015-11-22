@@ -62,7 +62,7 @@ function onClientDisconnect() {
 		if(this.id in game.players) {
 			delete game.players[this.id];
 	
-			io.in(this.gameID).emit("remove player", {ID: this.id});	
+			io.in(this.gameID).emit("remove player", {id: this.id});	
 		}
 
 		if(game.numPlayers < 2) {
@@ -84,13 +84,13 @@ function terminateExistingGame(gameID) {
 
 	delete games[gameID];
 
-	Lobby.getLobbySlots()[gameID] = new PendingGame();
+	Lobby.getLobbies()[gameID] = new PendingGame();
 
 	Lobby.broadcastStateUpdate(gameID, "empty");
 };
 
 function onStartGame() {
-	var lobbySlots = Lobby.getLobbySlots();
+	var lobbySlots = Lobby.getLobbies();
 
 	var game = new Game();
 	games[this.gameID] = game;
@@ -102,17 +102,18 @@ function onStartGame() {
 	var IDs = pendingGame.getPlayerIDs();
 	
 	for(var i = 0; i < IDs.length; i++) {
-		var playerID = IDs[i];
-		var spawnPoint = MapInfo[pendingGame.mapName].spawnLocations[i];
-		var newPlayer = new Player(spawnPoint.x * TILE_SIZE, spawnPoint.y * TILE_SIZE, "down", playerID, pendingGame.players[playerID].color);
+		var playerId = IDs[i];
+		var TILE_SIZE = 40;
+		var spawnPoint = MapInfo[pendingGame.mapID].spawnLocations[i];
+		var newPlayer = new Player(spawnPoint.x * TILE_SIZE, spawnPoint.y * TILE_SIZE, "down", playerId, pendingGame.players[playerId].color);
 		newPlayer.spawnPoint = spawnPoint;
 
-		game.players[playerID] = newPlayer;
+		game.players[playerId] = newPlayer;
 	}
 
 	game.numPlayersAlive = IDs.length;
 
-	io.in(this.gameID).emit("start game on client", {mapName: pendingGame.mapName, players: game.players});
+	io.in(this.gameID).emit("start game on client", {mapID: pendingGame.mapID, players: game.players});
 };
 
 function onRegisterMap(data) {
@@ -148,8 +149,8 @@ function onPlaceBomb(data) {
 	}
 
 	var gameID = this.gameID;
-	var bombID = data.ID;
-	var normalizedBombLocation = game.map.placeBombOnGrID(data.x, data.y);
+	var bombID = data.id;
+	var normalizedBombLocation = game.map.placeBombOnGrid(data.x, data.y);
 
 	if(normalizedBombLocation == -1) {
 		return;
@@ -161,7 +162,7 @@ function onPlaceBomb(data) {
 		var explosionData = bomb.detonate(game.map, player.bombStrength, game.players);
 		player.numBombsAlive--;
 
-		io.in(gameID).emit("detonate", {explosions: explosionData.explosions, ID: bombID, 
+		io.in(gameID).emit("detonate", {explosions: explosionData.explosions, id: bombID, 
 			destroyedTiles: explosionData.destroyedBlocks});
 		delete game.bombs[bombID];
 		game.map.removeBombFromGrID(data.x, data.y);
@@ -172,7 +173,7 @@ function onPlaceBomb(data) {
 	var bomb = new Bomb(normalizedBombLocation.x, normalizedBombLocation.y, bombTimeoutID);
 	game.bombs[bombID] = bomb;
 
-	io.to(this.gameID).emit("place bomb", {x: normalizedBombLocation.x, y: normalizedBombLocation.y, ID: data.ID});
+	io.to(this.gameID).emit("place bomb", {x: normalizedBombLocation.x, y: normalizedBombLocation.y, id: data.ID});
 };
 
 /*onPowerupOverlap : (data) {
@@ -268,7 +269,7 @@ function broadcastingLoop(){
 		for(var i in game.players){
 			var player = game.players[i];
 			if(player.alive && player.hasMoved){
-				io.to(g).emit("m",{ID: player.ID, x: player.x, y: player.y, f:player.facing});
+				io.to(g).emit("m",{id: player.id, x: player.x, y: player.y, f:player.facing});
 				player.hasMoved = false;
 			}
 		}
