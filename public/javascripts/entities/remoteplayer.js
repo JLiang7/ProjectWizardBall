@@ -15,8 +15,8 @@ var RemotePlayer = function(x,y,id,game){
 	this.game = game;
 	this.nextShot = 0;
 
-	game.physics.enable(this, Phaser.Physics.ARCADE);
-    game.physics.arcade.enable(this);
+	//game.physics.enable(this, Phaser.Physics.ARCADE);
+    //game.physics.arcade.enable(this);
 
     this.scale.setTo(.5,.5);
 

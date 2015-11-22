@@ -34,6 +34,7 @@ WizardBall.play.prototype = {
 
     create: function(){
         this.remotePlayers = {};
+        this.remotePlayersGroup = this.game.add.physicsGroup();
         fireRate = 100;
         nextThrow = 0;
         facing = 'idle';
@@ -167,9 +168,9 @@ WizardBall.play.prototype = {
         this.game.physics.arcade.collide(this.player,this.player.ball_group,this.handleCollision,null,this);
         this.game.physics.arcade.collide(this.player.ball_group,this.player.ball_group,this.handleBallCollision,null,this);
 
-        this.game.physics.arcade.collide([this.player,this.player.ball_group],this.layer,this.collided, null, this);
-        for(var temp in this.remotePlayers){
-            this.game.physics.arcade.collide(temp,this.layer,this.collided,null,this);
+        this.game.physics.arcade.collide([this.remotePlayerGroups,this.player,this.player.ball_group],this.layer,this.collided, null, this);
+        for(var i = 0; i <this.remotePlayers.length; i ++){
+            this.game.physics.arcade.collide(this.remotePlayers[i],this.layer,this.collided,null,this); 
         }
 //        this.game.physics.arcade.collide(this.ball_group,this.layer,this.collided, null, this);
         //this.game.physics.arcade.collide(player, layer);
@@ -194,7 +195,8 @@ WizardBall.play.prototype = {
             if(data.id == this.playerId) {
                 this.player = new Player(data.x, data.y, data.id, WizardBall.game);
             } else {
-                this.remotePlayers[data.id] = new RemotePlayer(data.x, data.y, data.id, WizardBall.game);
+                remotePlayer = new RemotePlayer(data.x, data.y, data.id, WizardBall.game);
+                this.remotePlayers[data.id] = remotePlayer;
             }
         }
     },
