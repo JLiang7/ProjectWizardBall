@@ -1,7 +1,7 @@
 var RemotePlayer = function(x,y,id,game){
 	Phaser.Sprite.call(this, game, x, y, 'player');
 	this.spawnPoint = {x: x, y: y};
-    this.previousPosition = {x: x, y: y};
+    //this.previousPosition = {x: x, y: y};
     this.targetPosition;
 
 	this.id = id;
@@ -47,11 +47,11 @@ RemotePlayer.prototype.interpolate = function(lastFrameTime) {
           this.distanceCovered.x += Math.abs(distanceCoveredThisFrameX);
           this.distanceCovered.y += Math.abs(distanceCoveredThisFrameY);
 
-          this.position.x += distanceCoveredThisFrameX;
-          this.position.y += distanceCoveredThisFrameY;
+          this.x += distanceCoveredThisFrameX;
+          this.y += distanceCoveredThisFrameY;
         } else {
-          this.position.x = this.targetPosition.x;
-          this.position.y = this.targetPosition.y;
+          this.x = this.targetPosition.x;
+          this.y = this.targetPosition.y;
         }
     }
 }
@@ -59,7 +59,7 @@ RemotePlayer.prototype.interpolate = function(lastFrameTime) {
 RemotePlayer.prototype.reset = function() {
   this.x = this.spawnPoint.x;
   this.y = this.spawnPoint.y;
-  this.previousPosition = {x: this.x, y: this.y};
+  //this.previousPosition = {x: this.x, y: this.y};
   this.distanceToCover = null;
   this.distanceCovered = null;
   this.targetPosition = null

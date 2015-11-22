@@ -15,7 +15,7 @@ var PendingGame = function() {
  
  
 PendingGame.prototype = { 
- 	getPlayerIds : function() { 
+ 	getPlayerIDs : function() { 
  		return Object.keys(this.players); 
 	}, 
  

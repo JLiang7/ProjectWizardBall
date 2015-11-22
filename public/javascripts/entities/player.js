@@ -70,7 +70,7 @@ Player.prototype.catch = function() {
 
 Player.prototype.handleInput = function() {
 
-	var moving = false;
+	var moving;
 	//var game = this.game;
 	//var speed = this.speed;
 	//var flying_speed = this.flying_speed;
@@ -168,10 +168,15 @@ Player.prototype.handleInput = function() {
                 }
 
             }
-            moving = false; 
+            
   	}
+    if(this.body.velocity.y == 0 && this.body.velocity.x == 0){
+        moving = false;
+    }else{
+        moving = true;
+    }
     if(moving){
-        socket.emit("move player", {x: this.position.x, y: this.position.y, facing: this.facing}); 
+        socket.emit("move player", {x: this.x, y: this.y, facing: this.facing}); 
     }
 
     if (!leftClick.isDown && this.chargeThrow > MIN_POWER) {

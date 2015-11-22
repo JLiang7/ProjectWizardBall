@@ -23,11 +23,17 @@ WizardBall.play.prototype = {
     preload: function() {
 
     },
+
+    init: function(tilemapName, players, id) {
+        this.tilemapName = tilemapName;
+        this.players = players;
+        console.log(this.players);
+        this.playerId = id;
+    },
     
 
     create: function(){
         this.remotePlayers = {};
-        var uuid = this.uuid();
         fireRate = 100;
         nextThrow = 0;
         facing = 'idle';
@@ -51,14 +57,12 @@ WizardBall.play.prototype = {
 
 
 
-        this.player = new Player(500,200,uuid,this.game);
+        //this.player = new Player(500,200,this.playerId,this.game);
 
 //        this.player = new Player(210,3400,'player',this.game);
-        this.opponent = new Player(300,3400,'opp',this.game);
+        //this.opponent = new Player(300,3400,'opp',this.game);
 
-        this.player.tint = 0xffffff;
-        console.log(uuid);
-        socket.emit("new player",{x:this.player.x,y:this.player.y,uuid:uuid});
+        //this.player.tint = 0xffffff;
 
         leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
         rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
@@ -76,7 +80,7 @@ WizardBall.play.prototype = {
         this.layer.resizeWorld();
         map.setCollisionBetween(1,20);
 
-
+        this.initializePlayers();
        // layer.resizeWorld();
         // level.setBalls(this.game.add.group());
         // level.getBalls().enableBody = true;
@@ -130,18 +134,9 @@ WizardBall.play.prototype = {
     collided : function(){
     //    console.log("COLLIDING");
     },
-    uuid : function(){
-        var d = new Date().getTime();
-        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = (d + Math.random()*16)%16 | 0;
-            d = Math.floor(d/16);
-            return (c=='x' ? r : (r&0x3|0x8)).toString(16);
-        });
-        return uuid;
-    },
 
     onMovePlayer: function(data) {
-        if(player && data.id == player.id || this.gameFrozen) {
+        if(this.player && data.id == this.player.id || this.gameFrozen) {
             return;
         }
 
@@ -149,14 +144,14 @@ WizardBall.play.prototype = {
 
         if(movingPlayer.targetPosition) {
             movingPlayer.animations.play(data.f);
-            movingPlayer.lastMoveTime = game.time.now;
+            movingPlayer.lastMoveTime = WizardBall.game.time.now;
 
             if(data.x == movingPlayer.targetPosition.x && data.y == movingPlayer.targetPosition.y) {
                 return;
             }
 
-            movingPlayer.position.x = movingPlayer.targetPosition.x;
-            movingPlayer.position.y = movingPlayer.targetPosition.y;
+            movingPlayer.x = movingPlayer.targetPosition.x;
+            movingPlayer.y = movingPlayer.targetPosition.y;
 
             movingPlayer.distanceToCover = {x: data.x - movingPlayer.targetPosition.x, y: data.y - movingPlayer.targetPosition.y};
             movingPlayer.distanceCovered = {x: 0, y:0};
@@ -173,6 +168,9 @@ WizardBall.play.prototype = {
         this.game.physics.arcade.collide(this.player.ball_group,this.player.ball_group,this.handleBallCollision,null,this);
 
         this.game.physics.arcade.collide([this.player,this.player.ball_group],this.layer,this.collided, null, this);
+        for(var temp in this.remotePlayers){
+            this.game.physics.arcade.collide(temp,this.layer,this.collided,null,this);
+        }
 //        this.game.physics.arcade.collide(this.ball_group,this.layer,this.collided, null, this);
         //this.game.physics.arcade.collide(player, layer);
         this.player.body.velocity.x = 0;
@@ -180,7 +178,7 @@ WizardBall.play.prototype = {
         //this.controlHandler();
         this.player.handleInput();
         this.setEventHandlers();
-        socket.emit("update player",{x:this.player.x,y:this.player.y,uuid:this.uuid});
+        socket.emit("update player",{x:this.player.x,y:this.player.y,uuid:this.playerId});
 
         
 
@@ -194,7 +192,7 @@ WizardBall.play.prototype = {
         for(var i in this.players) {
         var data = this.players[i];
             if(data.id == this.playerId) {
-                player = new Player(data.x, data.y, data.id, WizardBall.game);
+                this.player = new Player(data.x, data.y, data.id, WizardBall.game);
             } else {
                 this.remotePlayers[data.id] = new RemotePlayer(data.x, data.y, data.id, WizardBall.game);
             }
@@ -219,7 +217,8 @@ WizardBall.play.prototype = {
         socket.on("m", this.onMovePlayer.bind(this));
         socket.on("remove player",this.onRemovePlayer.bind(this));
 
-        this.game.physics.arcade.collide(this.opponent,this.player.ball_group,this.handleCollision,null,this);
+        //this.game.physics.arcade.collide(this.opponent,this.player.ball_group,this.handleCollision,null,this);
+
         this.player.body.velocity.x = 0;
 
         if (!dead) {
