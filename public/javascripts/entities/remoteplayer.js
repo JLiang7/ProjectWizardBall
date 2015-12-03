@@ -5,7 +5,7 @@ var RemotePlayer = function(x,y,id,game){
     this.targetPosition;
 
 	this.id = id;
-	this.facing = "idle";
+	this.facing = "idle_right";
     this.frame = 15;
     this.lastMoveTime = 0;
 	//this.speed = 0;
@@ -68,4 +68,35 @@ RemotePlayer.prototype.reset = function() {
   if(!this.alive) {
     this.revive();
   }
+};
+
+RemotePlayer.prototype.characterController = function(){
+
+  if(this.facing == "idle_left"){
+        this.animations.stop();
+        this.frame = 8;
+  }
+  if(this.facing == "idle_right"){
+        this.animations.stop();
+        this.frame = 15;
+  }
+  if(this.facing == "flying_right"){
+        this.frame = 14;
+  }
+  if(this.facing == "flying_left"){
+        this.frame = 9;
+  }
+  if(this.facing == "running_left"){
+        this.animations.play('left');
+  }
+  if(this.facing == "running_right"){
+        this.animations.play('right');
+  }
+  if(this.facing == "throw_left"){
+        this.animations.play('throwLeft');
+  }
+  if(this.facing == "throw_right"){
+        this.animations.play('throwRight');
+  }
+  console.log(facing);
 };

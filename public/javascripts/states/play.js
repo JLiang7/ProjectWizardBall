@@ -142,9 +142,11 @@ WizardBall.play.prototype = {
         }
 
         var movingPlayer = this.remotePlayers[data.id];
-
+        movingPlayer.facing = data.f;
         if(movingPlayer.targetPosition) {
-            movingPlayer.animations.play(data.f);
+            movingPlayer.characterController();
+            
+            //movingPlayer.animations.play(data.f);
             movingPlayer.lastMoveTime = WizardBall.game.time.now;
 
             if(data.x == movingPlayer.targetPosition.x && data.y == movingPlayer.targetPosition.y) {
@@ -178,11 +180,21 @@ WizardBall.play.prototype = {
 
         //this.controlHandler();
         this.player.handleInput();
+        this.player.characterController();
+        this.updateRemoteAnimations();
         this.setEventHandlers();
-        socket.emit("update player",{x:this.player.x,y:this.player.y,uuid:this.playerId});
+        //socket.emit("update player",{x:this.player.x,y:this.player.y,facing:this.player.facing, uuid:this.playerId});
 
         
 
+    },
+
+    updateRemoteAnimations: function(){
+        var i;
+        for (i = 0; i < this.remotePlayers.length; i ++){
+           console.log(i.facing);
+           i.characterController();
+        }
     },
 
     onSocketDisconnect: function() {

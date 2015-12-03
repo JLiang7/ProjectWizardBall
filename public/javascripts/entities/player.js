@@ -12,7 +12,7 @@ var Player = function(x, y, id, game) {
 	this.spawnPoint = {x: x, y: y};
     this.uuid = id;
 	this.id = id;
-	this.facing = "idle";
+	this.facing = "idle_right";
     this.frame = 15;
 	//this.speed = 0;
     this.running = 0;
@@ -83,13 +83,12 @@ Player.prototype.handleInput = function() {
 	if (leftButton.isDown) { 
    		this.body.velocity.x = -DEFAULT_PLAYER_SPEED;
         if (this.body.velocity.y != 0){
-            if (facing != 'leftJump') {
-                facing = 'leftJump';
-                this.frame = 9;
+            if (this.facing != 'flying_left') {
+                this.facing = 'flying_left';
             } 
-        } else if (facing != 'left') {
-                this.animations.play('left');
-                facing = 'left';
+        } else if (this.facing != 'running_left') {
+                
+                this.facing = 'running_left';
         }
         this.running = 1;
    	}
@@ -97,52 +96,50 @@ Player.prototype.handleInput = function() {
     if (rightButton.isDown) { 
    		this.body.velocity.x = DEFAULT_PLAYER_SPEED;
         if (this.body.velocity.y != 0){
-            if (facing != 'rightJump') {
-                facing = 'rightJump';
-                this.frame = 14;
+            if (this.facing != 'flying_right') {
+                this.facing = 'flying_right';
+                
             } 
-        } else if (facing != 'right') {
-            this.animations.play('right');
-            facing = 'right';
+        } else if (this.facing != 'running_right') {
+        
+            this.facing = 'running_right';
         }
         this.running = 1;
    	}
 
     if (jumpButton.isDown) { 
    		this.body.velocity.y = -DEFAULT_PLAYER_SPEED;
-        if (facing == 'left' || this.frame == 8) {
-            facing = 'leftJump';
-            this.frame = 9;
-        } else {
-            facing = 'rightJump';
-            this.frame = 14;
+       
+        if (this.body.velocity.y == 0){
+            if (this.facing == "idle_left" || this.facing == 'running_left' || this.frame == 8) {
+                this.facing = 'flying_left';
+                
+            } else {
+                this.facing = 'flying_right';
+            }
         }
    	}
 
    	if (leftClick.isDown) { 
-        console.log("THROW");
+  //      console.log("THROW");
    	    //this.throwBall();
         if (this.chargeThrow < MAX_POWER) {
             this.chargeThrow += CHARGE_RATE;
         }
-        if (this.frame == 8 || facing == 'leftJump' || facing == 'throwLeft') {
-            this.animations.play('throwLeft');
-            facing = 'throwLeft';
+        if (this.frame == 8 || this.facing == 'flying_left' || this.facing == 'throw_left') {           
+            this.facing = 'throw_left';
         } else {
-            this.animations.play('throwRight');
-            facing = 'throwRight';
+            this.facing = 'throw_right';
         }	
    	}
 
     if (catchButton.isDown) {
-        console.log("CATCH");
+  //     console.log("CATCH");
         this.catch();
-        if (this.frame == 8 || facing == 'leftJump' || facing == 'throwLeft') {
-            this.animations.play('throwLeft');
-            facing = 'throwLeft';
+        if (this.frame == 8 || this.facing == 'flying_left' || this.facing == 'throw_left') {
+            this.facing = 'throw_left';
         } else {
-            this.animations.play('throwRight');
-            facing = 'throwRight';
+            this.facing = 'throw_right';
         }   
     }
 
@@ -150,22 +147,21 @@ Player.prototype.handleInput = function() {
 
     else { 
         if(this.body.velocity.y == 0 && this.running != 0){
-                if (facing != 'idle' || facing != 'throwLeft'||facing != 'throwRight')
+                if (this.facing != 'throw_left'||this.facing != 'throw_right')
                 {
-                    this.animations.stop();
 
-                    if (facing == 'left' || facing == 'leftJump' || facing == 'throwLeft')
+                    if (this.facing == "running_left" || this.facing == 'flying_left' || this.facing == 'throw_left')
                     {
-                        this.frame = 8;
+                        this.facing = 'idle_left';
                     }
                     else
                     {
-                        this.frame = 15;
+                        this.facing = 'idle_right';
                     }
 
-                    facing = 'idle';
                     this.running = 0;
                 }
+
 
             }
             
@@ -183,6 +179,7 @@ Player.prototype.handleInput = function() {
         this.throwBall();
         this.chargeThrow = 0;
     }
+    this.characterController();
 
 };
 
@@ -191,4 +188,34 @@ Player.prototype.handleInput = function() {
      this.body.velocity.y = 0; 
      this.animations.stop(); 
 }; 
+
+Player.prototype.characterController = function(){
+
+  if(this.facing == "idle_left"){
+        this.animations.stop();
+        this.frame = 8;
+  }
+  if(this.facing == "idle_right"){
+        this.animations.stop();
+        this.frame = 15;
+  }
+  if(this.facing == "flying_right"){
+        this.frame = 14;
+  }
+  if(this.facing == "flying_left"){
+        this.frame = 9;
+  }
+  if(this.facing == "running_left"){
+        this.animations.play('left');
+  }
+  if(this.facing == "running_right"){
+        this.animations.play('right');
+  }
+  if(this.facing == "throw_left"){
+        this.animations.play('throwLeft');
+  }
+  if(this.facing == "throw_right"){
+        this.animations.play('throwRight');
+  }
+};
 
