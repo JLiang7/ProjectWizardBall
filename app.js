@@ -11,7 +11,7 @@ io = require("socket.io").listen(server);
 app.listen(port, function (){
   console.log('listening on \'localhost:3000\'');
 });
-
+//adding this comment because its broked
 var games = {};
 var playersOnServer = [];
 var Player = require("./server/objects/player");
