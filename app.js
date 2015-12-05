@@ -7,6 +7,9 @@ var express = require('express'),
 app.use(express.static(__dirname+'/public'));
 var server = http.createServer(app);
 io = require("socket.io").listen(server);
+server.listen(port, function (){
+  console.log('listening on \'localhost:3000\'');
+});
 
 var games = {};
 var playersOnServer = [];
@@ -305,7 +308,5 @@ app.get('/', function (req, res){
 });
 
 
-server.listen(port, function (){
-  console.log('listening on \'localhost:3000\'');
-});
+
 
