@@ -122,6 +122,7 @@ WizardBall.play.prototype = {
                 if (player.id == 'player') {
                 dead = true; 
                 }
+                socket.emit("player hit");
                 player.kill();
             }
         }
@@ -142,6 +143,14 @@ WizardBall.play.prototype = {
         }
 
         var movingPlayer = this.remotePlayers[data.id];
+        if(data.dead === true){
+            if(movingPlayer && movingPlayer.alive){
+                this.numPlayers --;
+                movingPlayer.kill();
+            }
+            return;
+        }
+
         movingPlayer.facing = data.f;
         if(movingPlayer.targetPosition) {
             movingPlayer.characterController();
@@ -192,8 +201,8 @@ WizardBall.play.prototype = {
     updateRemoteAnimations: function(){
         var i;
         for (i = 0; i < this.remotePlayers.length; i ++){
-           console.log(i.facing);
-           i.characterController();
+           //console.log(i.facing);
+           remotePlayers[i].characterController();
         }
     },
 

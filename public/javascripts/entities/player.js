@@ -10,6 +10,7 @@ var CHARGE_RATE = 20;
 var Player = function(x, y, id, game) {
 	Phaser.Sprite.call(this, game, x, y, 'player');
 	this.spawnPoint = {x: x, y: y};
+  this.dead = false;
     this.uuid = id;
 	this.id = id;
 	this.facing = "idle_right";
@@ -172,7 +173,7 @@ Player.prototype.handleInput = function() {
         moving = true;
     }
     if(moving){
-        socket.emit("move player", {x: this.x, y: this.y, facing: this.facing}); 
+        socket.emit("move player", {x: this.x, y: this.y, facing: this.facing, dead: this.dead}); 
     }
 
     if (!leftClick.isDown && this.chargeThrow > MIN_POWER) {

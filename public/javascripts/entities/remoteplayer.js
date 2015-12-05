@@ -27,10 +27,10 @@ var RemotePlayer = function(x,y,id,game){
 
     this.ball_group = this.game.add.physicsGroup();
 
- /*   this.animations.add('left', [0,1,2, 3, 4, 5, 6, 7], 12, true);
+    this.animations.add('left', [0,1,2, 3, 4, 5, 6, 7], 12, true);
     this.animations.add('right', [16,17,18,19,20,21,22,23], 12, true);
     this.animations.add('throwRight',[13,12],12,false);
-    this.animations.add('throwLeft',[10,11],12,false);*/
+    this.animations.add('throwLeft',[10,11],12,false);
 
     game.add.existing(this);
 } 
@@ -75,28 +75,32 @@ RemotePlayer.prototype.characterController = function(){
   if(this.facing == "idle_left"){
         this.animations.stop();
         this.frame = 8;
-  }
+  }else
   if(this.facing == "idle_right"){
         this.animations.stop();
         this.frame = 15;
-  }
+  }else
   if(this.facing == "flying_right"){
+        this.animations.stop();
         this.frame = 14;
-  }
+  }else
   if(this.facing == "flying_left"){
+        this.animations.stop();
         this.frame = 9;
-  }
+  }else
   if(this.facing == "running_left"){
         this.animations.play('left');
-  }
+  }else
   if(this.facing == "running_right"){
         this.animations.play('right');
-  }
+  }else
   if(this.facing == "throw_left"){
         this.animations.play('throwLeft');
-  }
+  }else
   if(this.facing == "throw_right"){
         this.animations.play('throwRight');
+  }else{
+    this.animations.stop();
   }
-  console.log(facing);
+
 };
