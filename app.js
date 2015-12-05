@@ -2,6 +2,7 @@ var express = require('express'),
 	app = express(),
 	http = require('http').Server(app);
 	
+	app.use(express.static(__dirname+'/public'));
 	io = require("socket.io").listen(http);
 
 var games = {};
@@ -294,7 +295,7 @@ function broadcastingLoop(){
 };
 
 //add dependencies for html script calls
-app.use(express.static(__dirname+'/public'));
+
 
 app.get('/', function (req, res){
   res.sendFile(__dirname + '/index.html');
