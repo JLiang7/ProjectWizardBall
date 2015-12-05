@@ -7,7 +7,7 @@ var express = require('express'),
 app.use("/",express.static(__dirname+'/public'));
 var server = http.createServer(app);
 io = require("socket.io").listen(server);
-server.listen(port, function (){
+app.listen(port, function (){
   console.log('listening on \'localhost:3000\'');
 });
 
