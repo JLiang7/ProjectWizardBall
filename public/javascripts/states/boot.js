@@ -10,6 +10,7 @@ WizardBall.boot.prototype = {
 	preload : function(){
 		this.load.image('logo',"images/loadingBG.png");
 		this.load.image("loader", "images/loader.png");
+		WizardBall.game.stage.disableVisibilityChange = true;
 	},
 
 	create : function(){
@@ -24,6 +25,7 @@ WizardBall.boot.prototype = {
 		this.scale.updateLayout();
 
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
 
 		this.state.start("Preload");
 	}

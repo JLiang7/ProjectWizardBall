@@ -12,7 +12,7 @@ var MapInfo = require("./public/javascripts/data/map_info");
 var Game = require("./server/objects/game");
 var Lobby = require("./server/lobby");
 var PendingGame = require("./server/objects/pending_game");
-var updateDelay = 30;
+var updateDelay = 100;
 
 init();
 
@@ -41,6 +41,7 @@ function setEventHandlers(){
 		client.on("select stage", Lobby.onStageSelect);
 		client.on("enter pending game", Lobby.onEnterLobby);
 		client.on("leave pending game", Lobby.onLeaveLobby);
+		client.on("player hit", onPlayerHit);
 	});
 };
 
@@ -118,6 +119,22 @@ function onStartGame() {
 
 function onRegisterMap(data) {
 	games[this.gameID].map = new Map(data, TILE_SIZE);
+};
+
+function onPlayerHit(data) {
+	var game = games[this.gameID];
+
+	if(game === undefined || game.awaitingAcknowledgements) {
+		return;
+	}
+
+	var hitPlayer = game.players[this.id];
+
+	if(!hitPlayer) {
+		return;
+	}
+
+	hitPlayer.dead = true;
 };
 
 function onMovePlayer(data) {
@@ -269,7 +286,7 @@ function broadcastingLoop(){
 		for(var i in game.players){
 			var player = game.players[i];
 			if(player.alive && player.hasMoved){
-				io.to(g).emit("m",{id: player.id, x: player.x, y: player.y, f:player.facing});
+				io.to(g).emit("m",{id: player.id, x: player.x, y: player.y, f:player.facing, dead:player.dead});
 				player.hasMoved = false;
 			}
 		}

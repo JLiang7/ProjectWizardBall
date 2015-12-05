@@ -1,6 +1,7 @@
 var Player = function(xSpawn, ySpawn, facing, id, color) {
 	this.xSpawn = xSpawn;
 	this.ySpawn = ySpawn;
+	this.dead = false;
 	this.x = xSpawn;
 	this.y = ySpawn;
 	this.facing = facing;
@@ -24,6 +25,7 @@ Player.prototype = {
 		this.bombStrength = 1;
 		this.bombCapacity = 3;
 		this.numBombsAlive = 0;
+		this.dead = false;
 	}
 }
 

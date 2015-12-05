@@ -124,6 +124,7 @@ WizardBall.play.prototype = {
                 if (player.id == 'player') {
                 dead = true; 
                 }
+                socket.emit("player hit");
                 player.kill();
             }
         }
@@ -144,6 +145,14 @@ WizardBall.play.prototype = {
         }
 
         var movingPlayer = this.remotePlayers[data.id];
+        if(data.dead === true){
+            if(movingPlayer && movingPlayer.alive){
+                this.numPlayers --;
+                movingPlayer.kill();
+            }
+            return;
+        }
+
         movingPlayer.facing = data.f;
         if(movingPlayer.targetPosition) {
             movingPlayer.characterController();
@@ -151,15 +160,21 @@ WizardBall.play.prototype = {
             //movingPlayer.animations.play(data.f);
             movingPlayer.lastMoveTime = WizardBall.game.time.now;
 
+
             if(data.x == movingPlayer.targetPosition.x && data.y == movingPlayer.targetPosition.y) {
                 return;
             }
 
-            movingPlayer.x = movingPlayer.targetPosition.x;
-            movingPlayer.y = movingPlayer.targetPosition.y;
+            //movingPlayer.x = movingPlayer.targetPosition.x;
+            //movingPlayer.y = movingPlayer.targetPosition.y;
 
             movingPlayer.distanceToCover = {x: data.x - movingPlayer.targetPosition.x, y: data.y - movingPlayer.targetPosition.y};
             movingPlayer.distanceCovered = {x: 0, y:0};
+            var tw = this.game.add.tween(movingPlayer).to({ x: movingPlayer.targetPosition.x, y: movingPlayer.targetPosition.y}, 100).interpolation(Phaser.Math.bezierInterpolation).start();
+            //tw.onComplete().add(this.updateRemoteAnimations,this);
+
+            //movingPlayer.interpolate();
+
         }
 
         movingPlayer.targetPosition = {x: data.x, y: data.y};
@@ -170,11 +185,14 @@ WizardBall.play.prototype = {
     update: function(){
 
         this.game.physics.arcade.collide(this.player,this.player.ball_group,this.handleCollision,null,this);
+
         this.game.physics.arcade.collide(this.player.ball_group,this.player.ball_group,this.handleBallCollision,null,this);
 
         this.game.physics.arcade.collide([this.remotePlayerGroups,this.player,this.player.ball_group],this.layer,this.collided, null, this);
-        for(var i = 0; i <this.remotePlayers.length; i ++){
-            this.game.physics.arcade.collide(this.remotePlayers[i],this.layer,this.collided,null,this); 
+        for(var i in this.remotePlayers){
+            var movPlayer = this.remotePlayers[i];
+            this.game.physics.arcade.collide(movPlayer,this.layer,this.collided,null,this); 
+            this.game.physics.arcade.collide(movPlayer,this.player.ball_group,this.collied,null,this);
         }
 //        this.game.physics.arcade.collide(this.ball_group,this.layer,this.collided, null, this);
         //this.game.physics.arcade.collide(player, layer);
@@ -185,6 +203,7 @@ WizardBall.play.prototype = {
         this.player.characterController();
         this.updateRemoteAnimations();
         this.setEventHandlers();
+        //
         //socket.emit("update player",{x:this.player.x,y:this.player.y,facing:this.player.facing, uuid:this.playerId});
 
         
@@ -192,11 +211,21 @@ WizardBall.play.prototype = {
     },
 
     updateRemoteAnimations: function(){
-        var i;
-        for (i = 0; i < this.remotePlayers.length; i ++){
-           console.log(i.facing);
-           i.characterController();
-        }
+        if(this.facing == "flying_left" || this.facing == "running_left" || this.facing == "throw_left"){
+                    this.facing = "idle_left";
+                    this.characterController();
+                    
+
+                }else if(!(this.facing != "idle_right" && this.facing != "idle_left")){
+                    this.facing = "idle_right";
+                    this.characterController();
+                    
+                }
+            
+            
+            
+           //this.remotePlayers[i].characterController();
+        
     },
 
     onSocketDisconnect: function() {
@@ -209,7 +238,7 @@ WizardBall.play.prototype = {
             if(data.id == this.playerId) {
                 this.player = new Player(data.x, data.y, data.id, WizardBall.game);
             } else {
-                remotePlayer = new RemotePlayer(data.x, data.y, data.id, WizardBall.game);
+                var remotePlayer = new RemotePlayer(data.x, data.y, data.id, WizardBall.game);
                 this.remotePlayers[data.id] = remotePlayer;
             }
         }
