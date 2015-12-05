@@ -1,8 +1,11 @@
 var express = require('express'),
+	http = require('http'),
 	app = express(),
-	http = require('http').Server(app);
+	port = process.env.PORT || 3000;
 	
-	app.use(express.static(__dirname+'/public'));
+	
+app.use(express.static(__dirname+'/public'));
+var server = http.createServer(app);
 	io = require("socket.io").listen(http);
 
 var games = {};
@@ -302,7 +305,7 @@ app.get('/', function (req, res){
 });
 
 
-http.listen(process.env.PORT || 3000, function (){
+server.listen(port, function (){
   console.log('listening on \'localhost:3000\'');
 });
 
