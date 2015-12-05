@@ -1,10 +1,13 @@
 var WizardBall = WizardBall || {};
 
 WizardBall.preload = function(){};
-var levelData;
+
 WizardBall.preload.prototype = {
 
 	preload: function(){
+		while(!levelData){
+			console.log("spinning");
+		}
 		this.splash = this.add.sprite(this.game.world.centerX, this.game.world.centerY, "logo");
 		this.splash.anchor.setTo(0.5);
 
@@ -13,10 +16,6 @@ WizardBall.preload.prototype = {
 
 		this.load.setPreloadSprite(this.preloadBar);
 
-		$.getJSON('json/levelData.json', function(data){
-			console.log(data);
-			levelData = data;
-		});
            
 
 		this.loadTitleResources();
