@@ -35,6 +35,8 @@ WizardBall.play.prototype = {
     create: function(){
         this.remotePlayers = {};
         this.remotePlayersGroup = this.game.add.physicsGroup();
+        this.balls = this.game.add.physicsGroup();
+
         fireRate = 100;
         nextThrow = 0;
         facing = 'idle';
@@ -224,12 +226,15 @@ WizardBall.play.prototype = {
         delete this.players[data.id];
     },
 
-
+    onBallThrown: function(data) {
+        this.balls.add(new Ball(data.x, data.y, data.id));
+    },
 
     setEventHandlers: function(){
         socket.on("disconnect",this.onClientDisconnect);
         socket.on("m", this.onMovePlayer.bind(this));
         socket.on("remove player",this.onRemovePlayer.bind(this));
+        socket.on("ball throw", this.onBallThrown.bind(this));
 
         //this.game.physics.arcade.collide(this.opponent,this.player.ball_group,this.handleCollision,null,this);
 

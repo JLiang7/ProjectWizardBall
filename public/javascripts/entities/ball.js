@@ -2,28 +2,22 @@
 //var textureUtil = require("../images/texture_util");
 var WizardBall = WizardBall || {};
 
-var Ball = function(x, y, id) {
-	/*var speed;
-	var isLive=true;
-	var bounce=5;
-	var isVisible=true;
-	var defSprite;
-
-	this.onHit=function() {
-		isLive=false;
-	}
-
-	this.grounded=function() {
-		bounce--;
-	}
-
-	this.visible=function() {
-		if(bounce==0) {
-			
-		}
-	}*/
-	//Phaser.Sprite.call(this, )
+var Ball = function(x, y, id, game) {
+	Phaser.Sprite.call(this, game, x, y, 'ball');
 	this.id = id;
 
+	this.anchor.setTo(.5,.5);
+	game.physics.enable(this, Phaser.Physics.ARCADE);
 
-}
+	game.add.existing(this);
+
+};
+
+Ball.prototype = Object.create(Phaser.Sprite.prototype);
+
+Ball.prototype.remove = function () {
+    this.destroy();
+};
+
+
+
