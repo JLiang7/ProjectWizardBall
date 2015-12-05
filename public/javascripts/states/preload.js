@@ -13,14 +13,11 @@ WizardBall.preload.prototype = {
 
 		this.load.setPreloadSprite(this.preloadBar);
 
-		levelData = $.parseJSON(
-           $.ajax({
-                   url: "json/levelData.json", 
-                   async: false, 
-                   dataType: 'json'
-                }
-            ).responseText
-        );
+		$.getJSON('json/levelData.json', function(data){
+			console.log(data);
+			levelData = data;
+		});
+           
 
 		this.loadTitleResources();
 		this.loadPlayResources();
@@ -88,6 +85,6 @@ WizardBall.preload.prototype = {
 	},
 
 	create: function(){
-		this.state.start("Lobby");
+		this.state.start("TitleScreen");
 	}
 };

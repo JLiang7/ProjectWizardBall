@@ -1,13 +1,16 @@
 //this is where we set up the screen, physics, and preload assets (loading bar, splash, etc)
 
 var WizardBall = WizardBall || {};
-
+var levelData;
 WizardBall.boot = function(){
 	Phaser.State.call(this);
 };
 
 WizardBall.boot.prototype = {
 	preload : function(){
+		$.getJSON('json/levelData.json', function(data){
+			levelData = data;
+		});
 		this.load.image('logo',"images/loadingBG.png");
 		this.load.image("loader", "images/loader.png");
 		WizardBall.game.stage.disableVisibilityChange = true;
