@@ -12,7 +12,7 @@ var	root = process.env.PWD || __dirname;
 
 	
 
-app.use(express.static(root+'/public'));
+app.use(express.static(process.env.PWD+'/public'));
 
 var server = http.createServer(app);
 io = require("socket.io").listen(server);

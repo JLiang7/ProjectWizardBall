@@ -8,7 +8,7 @@ WizardBall.boot = function(){
 
 WizardBall.boot.prototype = {
 	preload : function(){
-		$.getJSON('json/levelData.json', function(data){
+		$.getJSON('json/leveldata.json', function(data){
 			levelData = data;
 		});
 		this.load.image('logo',"images/loadingBG.png");
