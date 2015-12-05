@@ -1,29 +1,32 @@
 var RemotePlayer = function(x,y,id,game){
 	Phaser.Sprite.call(this, game, x, y, 'player');
 	this.spawnPoint = {x: x, y: y};
+    this.MOVE_DELAY = 30;
+    this.movLag = 0;
     //this.previousPosition = {x: x, y: y};
+    this.didAnimCheck = true;
     this.targetPosition;
-
-	this.id = id;
-	this.facing = "idle_right";
+    this.moving = false;
+	  this.id = id;
+	  this.facing = "idle_right";
     this.frame = 15;
     this.lastMoveTime = 0;
 	//this.speed = 0;
     this.running = 0;
     this.hp = 3;
 	//this.flying_speed = FLYING_SPEED;
-	this.game = game;
-	this.nextShot = 0;
+    this.game = game;
+	  this.nextShot = 0;
 
-	//game.physics.enable(this, Phaser.Physics.ARCADE);
-    //game.physics.arcade.enable(this);
+	game.physics.enable(this, Phaser.Physics.ARCADE);
+  game.physics.arcade.enable(this);
 
     this.scale.setTo(.5,.5);
 
-    //this.body.collideWorldBounds = true;
-    //this.body.gravity.y = 1000;
-    //this.body.maxVelocity.y = 500;
-    //this.body.setSize(140,210,0, 12);
+  this.body.collideWorldBounds = true;
+  this.body.gravity.y = 0;
+  this.body.maxVelocity.y = 0;
+  this.body.setSize(140,210,0, 12);
 
     this.ball_group = this.game.add.physicsGroup();
 
@@ -33,13 +36,18 @@ var RemotePlayer = function(x,y,id,game){
     this.animations.add('throwLeft',[10,11],12,false);
 
     game.add.existing(this);
-} 
+}; 
 
 RemotePlayer.prototype = Object.create(Phaser.Sprite.prototype); 
 
 RemotePlayer.prototype.interpolate = function(lastFrameTime) {
+    //console.log("interpolateing");
     if(this.distanceToCover && lastFrameTime) {
+      
         if((this.distanceCovered.x < Math.abs(this.distanceToCover.x) || this.distanceCovered.y < Math.abs(this.distanceToCover.y))) {
+          this.didAnimCheck = false;
+          this.movLag = this.game.time.now + this.MOVE_DELAY;
+         
           var fractionOfTimeStep = (game.time.now - lastFrameTime) / remotePlayerUpdateInterval;
           var distanceCoveredThisFrameX = fractionOfTimeStep * this.distanceToCover.x;
           var distanceCoveredThisFrameY = fractionOfTimeStep * this.distanceToCover.y;
@@ -49,12 +57,15 @@ RemotePlayer.prototype.interpolate = function(lastFrameTime) {
 
           this.x += distanceCoveredThisFrameX;
           this.y += distanceCoveredThisFrameY;
+
         } else {
+          
           this.x = this.targetPosition.x;
           this.y = this.targetPosition.y;
         }
     }
-}
+
+};
 
 RemotePlayer.prototype.reset = function() {
   this.x = this.spawnPoint.x;
