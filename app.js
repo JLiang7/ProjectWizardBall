@@ -1,11 +1,19 @@
+
+
 var express = require('express'),
 	http = require('http'),
 	app = express(),
-	port = process.env.PORT || 3000,
-	root = process.env.PWD || __dirname;
+	port = process.env.PORT || 3000;
+
+process.env.PWD = process.cwd();
+
+var	root = process.env.PWD || __dirname;
+
+
 	
 	
 app.use(express.static(root+'/public'));
+
 var server = http.createServer(app);
 io = require("socket.io").listen(server);
 server.listen(port, function (){
