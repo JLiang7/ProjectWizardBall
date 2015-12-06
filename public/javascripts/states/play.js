@@ -24,10 +24,10 @@ WizardBall.play.prototype = {
 
     },
 
-    init: function(tilemapName, players, id) {
+    init: function(tilemapName, players, id, bg) {
         this.tilemapName = tilemapName;
         this.players = players;
-
+        this.bg = bg;
         this.playerId = id;
     },
     
@@ -47,9 +47,8 @@ WizardBall.play.prototype = {
        dead = false;
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
     //    filter = this.game.add.filter('Plasma',800,600);
-        
         this.level = new Level(this.tilemapName);
-        this.level.setBackgroundImage('greenBar',1,true);
+        this.level.setBackgroundImage(this.bg,1,true);
         this.level.setMusic(this.game.add.audio('bgmusic'));
         this.level.getMusic().play();
 

@@ -28,9 +28,11 @@ var minPlayerMessageOffsetY = 300;
 var numCharacterSquares = 4;
 
 WizardBall.pendinggame.prototype = {
-	init: function(tilemapName, gameID) {
+	init: function(tilemapName, gameID, bg) {
+
 		this.tilemapName = tilemapName;
 		this.gameID = gameID;
+		this.bg = bg;
 
 	},
 
@@ -155,6 +157,6 @@ WizardBall.pendinggame.prototype = {
 
 	startGame: function(data) {
 		socket.removeAllListeners();
-		WizardBall.game.state.start("Play", true, false, data.mapID, data.players, this.id);
+		WizardBall.game.state.start("Play", true, false, data.mapID, data.players, this.id, data.bg);
 	}
 }

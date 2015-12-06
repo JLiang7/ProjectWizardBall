@@ -88,6 +88,11 @@
       }
    },
 
+   "level_backgrounds":{
+      "level_one_bg" : "images/final_d.jpg",
+      "level_two_bg" : "images/jungle.jpg"
+   },
+
    "platforms" : {
          "flat_large": {
             "body_x" : 600,
