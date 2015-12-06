@@ -1,10 +1,11 @@
 var WizardBall = WizardBall || {};
 
 WizardBall.preload = function(){};
-var levelData;
+
 WizardBall.preload.prototype = {
 
 	preload: function(){
+		
 		this.splash = this.add.sprite(this.game.world.centerX, this.game.world.centerY, "logo");
 		this.splash.anchor.setTo(0.5);
 
@@ -13,14 +14,7 @@ WizardBall.preload.prototype = {
 
 		this.load.setPreloadSprite(this.preloadBar);
 
-		levelData = $.parseJSON(
-           $.ajax({
-                   url: "json/levelData.json", 
-                   async: false, 
-                   dataType: 'json'
-                }
-            ).responseText
-        );
+           
 
 		this.loadTitleResources();
 		this.loadPlayResources();
@@ -88,6 +82,6 @@ WizardBall.preload.prototype = {
 	},
 
 	create: function(){
-		this.state.start("Lobby");
+		this.state.start("TitleScreen");
 	}
 };

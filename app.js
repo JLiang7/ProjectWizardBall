@@ -1,9 +1,26 @@
-var express = require('express'),
-	app = express(),
-	http = require('http').Server(app);
-	
-	io = require("socket.io").listen(http);
 
+
+var express = require('express'),
+	http = require('http'),
+	app = express(),
+	port = process.env.PORT || 3000;
+
+process.env.PWD = process.cwd();
+
+var	root = process.env.PWD || __dirname;
+
+
+	
+
+app.use(express.static(process.env.PWD+'/public'));
+
+var server = http.createServer(app);
+io = require("socket.io").listen(server);
+server.listen(port, function (){
+  console.log('listening on \'localhost:3000\'');
+});
+
+//adding this comment because its broked
 var games = {};
 var playersOnServer = [];
 var Player = require("./server/objects/player");
@@ -12,7 +29,7 @@ var MapInfo = require("./public/javascripts/data/map_info");
 var Game = require("./server/objects/game");
 var Lobby = require("./server/lobby");
 var PendingGame = require("./server/objects/pending_game");
-var updateDelay = 100;
+var updateDelay = 50;
 
 init();
 
@@ -269,14 +286,12 @@ function broadcastingLoop(){
 };
 
 //add dependencies for html script calls
-app.use(express.static(__dirname+'/public'));
+
 
 app.get('/', function (req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
 
-http.listen(3000, function (){
-  console.log('listening on \'localhost:3000\'');
-});
+
 
