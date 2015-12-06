@@ -35,7 +35,7 @@ WizardBall.play.prototype = {
     create: function(){
         this.remotePlayers = {};
         //this.remotePlayersGroup = this.game.add.physicsGroup();
-        this.balls = [];
+        this.balls = {};
         //this.ballsGroup = this.game.add.physicsGroup();
 
         fireRate = 100;
@@ -101,6 +101,11 @@ WizardBall.play.prototype = {
     handleCollision: function(player,ball){
         if (this.game.time.now < player.catchTime) {
             player.ballCount++;
+            for (var i in this.balls) {
+                if (this.balls[i].ball == ball) {
+                    socket.emit("ball destroy",{id : this.balls[i].id});
+                }
+            }
         } else { 
             player.hp -= 1;
             if (player.hp == 0) {
@@ -110,8 +115,13 @@ WizardBall.play.prototype = {
                 socket.emit("player hit");
                 player.kill();
             }
+            for (var i in this.balls) {
+                if (this.balls[i].ball == ball) {
+                    socket.emit("ball destroy",{id : this.balls[i].id});
+                }
+            }
         }
-        ball.kill();
+        //ball.kill();
     },
 
     handleBallCollision: function(ball1,ball2){
@@ -246,7 +256,7 @@ WizardBall.play.prototype = {
             console.log("Speed val: " + data.speed);
 
             var ball_wrapper = new Ball(ball,data.time);
-            this.balls.push(ball_wrapper);
+            this.balls[data.time] = ball_wrapper;
             this.game.physics.arcade.velocityFromAngle(data.throw_angle, data.speed,ball.body.velocity);
 
             //ball.reset(this.x,this.y);
@@ -255,11 +265,21 @@ WizardBall.play.prototype = {
             ball.body.bounce.setTo(.5,.5);
     },
 
+    onBallDestroy: function(data) {
+        for (var i in this.balls) {
+            if (this.balls[i].id == data.id) {
+                this.balls[i].ball.kill();
+                delete this.balls[i];
+            }
+        }
+    },
+
     setEventHandlers: function(){
         socket.on("disconnect",this.onClientDisconnect);
         socket.on("m", this.onMovePlayer.bind(this));
         socket.on("remove player",this.onRemovePlayer.bind(this));
         socket.on("ball throw", this.onBallThrown.bind(this));
+        socket.on("ball destroy", this.onBallDestroy.bind(this));
 
         //this.game.physics.arcade.collide(this.opponent,this.player.ball_group,this.handleCollision,null,this);
 

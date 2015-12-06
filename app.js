@@ -46,6 +46,7 @@ function setEventHandlers(){
 
 		client.on("move player", onMovePlayer);
 		client.on("ball throw", onBallThrown);
+		client.on("ball destroy", onBallDestroy);
 		client.on("disconnect", onClientDisconnect);
 //		client.on("place bomb", onPlaceBomb);
 //		client.on("register map", onRegisterMap);
@@ -184,6 +185,14 @@ function onBallThrown(data) {
 	io.in(this.gameID).emit("ball throw",{x: data.x, y: data.y, throw_angle: data.throw_angle, thrower: data.thrower, speed: data.speed, time: data.time});
 	
 };
+
+function onBallDestroy(data) {
+	var game = games[this.gameID];
+	if(game === undefined || game.awaitingAcknowledgements) {
+		return;
+	}
+	io.in(this.gameID).emit("ball destroy",{id : data.id});
+}
 
 function handlePlayerDeath(deadPlayerIDs, gameID) {
 	var tiedWinnerIDs;
