@@ -48,7 +48,7 @@ WizardBall.play.prototype = {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
     //    filter = this.game.add.filter('Plasma',800,600);
         
-        this.level = new Level("levelOne");
+        this.level = new Level(this.tilemapName);
         this.level.setBackgroundImage('greenBar',1,true);
         this.level.setMusic(this.game.add.audio('bgmusic'));
         this.level.getMusic().play();
@@ -258,6 +258,10 @@ WizardBall.play.prototype = {
             this.player.handleInput();
         }
 
+    },
+
+    gameOver: function(data) {
+        WizardBall.game.state.start("GameOver", true, false, data.mapID, data.players, this.id);
     }
 }
 
