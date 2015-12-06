@@ -21,7 +21,7 @@ WizardBall.play = function(game){
 WizardBall.play.prototype = {
     
     preload: function() {
-
+        this.game.load.audio('catch','public/audio/Upgrade.wav');
     },
 
     init: function(tilemapName, players, id) {
