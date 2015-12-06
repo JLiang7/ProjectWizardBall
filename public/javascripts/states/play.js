@@ -141,6 +141,7 @@ WizardBall.play.prototype = {
 
         movingPlayer.facing = data.f;
         if(movingPlayer.targetPosition) {
+
             movingPlayer.characterController();
             movingPlayer.lastMoveTime = WizardBall.game.time.now;
 
@@ -179,7 +180,10 @@ WizardBall.play.prototype = {
         if(this.facing == "flying_left" || this.facing == "running_left" || this.facing == "throw_left"){
             this.facing = "idle_left";
             this.characterController();
-        }else if(!(this.facing != "idle_right" && this.facing != "idle_left")){
+        } else if(this.facing == "flying_right" || this.facing == "running_right" || this.facing == "throw_right"){
+            this.facing = "idle_right";
+            this.characterController();
+        } else if(!(this.facing != "idle_right" && this.facing != "idle_left")){
             this.facing = "idle_right";
             this.characterController();                  
         }
