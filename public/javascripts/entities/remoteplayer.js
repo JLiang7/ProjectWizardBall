@@ -81,6 +81,8 @@ RemotePlayer.prototype.reset = function() {
   }
 };
 
+
+
 RemotePlayer.prototype.characterController = function(){
 
   if(this.facing == "idle_left"){

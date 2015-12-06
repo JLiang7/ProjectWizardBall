@@ -116,11 +116,13 @@ Player.prototype.handleInput = function() {
         if (this.chargeThrow < MAX_POWER) {
             this.chargeThrow += CHARGE_RATE;
         }
-        if (this.frame == 8 || this.facing == 'flying_left' || this.facing == 'throw_left') {           
+        if (this.frame == 8 || this.facing == 'flying_left' || this.facing == 'throw_left' || this.facing == 'running_left') {           
             this.facing = 'throw_left';
-        } else {
+        } else if (this.frame == 15 || this.facing == 'flying_right' || this.facing == 'throw_right' || this.facing == 'running_right'){
             this.facing = 'throw_right';
         }	
+        //} else if (this.frame == 15 || this.facing == 'flying_right' || this.facing == 'throw_right'){
+
    	}
 
     if (catchButton.isDown) {
