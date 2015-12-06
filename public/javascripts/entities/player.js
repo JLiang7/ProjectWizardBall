@@ -167,6 +167,12 @@ Player.prototype.handleInput = function() {
     if (!leftClick.isDown && this.chargeThrow > MIN_POWER) {
         this.throwBall();
         this.chargeThrow = 0;
+        if(this.facing != "running_left" && this.facing != "throw_left" && this.facing != "flying_left") {
+          this.facing = "idle_right";
+        }
+        if(this.facing != "running_right" && this.facing != "throw_right" && this.facing != "flying_right") {
+          this.facing = "idle_left" ;
+        }
     }
     this.characterController();
 
