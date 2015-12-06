@@ -27,13 +27,11 @@ var minPlayerMessageOffsetY = 300;
 
 var numCharacterSquares = 4;
 
-//var repeatingBombTilesprite;
-
 WizardBall.pendinggame.prototype = {
 	init: function(tilemapName, gameID) {
 		this.tilemapName = tilemapName;
 		this.gameID = gameID;
-	//	repeatingBombTilesprite = rbts;
+
 	},
 
 	create: function() {
@@ -50,8 +48,6 @@ WizardBall.pendinggame.prototype = {
 		this.leaveGameButton = this.game.add.button(leaveButtonXOffset,600, 'LeaveButton', this.leaveGameAction, null, // TEXTURES
 			1, 2); // leave game button 2, 1
 		this.leaveGameButton.angle = 0;
-
-		//this.leaveGameButton.setDownSound(buttonClickSound);
 		
 		this.characterSquares = this.drawCharacterSquares(4);
 		this.characterImages = [];
@@ -59,7 +55,6 @@ WizardBall.pendinggame.prototype = {
 
 		var style = { font: "40px Arial", fill: "#000000", align: "left"};
 		this.minPlayerMessage = this.game.add.text(minPlayerMessageOffsetX, minPlayerMessageOffsetY, "Waiting for players...",style);
-	//	TextConfigurer.configureText(this.minPlayerMessage, "red", 17);
 		this.minPlayerMessage.visible = false;
 
 		socket.on("show current players", this.populateCharacterSquares.bind(this));
@@ -69,8 +64,7 @@ WizardBall.pendinggame.prototype = {
 	},
 
 	update: function() {
-	//	repeatingBombTilesprite.tilePosition.x++;
-	//	repeatingBombTilesprite.tilePosition.y--;
+
 	},
 
 	drawCharacterSquares: function(numOpenings) {
@@ -93,7 +87,6 @@ WizardBall.pendinggame.prototype = {
 	populateCharacterSquares: function(data) {
 		this.numPlayersInGame = 0;
 		for(var playerId in data.players) {
-		//	var color = data.players[playerId].color;
 			this.characterImages[playerId] = this.game.add.image(this.characterSquares[this.numPlayersInGame].position.x + characterOffsetX, 
 				this.characterSquares[this.numPlayersInGame].position.y + characterOffsetY, 'CharacterSlot', 1 ); // Texture, head+color+.png
 			this.numPlayersInGame++;
@@ -161,9 +154,7 @@ WizardBall.pendinggame.prototype = {
 	},
 
 	startGame: function(data) {
-	//	repeatingBombTilesprite.doNotDestroy = false;
 		socket.removeAllListeners();
-		console.log(data.players);
 		WizardBall.game.state.start("Play", true, false, data.mapID, data.players, this.id);
 	}
 }

@@ -1,10 +1,6 @@
 var WizardBall = WizardBall || {};
 
  WizardBall.lobby = function() {}; 
- 
- 
- //var TextConfigurer = require("./util/text_configurer"); 
- 
 
  var initialSlotYOffset = 200; 
  var slotXOffset = 40; 
@@ -17,13 +13,12 @@ var WizardBall = WizardBall || {};
  var headerXOffset = 1100; 
  var headerYOffset = 600; 
  
- 
- //module.exports = Lobby; 
+
  
  
  WizardBall.lobby.prototype = { 
  	init: function() { 
-// 		repeatingBombTilesprite = rbts; 
+
  	}, 
  
  
@@ -65,19 +60,13 @@ var WizardBall = WizardBall || {};
  		}; 
  
  
-// 		repeatingBombTilesprite.doNotDestroy = true; 
- 
- 
 // 		this.backdrop = game.add.image(12.5, 12.5, TEXTURES, "lobby/lobby_backdrop.png"); 
 		var style = { font: "50px Arial", fill: "#000000", align: "left"};
  		this.header = this.game.add.text(headerXOffset, headerYOffset, "Lobby",style); 
- 		this.header.anchor.setTo(.5, .5); 
- //		TextConfigurer.configureText(this.header, "white", 32); 
- 
+ 		this.header.anchor.setTo(.5, .5);  
  
  		this.slots = []; 
  		this.labels = []; 
- 
  
  		var gameData = [{state: "empty"}, {state: "empty"}, {state: "joinable"}, {state: "insession"}]; 
  

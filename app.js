@@ -48,12 +48,7 @@ function setEventHandlers(){
 		client.on("ball throw", onBallThrown);
 		client.on("ball destroy", onBallDestroy);
 		client.on("disconnect", onClientDisconnect);
-//		client.on("place bomb", onPlaceBomb);
-//		client.on("register map", onRegisterMap);
 		client.on("start game on server", onStartGame);
-//		client.on("ready for round", onReadyForRound);
-		//client.on("powerup overlap", onPowerupOverlap);
-
 		client.on("enter lobby", Lobby.onEnter);
 		client.on("host game", Lobby.onHost);
 		client.on("select stage", Lobby.onStageSelect);
@@ -99,7 +94,6 @@ function onClientDisconnect() {
 
 // Deletes the game object and frees up the slot.
 function terminateExistingGame(gameID) {
-	games[gameID].clearBombs();
 
 	delete games[gameID];
 
@@ -135,9 +129,6 @@ function onStartGame() {
 	io.in(this.gameID).emit("start game on client", {mapID: pendingGame.mapID, players: game.players});
 };
 
-function onRegisterMap(data) {
-	games[this.gameID].map = new Map(data, TILE_SIZE);
-};
 
 function onPlayerHit(data) {
 	var game = games[this.gameID];
@@ -177,7 +168,6 @@ function onMovePlayer(data) {
 
 function onBallThrown(data) {
 	var game = games[this.gameID];
-	console.log("Server throw");
 	if(game === undefined || game.awaitingAcknowledgements) {
 		return;
 	}
@@ -212,55 +202,6 @@ function handlePlayerDeath(deadPlayerIDs, gameID) {
 	}
 };
 
-function endRound(gameID, tiedWinnerIDs) {
-	var roundWinnerColors = [];
-
-	var game = games[gameID];
-
-	if(tiedWinnerIDs) {
-		tiedWinnerIDs.forEach(function (tiedWinnerID) {
-			roundWinnerColors.push(game.players[tiedWinnerID].color);
-		});
-	} else {
-		var winner = game.calculateRoundWinner();
-		winner.wins++;
-		roundWinnerColors.push(winner.color);
-	}
-
-	game.currentRound++;
-
-	if(game.currentRound > 2) {
-		var gameWinners = game.calculateGameWinners();
-
-		if(gameWinners.length == 1 && (game.currentRound > 3 || gameWinners[0].wins == 2)) {
-			io.in(gameID).emit("end game", {completedRoundNumber: game.currentRound - 1, roundWinnerColors: roundWinnerColors, 
-				gameWinnerColor: gameWinners[0].color});
-			terminateExistingGame(gameID);
-			return;
-		}
-	}
-
-	game.awaitingAcknowledgements = true;
-	game.resetForNewRound();
-
-
-	io.in(gameID).emit("new round", {completedRoundNumber: game.currentRound - 1, roundWinnerColors: roundWinnerColors});
-};
-
-function onReadyForRound() {
-	var game = games[this.gameID];
-
-	if(!game.awaitingAcknowledgements) {
-		return;
-	}
-
-	game.acknowledgeRoundReadinessForPlayer(this.id);
-
-	if(game.numRoundReadinessAcknowledgements >= game.numPlayers) {
-		game.awaitingAcknowledgements = false;
-	}
-};
-
 
 
 function broadcastingLoop(){
@@ -275,8 +216,6 @@ function broadcastingLoop(){
 		}
 	}
 };
-
-//add dependencies for html script calls
 
 
 app.get('/', function (req, res){
