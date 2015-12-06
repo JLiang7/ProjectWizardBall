@@ -181,7 +181,7 @@ function onBallThrown(data) {
 		return;
 	}
 
-	io.in(this.gameID).emit("ball throw",{x: data.x, y: data.y, pointer: data.pointer, thrower: data.thrower, speed: data.speed});
+	io.in(this.gameID).emit("ball throw",{x: data.x, y: data.y, pointer: data.pointer, thrower: data.thrower, speed: data.speed, time: data.time});
 	
 };
 

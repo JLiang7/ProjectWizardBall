@@ -18,15 +18,15 @@ var RemotePlayer = function(x,y,id,game){
     this.game = game;
 	  this.nextShot = 0;
 
-	game.physics.enable(this, Phaser.Physics.ARCADE);
-  game.physics.arcade.enable(this);
+//	game.physics.enable(this, Phaser.Physics.ARCADE);
+ // game.physics.arcade.enable(this);
 
     this.scale.setTo(.5,.5);
 
-  this.body.collideWorldBounds = true;
-  this.body.gravity.y = 0;
-  this.body.maxVelocity.y = 0;
-  this.body.setSize(140,210,0, 12);
+  //this.body.collideWorldBounds = true;
+  //this.body.gravity.y = 0;
+  //this.body.maxVelocity.y = 0;
+  //this.body.setSize(140,210,0, 12);
 
     this.ball_group = this.game.add.physicsGroup();
 
