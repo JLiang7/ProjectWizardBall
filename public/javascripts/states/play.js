@@ -126,12 +126,18 @@ WizardBall.play.prototype = {
     },
 
     onMovePlayer: function(data) {
+        if(data.won){
+            this.onGameOver({winnerID:data.winnerID});
+        }
         if(this.player && data.id == this.player.id || this.gameFrozen) {
             return;
         }
+       
 
         var movingPlayer = this.remotePlayers[data.id];
+       
         if(data.dead === true){
+             movingPlayer.dead = true;
             if(movingPlayer && movingPlayer.alive){
                 this.numPlayers --;
                 movingPlayer.kill();
@@ -170,10 +176,14 @@ WizardBall.play.prototype = {
 
         this.player.body.velocity.x = 0;
 
-        this.player.handleInput();
+        //this.player.handleInput();
         this.player.characterController();
         this.updateRemoteAnimations();
         this.setEventHandlers();
+
+        if(this.checkGameOver()){
+            socket.emit("game over", {});
+        }
     },
 
     updateRemoteAnimations: function(){
@@ -236,9 +246,20 @@ WizardBall.play.prototype = {
 
     checkGameOver: function(data){
         for(var i in this.remotePlayers){
-            return false;
+            
+            if(!this.remotePlayers[i].dead)
+                return false;
         }
+
         return true;
+    },
+
+    onGameOver: function(data){
+        if(data.winnerID == this.id){
+            //console.log("winner");
+        }
+
+        WizardBall.game.state.start("Lobby", true, false, data.gameID);    
     },
 
     onBallDestroy: function(data) {
@@ -256,6 +277,7 @@ WizardBall.play.prototype = {
         socket.on("remove player",this.onRemovePlayer.bind(this));
         socket.on("ball throw", this.onBallThrown.bind(this));
         socket.on("ball destroy", this.onBallDestroy.bind(this));
+        socket.on("game over", this.onGameOver.bind(this));
 
         this.player.body.velocity.x = 0;
 
@@ -265,9 +287,9 @@ WizardBall.play.prototype = {
 
     },
 
-    gameOver: function(data) {
+ /*   gameOver: function(data) {
         WizardBall.game.state.start("GameOver", true, false, data.mapID, data.players, this.id);
-    }
+    }*/
 }
 
 var Ball = function(ball,id) {

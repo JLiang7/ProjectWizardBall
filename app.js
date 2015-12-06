@@ -55,6 +55,10 @@ function setEventHandlers(){
 		client.on("enter pending game", Lobby.onEnterLobby);
 		client.on("leave pending game", Lobby.onLeaveLobby);
 		client.on("player hit", onPlayerHit);
+		client.on("game over", onGameOver);
+		client.on("terminate game", function(data){
+			terminateExistingGame(data);
+		});
 	});
 };
 
@@ -129,6 +133,17 @@ function onStartGame() {
 	io.in(this.gameID).emit("start game on client", {mapID: pendingGame.mapID, players: game.players, bg:pendingGame.bg});
 };
 
+function onGameOver(data) {
+	var game = games[this.gameID];
+
+	if(game === undefined || game.awaitingAcknowledgements) {
+		return;
+	}
+	game.won = true;
+	game.winnerID = data.winnerID;
+	game.numPlayers = 0;
+	game.gameID = this.gameID;
+};
 
 function onPlayerHit(data) {
 	var game = games[this.gameID];
@@ -210,7 +225,7 @@ function broadcastingLoop(){
 		for(var i in game.players){
 			var player = game.players[i];
 			if(player.alive && player.hasMoved){
-				io.to(g).emit("m",{id: player.id, x: player.x, y: player.y, f:player.facing, dead:player.dead});
+				io.to(g).emit("m",{id: player.id, x: player.x, y: player.y, f:player.facing, dead:player.dead, won:game.won, winnerID: game.winnerID, gameID: game.gameID});
 				player.hasMoved = false;
 			}
 		}
