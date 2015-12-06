@@ -40,6 +40,32 @@ var RemotePlayer = function(x,y,id,game){
 
 RemotePlayer.prototype = Object.create(Phaser.Sprite.prototype); 
 
+/*RemotePlayer.prototype.interpolate = function(lastFrameTime) {
+    //console.log("interpolateing");
+    if(this.distanceToCover && lastFrameTime) {
+      
+        if((this.distanceCovered.x < Math.abs(this.distanceToCover.x) || this.distanceCovered.y < Math.abs(this.distanceToCover.y))) {
+          this.didAnimCheck = false;
+          this.movLag = this.game.time.now + this.MOVE_DELAY;
+         
+          var fractionOfTimeStep = (game.time.now - lastFrameTime) / remotePlayerUpdateInterval;
+          var distanceCoveredThisFrameX = fractionOfTimeStep * this.distanceToCover.x;
+          var distanceCoveredThisFrameY = fractionOfTimeStep * this.distanceToCover.y;
+
+          this.distanceCovered.x += Math.abs(distanceCoveredThisFrameX);
+          this.distanceCovered.y += Math.abs(distanceCoveredThisFrameY);
+
+          this.x += distanceCoveredThisFrameX;
+          this.y += distanceCoveredThisFrameY;
+
+        } else {
+          
+          this.x = this.targetPosition.x;
+          this.y = this.targetPosition.y;
+        }
+    }
+
+};*/
 
 RemotePlayer.prototype.reset = function() {
   this.x = this.spawnPoint.x;
