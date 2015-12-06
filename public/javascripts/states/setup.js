@@ -2,10 +2,6 @@ var WizardBall = WizardBall || {};
 
 WizardBall.setup = function(){};
 
-//var StageSelect = function() {};
-
-//module.exports = WizardBall.setup;
-
 var xOffset = 40;
 var yOffset = 50;
 
@@ -15,7 +11,6 @@ var thumbnailYOffset = 720/2;
 var stageNameYOffset = 328;
 var previewDim = 500;
 
-var repeatingBombTilesprite;
 
 var stages = [
 	{name: "Stage 1", thumbnailKey: "levelPreview1", tilemapName: "levelOne", maxPlayers: 4, size: "W.e"},
@@ -24,7 +19,6 @@ var stages = [
 
 WizardBall.setup.prototype = {
 	init: function(gameID) {
-		//repeatingBombTilesprite = rbts;
 		this.gameID = gameID;
 	},
 
@@ -50,16 +44,14 @@ WizardBall.setup.prototype = {
 		
 		this.leftButton = this.game.add.button(110, 500, 'leftButton', this.leftSelect, this, 1,0);
 		this.leftButton.angle = this.phoneGraphicsAngle;
-		//this.leftButton.anchor.setTo(.5,.5);
+
 		this.rightButton = this.game.add.button(390,510, 'rightButton', this.rightSelect, this,1,0);
 		this.rightButton.angle = this.phoneGraphicsAngle;
-		//this.rightButton.anchor.setTo(.5,.5);
+
 		this.okButton = this.game.add.button(255,505, 'okButton', this.confirmStageSelection, this,1,0);
 		this.okButton.angle = this.phoneGraphicsAngle;
-		//this.okButton.anchor.setTo(.5,.5);
-		//this.leftButton.setDownSound(buttonClickSound);
-		//this.rightButton.setDownSound(buttonClickSound);
-		//this.okButton.setDownSound(buttonClickSound);
+
+		
 
 		
 
@@ -130,8 +122,7 @@ WizardBall.setup.prototype = {
 	},
 
 	update: function() {
-	//	repeatingBombTilesprite.tilePosition.x++;
-	//	repeatingBombTilesprite.tilePosition.y--;
+
 	},
 
 	updateStageInfo: function() {
@@ -139,7 +130,6 @@ WizardBall.setup.prototype = {
 		this.text.setText(newStage.name);
 		this.numPlayersText.setText("Max # of players:   " + newStage.maxPlayers);
 		this.stageSizeText.setText("Map size:   " + newStage.size);
-		//this.thumbnail.loadTexture('purpleBar', newStage.thumbnailKey);
 	},
 
 	configureText: function(text, color, size) {
@@ -152,6 +142,6 @@ WizardBall.setup.prototype = {
 		var selectedStage = stages[this.selectedStageIndex];
 
 		socket.emit("select stage", {mapID: selectedStage.tilemapName});
-		this.game.state.start("PendingGame", true, false, selectedStage.tilemapName, this.gameID, repeatingBombTilesprite);
+		this.game.state.start("PendingGame", true, false, selectedStage.tilemapName, this.gameID);
 	}
 };

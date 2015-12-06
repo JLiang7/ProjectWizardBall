@@ -3,11 +3,8 @@ var DEFAULT_NUM_ROUNDS = 3;
 var Game = function() {
 	this.players = {};
 	this.map = {};
-	this.bombs = {};
 	this.numPlayersAlive = 0;
     this.ballsThrown = 0;
-	// This is used to keep track of how many players have acknowledged readiness for a round, to avoid
-	// extra socket messages from causing weird behavior.
 	this.roundReadyAcknowledgements = [];
 	this.awaitingAcknowledgements = false;
 
@@ -30,15 +27,15 @@ Game.prototype = {
 		}
 	},
 
-	calculateRoundWinner: function() {
+	/*calculateRoundWinner: function() {
 		for(var i in this.players) {
 			if(this.players[i].alive) {
 				return this.players[i];
 			}
 		}
-	},
+	},*/
 
-	calculateGameWinners: function() {
+	/*calculateGameWinners: function() {
 		var winningPlayers = [];
 		var maxWinCount = 0;
 
@@ -52,14 +49,8 @@ Game.prototype = {
 		}
 
 		return winningPlayers;
-	},
+	},*/
 
-	clearBombs: function() {
-		for(var bombId in this.bombs) {
-			clearTimeout(this.bombs[bombId].explosionTimerId);
-		}
-		this.bombs = {};
-	},
 
 	resetPlayers: function() {
 		for(var i in this.players) {
@@ -69,7 +60,6 @@ Game.prototype = {
 	},
 
 	resetForNewRound: function() {
-		this.clearBombs();
 		this.resetPlayers();
 		this.roundReadyAcknowledgements = [];
 		this.numPlayersAlive = Object.keys(this.players).length;

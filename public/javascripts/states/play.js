@@ -27,7 +27,7 @@ WizardBall.play.prototype = {
     init: function(tilemapName, players, id) {
         this.tilemapName = tilemapName;
         this.players = players;
-        console.log(this.players);
+
         this.playerId = id;
     },
     
@@ -85,13 +85,6 @@ WizardBall.play.prototype = {
         map.setCollisionBetween(1,20);
 
         this.initializePlayers();
-       // layer.resizeWorld();
-        // level.setBalls(this.game.add.group());
-        // level.getBalls().enableBody = true;
-        // level.getBalls().physicsBodyType = Phaser.Physics.ARCADE;
-        // level.getBalls().createMultiple(1000,'ball');
-
-        //player.running = 0;
     },
 
     render: function() {
@@ -125,11 +118,11 @@ WizardBall.play.prototype = {
     },
 
     handleBallCollision: function(ball1,ball2){
-        console.log("ball collision");
+        
     },
 
     collided : function(){
-    //    console.log("COLLIDING");
+    
     },
 
     onMovePlayer: function(data) {
@@ -149,24 +142,15 @@ WizardBall.play.prototype = {
         movingPlayer.facing = data.f;
         if(movingPlayer.targetPosition) {
             movingPlayer.characterController();
-            
-            //movingPlayer.animations.play(data.f);
             movingPlayer.lastMoveTime = WizardBall.game.time.now;
-
 
             if(data.x == movingPlayer.targetPosition.x && data.y == movingPlayer.targetPosition.y) {
                 return;
             }
 
-            //movingPlayer.x = movingPlayer.targetPosition.x;
-            //movingPlayer.y = movingPlayer.targetPosition.y;
-
             movingPlayer.distanceToCover = {x: data.x - movingPlayer.targetPosition.x, y: data.y - movingPlayer.targetPosition.y};
             movingPlayer.distanceCovered = {x: 0, y:0};
             var tw = this.game.add.tween(movingPlayer).to({ x: movingPlayer.targetPosition.x, y: movingPlayer.targetPosition.y}, 50).interpolation(Phaser.Math.bezierInterpolation).start();
-            //tw.onComplete().add(this.updateRemoteAnimations,this);
-
-            //movingPlayer.interpolate();
 
         }
 
@@ -182,33 +166,22 @@ WizardBall.play.prototype = {
         this.game.physics.arcade.collide(this.player.ball_group,this.player.ball_group,this.handleBallCollision,null,this);
 
         this.game.physics.arcade.collide([this.player,this.player.ball_group],this.layer,this.collided, null, this);
-        
-//        this.game.physics.arcade.collide(this.ball_group,this.layer,this.collided, null, this);
-        //this.game.physics.arcade.collide(player, layer);
+
         this.player.body.velocity.x = 0;
 
-        //this.controlHandler();
         this.player.handleInput();
         this.player.characterController();
         this.updateRemoteAnimations();
         this.setEventHandlers();
-        //
-        //socket.emit("update player",{x:this.player.x,y:this.player.y,facing:this.player.facing, uuid:this.playerId});
-
-        
-
     },
 
     updateRemoteAnimations: function(){
         if(this.facing == "flying_left" || this.facing == "running_left" || this.facing == "throw_left"){
-                    this.facing = "idle_left";
-                    this.characterController();
-                    
-
+            this.facing = "idle_left";
+            this.characterController();
         }else if(!(this.facing != "idle_right" && this.facing != "idle_left")){
             this.facing = "idle_right";
-            this.characterController();
-                    
+            this.characterController();                  
         }
     },
 
@@ -247,15 +220,11 @@ WizardBall.play.prototype = {
                 }
             }
             var ball = this.player.ball_group.create(data.x,data.y,'ball');
-            console.log("Angle val: " + data.throw_angle);
-            console.log("Speed val: " + data.speed);
 
             var ball_wrapper = new Ball(ball,data.time);
             this.balls[data.time] = ball_wrapper;
             this.game.physics.arcade.velocityFromAngle(data.throw_angle, data.speed,ball.body.velocity);
 
-            //ball.reset(this.x,this.y);
-            //this.game.physics.arcade.moveToAngle(ball, data.speed, data.pointer);
             ball.body.collideWorldBounds = true;
             ball.body.bounce.setTo(.5,.5);
     },
@@ -283,8 +252,6 @@ WizardBall.play.prototype = {
         socket.on("ball throw", this.onBallThrown.bind(this));
         socket.on("ball destroy", this.onBallDestroy.bind(this));
 
-        //this.game.physics.arcade.collide(this.opponent,this.player.ball_group,this.handleCollision,null,this);
-
         this.player.body.velocity.x = 0;
 
         if (!dead) {
@@ -293,14 +260,6 @@ WizardBall.play.prototype = {
 
     }
 }
-var findPlayer = function(uid){
-    for(var i = 0; i <remotePlayers.length; i ++){
-        if(remotePlayers[i].uuid === uid)
-            return remotePlayers[i];
-    };
-
-    return;
-};
 
 var Ball = function(ball,id) {
     this.id = id;
