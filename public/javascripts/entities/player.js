@@ -59,6 +59,7 @@ Player.prototype.throwBall = function() {
             this.game.physics.arcade.moveToPointer(ball, this.chargeThrow);
             ball.body.collideWorldBounds = true;
             ball.body.bounce.setTo(.5,.5);
+            socket.emit("ball throw", {x: this.x, y: this.y, speed: this.chargeThrow, pointer: this.game.physics.arcade.pointer, thrower: this.id});
         }
 }
 

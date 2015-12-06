@@ -15,7 +15,7 @@ WizardBall.play = function(game){
     var leftButton;
     var rightButton;
     var leftClick;
-    var balls;
+    //var balls;
 }
 
 WizardBall.play.prototype = {
@@ -34,8 +34,9 @@ WizardBall.play.prototype = {
 
     create: function(){
         this.remotePlayers = {};
-        this.remotePlayersGroup = this.game.add.physicsGroup();
-        this.balls = this.game.add.physicsGroup();
+        //this.remotePlayersGroup = this.game.add.physicsGroup();
+        this.balls = {};
+        //this.ballsGroup = this.game.add.physicsGroup();
 
         fireRate = 100;
         nextThrow = 0;
@@ -95,24 +96,6 @@ WizardBall.play.prototype = {
 
     render: function() {
 
-    },
-
-    throwBall: function(){
-        if (this.game.time.now > nextThrow && level.getBalls().countDead() > 0)
-        {
-            nextThrow = this.game.time.now + fireRate;
-
-            var ball = this.ball_group.create(this.player.x,this.player.y,'ball');
-            ball.body.mass = 1000000;
-
-            // var ball = level.getBalls().getFirstDead();
-            
-
-            // ball.reset(this.player.x,this.player.y);
-            this.game.physics.arcade.moveToPointer(ball,300);
-            ball.body.collideWorldBounds = true;
-            ball.body.bounce.setTo(.3,.5);
-        }
     },
 
     handleCollision: function(player,ball){
@@ -256,7 +239,16 @@ WizardBall.play.prototype = {
     },
 
     onBallThrown: function(data) {
-        this.balls.add(new Ball(data.x, data.y, data.id));
+            console.log("In ball thrown");
+            if(this.player.id == data.thrower)
+            {
+                return;
+            }
+            var ball = this.player.ball_group.create(data.x,data.y,'ball');
+            //ball.reset(this.x,this.y);
+            this.game.physics.arcade.moveToPointer(ball, data.speed, data.pointer);
+            ball.body.collideWorldBounds = true;
+            ball.body.bounce.setTo(.5,.5);
     },
 
     setEventHandlers: function(){

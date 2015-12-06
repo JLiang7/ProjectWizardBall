@@ -40,7 +40,7 @@ var RemotePlayer = function(x,y,id,game){
 
 RemotePlayer.prototype = Object.create(Phaser.Sprite.prototype); 
 
-RemotePlayer.prototype.interpolate = function(lastFrameTime) {
+/*RemotePlayer.prototype.interpolate = function(lastFrameTime) {
     //console.log("interpolateing");
     if(this.distanceToCover && lastFrameTime) {
       
@@ -65,7 +65,7 @@ RemotePlayer.prototype.interpolate = function(lastFrameTime) {
         }
     }
 
-};
+};*/
 
 RemotePlayer.prototype.reset = function() {
   this.x = this.spawnPoint.x;

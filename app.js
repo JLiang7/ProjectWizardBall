@@ -28,7 +28,7 @@ function setEventHandlers(){
 	io.on("connection",function(client){
 
 		client.on("move player", onMovePlayer);
-
+		client.on("ball throw", onBallThrown);
 		client.on("disconnect", onClientDisconnect);
 //		client.on("place bomb", onPlaceBomb);
 //		client.on("register map", onRegisterMap);
@@ -157,40 +157,15 @@ function onMovePlayer(data) {
 	movingPlayer.hasMoved = true;
 };
 
-function onPlaceBomb(data) {
+function onBallThrown(data) {
 	var game = games[this.gameID];
-	var player = game.players[this.id];
-
-	if(game === undefined || game.awaitingAcknowledgements || player.numBombsAlive >= player.bombCapacity) {
+	console.log("Server throw");
+	if(game === undefined || game.awaitingAcknowledgements) {
 		return;
 	}
 
-	var gameID = this.gameID;
-	var bombID = data.id;
-	var normalizedBombLocation = game.map.placeBombOnGrid(data.x, data.y);
-
-	if(normalizedBombLocation == -1) {
-		return;
-	}
-
-	player.numBombsAlive++;
-
-	var bombTimeoutID = setTimeout(function () {
-		var explosionData = bomb.detonate(game.map, player.bombStrength, game.players);
-		player.numBombsAlive--;
-
-		io.in(gameID).emit("detonate", {explosions: explosionData.explosions, id: bombID, 
-			destroyedTiles: explosionData.destroyedBlocks});
-		delete game.bombs[bombID];
-		game.map.removeBombFromGrID(data.x, data.y);
-
-		handlePlayerDeath(explosionData.killedPlayers, gameID);
-	}, 2000);
-
-	var bomb = new Bomb(normalizedBombLocation.x, normalizedBombLocation.y, bombTimeoutID);
-	game.bombs[bombID] = bomb;
-
-	io.to(this.gameID).emit("place bomb", {x: normalizedBombLocation.x, y: normalizedBombLocation.y, id: data.ID});
+	io.in(this.gameID).emit("ball throw",{x: data.x, y: data.y, pointer: data.pointer, thrower: data.thrower, speed: data.speed});
+	
 };
 
 /*onPowerupOverlap : (data) {
