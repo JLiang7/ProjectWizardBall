@@ -21,7 +21,7 @@ WizardBall.play = function(game){
 WizardBall.play.prototype = {
     
     preload: function() {
-
+        this.game.load.audio('catch','audio/Upgrade.wav');
     },
 
     init: function(tilemapName, players, id, bg) {
@@ -42,6 +42,8 @@ WizardBall.play.prototype = {
         nextThrow = 0;
         facing = 'idle';
         jumpTimer = 0;
+
+        catchSound = this.game.add.audio('catch');
 
         
        dead = false;
@@ -93,6 +95,7 @@ WizardBall.play.prototype = {
 
     handleCollision: function(player,ball){
         if (this.game.time.now < player.catchTime) {
+            catchSound.play();
             player.ballCount++;
             for (var i in this.balls) {
                 if (this.balls[i].ball == ball) {
