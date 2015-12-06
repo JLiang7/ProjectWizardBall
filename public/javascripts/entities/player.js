@@ -1,6 +1,6 @@
 var DEFAULT_PLAYER_SPEED = 300;
 var FLYING_SPEED = 250;
-var CATCH_WINDOW = 65;
+var CATCH_WINDOW = 300;
 var THROW_COOLDOWN = 300;
 var CATCH_COOLDOWN = 300;
 var MIN_POWER = 100;
@@ -10,7 +10,7 @@ var CHARGE_RATE = 20;
 var Player = function(x, y, id, game) {
 	Phaser.Sprite.call(this, game, x, y, 'player');
 	this.spawnPoint = {x: x, y: y};
-  this.dead = false;
+    this.dead = false;
     this.uuid = id;
 	this.id = id;
 	this.facing = "idle_right";
@@ -76,11 +76,6 @@ Player.prototype.catch = function() {
 Player.prototype.handleInput = function() {
 
 	var moving;
-	//var game = this.game;
-	//var speed = this.speed;
-	//var flying_speed = this.flying_speed;
-
-    
 
     if ( leftButton.isDown || rightButton.isDown || jumpButton.isDown || leftClick.isDown || catchButton.isDown) {
 
@@ -126,8 +121,6 @@ Player.prototype.handleInput = function() {
    	}
 
    	if (leftClick.isDown) { 
-  //      console.log("THROW");
-   	    //this.throwBall();
         if (this.chargeThrow < MAX_POWER) {
             this.chargeThrow += CHARGE_RATE;
         }
@@ -139,7 +132,6 @@ Player.prototype.handleInput = function() {
    	}
 
     if (catchButton.isDown) {
-  //     console.log("CATCH");
         this.catch();
         if (this.frame == 8 || this.facing == 'flying_left' || this.facing == 'throw_left') {
             this.facing = 'throw_left';

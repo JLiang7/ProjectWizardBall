@@ -185,24 +185,6 @@ function onBallThrown(data) {
 	
 };
 
-/*onPowerupOverlap : (data) {
-	var powerup = games[this.gameID].map.claimPowerup(data.x, data.y);
-
-	if(!powerup) {
-		return;
-	}
-
-	var player = games[this.gameID].players[this.id];
-
-	if(powerup.powerupType === PowerupIDs.BOMB_STRENGTH) {
-		player.bombStrength++;
-	} else if(powerup.powerupType === PowerupIDs.BOMB_CAPACITY) {
-		player.bombCapacity++;
-	}
-
-	io.in(this.gameID).emit("powerup acquired", {acquiringPlayerID: this.id, powerupID: powerup.ID, powerupType: powerup.powerupType});
-};*/
-
 function handlePlayerDeath(deadPlayerIDs, gameID) {
 	var tiedWinnerIDs;
 

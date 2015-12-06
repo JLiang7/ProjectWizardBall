@@ -105,7 +105,7 @@ WizardBall.play.prototype = {
             player.hp -= 1;
             if (player.hp == 0) {
                 if (player.id == 'player') {
-                dead = true; 
+                    dead = true; 
                 }
                 socket.emit("player hit");
                 player.kill();
@@ -213,7 +213,7 @@ WizardBall.play.prototype = {
 
     initializePlayers: function() {
         for(var i in this.players) {
-        var data = this.players[i];
+            var data = this.players[i];
             if(data.id == this.playerId) {
                 this.player = new Player(data.x, data.y, data.id, WizardBall.game);
             } else {

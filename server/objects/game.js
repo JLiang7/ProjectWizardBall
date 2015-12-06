@@ -5,7 +5,7 @@ var Game = function() {
 	this.map = {};
 	this.bombs = {};
 	this.numPlayersAlive = 0;
-this.ballsThrown = 0;
+    this.ballsThrown = 0;
 	// This is used to keep track of how many players have acknowledged readiness for a round, to avoid
 	// extra socket messages from causing weird behavior.
 	this.roundReadyAcknowledgements = [];
