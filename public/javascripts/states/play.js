@@ -242,13 +242,15 @@ WizardBall.play.prototype = {
                 }
             }
             var ball = this.player.ball_group.create(data.x,data.y,'ball');
-            console.log("Pointer val: " + data.pointer);
+            console.log("Angle val: " + data.throw_angle);
             console.log("Speed val: " + data.speed);
 
             var ball_wrapper = new Ball(ball,data.time);
             this.balls.push(ball_wrapper);
+            this.game.physics.arcade.velocityFromAngle(data.throw_angle, data.speed,ball.body.velocity);
+
             //ball.reset(this.x,this.y);
-            this.game.physics.arcade.moveToPointer(ball, data.speed, data.pointer);
+            //this.game.physics.arcade.moveToAngle(ball, data.speed, data.pointer);
             ball.body.collideWorldBounds = true;
             ball.body.bounce.setTo(.5,.5);
     },

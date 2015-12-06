@@ -60,7 +60,9 @@ Player.prototype.throwBall = function() {
             //ball.body.collideWorldBounds = true;
             //ball.body.bounce.setTo(.5,.5);
             //console.log("throwing the ball");
-            socket.emit("ball throw", {x: this.x, y: this.y, speed: this.chargeThrow, pointer: this.game.input.pointer, thrower: this.id, time: this.game.time.now});
+            this.throwAngle = Phaser.Math.radToDeg(this.game.physics.arcade.angleToPointer(this));
+            console.log(this.throwAngle);
+            socket.emit("ball throw", {x: this.x, y: this.y, speed: this.chargeThrow, throw_angle: this.throwAngle, thrower: this.id, time: this.game.time.now});
         }
 }
 
