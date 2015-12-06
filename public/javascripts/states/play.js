@@ -258,6 +258,10 @@ WizardBall.play.prototype = {
             this.player.handleInput();
         }
 
+    },
+
+    gameOver: function(data) {
+        WizardBall.game.state.start("GameOver", true, false, data.mapID, data.players, this.id);
     }
 }
 
