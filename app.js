@@ -56,7 +56,12 @@ function setEventHandlers(){
 		client.on("leave pending game", Lobby.onLeaveLobby);
 		client.on("player hit", onPlayerHit);
 		client.on("game over", onGameOver);
-		client.on("terminate game", function(data){
+		client.on("terminate slot", function(data){
+			onClientDisconnect();
+			var lobbySlots = Lobby.getLobbies();
+			if(lobbySlots[this.gameID]){
+				lobbySlots[this.gameID].reset();
+			}
 			terminateExistingGame(data);
 		});
 	});

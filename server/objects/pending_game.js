@@ -15,7 +15,12 @@ var PendingGame = function() {
 }; 
  
  
-PendingGame.prototype = { 
+PendingGame.prototype = {
+	reset : function(){
+		this.players = {}
+		this.state = "empty";
+	},
+
  	getPlayerIDs : function() { 
  		return Object.keys(this.players); 
 	}, 
