@@ -67,7 +67,6 @@ WizardBall.play.prototype = {
 //        this.player = new Player(210,3400,'player',this.game);
         //this.opponent = new Player(300,3400,'opp',this.game);
 
-        //this.player.tint = 0xffffff;
 
         leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
         rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
@@ -86,6 +85,8 @@ WizardBall.play.prototype = {
         map.setCollisionBetween(1,20);
 
         this.initializePlayers();
+        this.player.tint = 0xFF7919;
+
     },
 
     render: function() {
@@ -202,6 +203,7 @@ WizardBall.play.prototype = {
                 this.player = new Player(data.x, data.y, data.id, WizardBall.game);
             } else {
                 var remotePlayer = new RemotePlayer(data.x, data.y, data.id, WizardBall.game);
+                remotePlayer.tint = 0x19AFFF;
                 this.remotePlayers[data.id] = remotePlayer;
             }
         }
