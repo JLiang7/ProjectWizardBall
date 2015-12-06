@@ -168,7 +168,7 @@ WizardBall.play.prototype = {
 
             movingPlayer.distanceToCover = {x: data.x - movingPlayer.targetPosition.x, y: data.y - movingPlayer.targetPosition.y};
             movingPlayer.distanceCovered = {x: 0, y:0};
-            var tw = this.game.add.tween(movingPlayer).to({ x: movingPlayer.targetPosition.x, y: movingPlayer.targetPosition.y}, 100).interpolation(Phaser.Math.bezierInterpolation).start();
+            var tw = this.game.add.tween(movingPlayer).to({ x: movingPlayer.targetPosition.x, y: movingPlayer.targetPosition.y}, 50).interpolation(Phaser.Math.bezierInterpolation).start();
             //tw.onComplete().add(this.updateRemoteAnimations,this);
 
             //movingPlayer.interpolate();

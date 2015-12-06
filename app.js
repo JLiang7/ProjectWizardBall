@@ -29,7 +29,7 @@ var MapInfo = require("./public/javascripts/data/map_info");
 var Game = require("./server/objects/game");
 var Lobby = require("./server/lobby");
 var PendingGame = require("./server/objects/pending_game");
-var updateDelay = 100;
+var updateDelay = 50;
 
 init();
 
