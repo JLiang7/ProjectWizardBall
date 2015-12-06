@@ -13,8 +13,8 @@ var previewDim = 500;
 
 
 var stages = [
-	{name: "Stage 1", thumbnailKey: "levelPreview1", tilemapName: "levelOne", maxPlayers: 4, size: "W.e"},
-	{name: "Stage 2", thumbnailKey: "levelPreview2", tilemapName: "levelTwo", maxPlayers: 4, size: "W.e"}
+	{name: "All out Brawl", thumbnailKey: "levelPreview2", tilemapName: "levelOne", maxPlayers: 4, size: "W.e", bg: "levelOneBG"},
+	{name: "Jungle Tussle", thumbnailKey: "levelPreview1", tilemapName: "levelTwo", maxPlayers: 4, size: "W.e", bg: "levelTwoBG"}
 ];
 
 WizardBall.setup.prototype = {
@@ -140,8 +140,7 @@ WizardBall.setup.prototype = {
 
 	confirmStageSelection: function() {
 		var selectedStage = stages[this.selectedStageIndex];
-
-		socket.emit("select stage", {mapID: selectedStage.tilemapName});
-		this.game.state.start("PendingGame", true, false, selectedStage.tilemapName, this.gameID);
+		socket.emit("select stage", {mapID: selectedStage.tilemapName, bg: selectedStage.bg});
+		this.game.state.start("PendingGame", true, false, selectedStage.tilemapName, this.gameID, selectedStage.bg);
 	}
 };

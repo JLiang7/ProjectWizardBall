@@ -24,10 +24,10 @@ WizardBall.play.prototype = {
         this.game.load.audio('catch','public/audio/Upgrade.wav');
     },
 
-    init: function(tilemapName, players, id) {
+    init: function(tilemapName, players, id, bg) {
         this.tilemapName = tilemapName;
         this.players = players;
-
+        this.bg = bg;
         this.playerId = id;
     },
     
@@ -47,9 +47,8 @@ WizardBall.play.prototype = {
        dead = false;
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
     //    filter = this.game.add.filter('Plasma',800,600);
-        
         this.level = new Level(this.tilemapName);
-        this.level.setBackgroundImage('greenBar',1,true);
+        this.level.setBackgroundImage(this.bg,1,true);
         this.level.setMusic(this.game.add.audio('bgmusic'));
         this.level.getMusic().play();
 
@@ -141,6 +140,7 @@ WizardBall.play.prototype = {
 
         movingPlayer.facing = data.f;
         if(movingPlayer.targetPosition) {
+
             movingPlayer.characterController();
             movingPlayer.lastMoveTime = WizardBall.game.time.now;
 
@@ -179,7 +179,10 @@ WizardBall.play.prototype = {
         if(this.facing == "flying_left" || this.facing == "running_left" || this.facing == "throw_left"){
             this.facing = "idle_left";
             this.characterController();
-        }else if(!(this.facing != "idle_right" && this.facing != "idle_left")){
+        } else if(this.facing == "flying_right" || this.facing == "running_right" || this.facing == "throw_right"){
+            this.facing = "idle_right";
+            this.characterController();
+        } else if(!(this.facing != "idle_right" && this.facing != "idle_left")){
             this.facing = "idle_right";
             this.characterController();                  
         }
