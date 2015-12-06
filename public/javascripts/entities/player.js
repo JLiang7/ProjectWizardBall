@@ -49,13 +49,12 @@ var Player = function(x, y, id, game) {
 Player.prototype = Object.create(Phaser.Sprite.prototype); 
 
 Player.prototype.throwBall = function() {
-	 if (this.game.time.now > this.nextShot && this.ballCount > 0)
-        {
-            this.ballCount--;
-        	this.nextShot = this.game.time.now + THROW_COOLDOWN;
-            this.throwAngle = Phaser.Math.radToDeg(this.game.physics.arcade.angleToPointer(this));
-            socket.emit("ball throw", {x: this.x, y: this.y, speed: this.chargeThrow, throw_angle: this.throwAngle, thrower: this.id, time: this.game.time.now});
-        }
+	  if (this.game.time.now > this.nextShot && this.ballCount > 0) {
+        this.ballCount--;
+        this.nextShot = this.game.time.now + THROW_COOLDOWN;
+        this.throwAngle = Phaser.Math.radToDeg(this.game.physics.arcade.angleToPointer(this));
+       socket.emit("ball throw", {x: this.x, y: this.y, speed: this.chargeThrow, throw_angle: this.throwAngle, thrower: this.id, time: this.game.time.now});
+    }
 }
 
 Player.prototype.catch = function() {
@@ -66,21 +65,20 @@ Player.prototype.catch = function() {
 }
 
 Player.prototype.handleInput = function() {
-
 	var moving;
 
     if ( leftButton.isDown || rightButton.isDown || jumpButton.isDown || leftClick.isDown || catchButton.isDown) {
 
         moving = true;
-	if (leftButton.isDown) { 
+	  if (leftButton.isDown) { 
    		this.body.velocity.x = -DEFAULT_PLAYER_SPEED;
         if (this.body.velocity.y != 0){
-            if (this.facing != 'flying_left') {
-                this.facing = 'flying_left';
+            if (this.facing != "flying_left") {
+                this.facing = "flying_left";
             } 
-        } else if (this.facing != 'running_left') {
+        } else if (this.facing != "running_left") {
                 
-                this.facing = 'running_left';
+                this.facing = "running_left";
         }
         this.running = 1;
    	}
@@ -88,13 +86,13 @@ Player.prototype.handleInput = function() {
     if (rightButton.isDown) { 
    		this.body.velocity.x = DEFAULT_PLAYER_SPEED;
         if (this.body.velocity.y != 0){
-            if (this.facing != 'flying_right') {
-                this.facing = 'flying_right';
+            if (this.facing != "flying_right") {
+                this.facing = "flying_right";
                 
             } 
-        } else if (this.facing != 'running_right') {
+        } else if (this.facing != "running_right") {
         
-            this.facing = 'running_right';
+            this.facing = "running_right";
         }
         this.running = 1;
    	}
@@ -103,11 +101,11 @@ Player.prototype.handleInput = function() {
    		this.body.velocity.y = -DEFAULT_PLAYER_SPEED;
        
         if (this.body.velocity.y == 0){
-            if (this.facing == "idle_left" || this.facing == 'running_left' || this.frame == 8) {
-                this.facing = 'flying_left';
+            if (this.facing == "idle_left" || this.facing == "running_left" || this.frame == 8) {
+                this.facing = "flying_left";
                 
             } else {
-                this.facing = 'flying_right';
+                this.facing = "flying_right";
             }
         }
    	}
@@ -116,48 +114,40 @@ Player.prototype.handleInput = function() {
         if (this.chargeThrow < MAX_POWER) {
             this.chargeThrow += CHARGE_RATE;
         }
-        if (this.frame == 8 || this.facing == 'flying_left' || this.facing == 'throw_left' || this.facing == 'running_left') {           
-            this.facing = 'throw_left';
-        } else if (this.frame == 15 || this.facing == 'flying_right' || this.facing == 'throw_right' || this.facing == 'running_right'){
-            this.facing = 'throw_right';
+        if (this.frame == 8 || this.facing == "flying_left" || this.facing == "throw_left" || this.facing == "running_left") {           
+            this.facing = "throw_left";
+        } else if (this.frame == 15 || this.facing == "flying_right" || this.facing == "throw_right" || this.facing == "running_right"){
+            this.facing = "throw_right";
         }	
    	}
 
     if (catchButton.isDown) {
         this.catch();
-        if (this.frame == 8 || this.facing == 'flying_left' || this.facing == 'throw_left') {
-            this.facing = 'throw_left';
+        if (this.frame == 8 || this.facing == "flying_left" || this.facing == "throw_left") {
+            this.facing = "throw_left";
         } else {
-            this.facing = 'throw_right';
+            this.facing = "throw_right";
         }   
     }
 
     }	
 
     else { 
-        if(this.body.velocity.y == 0 && this.running != 0){
-                if (this.facing != 'throw_left'||this.facing != 'throw_right')
-                {
-
-                    if (this.facing == "running_left" || this.facing == 'flying_left' || this.facing == 'throw_left')
-                    {
-                        this.facing = 'idle_left';
-                    }
-                    else
-                    {
-                        this.facing = 'idle_right';
-                    }
-
-                    this.running = 0;
-                }
-
-
+        if(this.body.velocity.y == 0 && this.running != 0) {
+            if (this.facing != "throw_left"||this.facing != "throw_right") {
+                if (this.facing == "running_left" || this.facing == "flying_left" || this.facing == "throw_left") {
+                        this.facing = "idle_left";
+                } else {
+                      this.facing = "idle_right";
+                  }
+                      this.running = 0;
             }
-            
+        }    
   	}
+
     if(this.body.velocity.y == 0 && this.body.velocity.x == 0){
         moving = false;
-    }else{
+    } else {
         moving = true;
     }
     if(moving){
