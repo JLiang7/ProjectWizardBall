@@ -60,7 +60,11 @@ WizardBall.play.prototype = {
 
         this.game.physics.arcade.gravity.y = 300;
 
-
+        this.froggy = this.game.add.sprite(600,400,"froggy");
+        this.froggy.anchor.setTo(.5, .5);
+        this.froggy.scale.setTo(.5,.5);
+        this.froggy.animations.add('spin',[0,1,2,3,4,5,6,7,8,9], 20, true);
+        this.froggy.animations.play("spin");
 
         //this.player = new Player(500,200,this.playerId,this.game);
 
@@ -138,7 +142,7 @@ WizardBall.play.prototype = {
        
 
         var movingPlayer = this.remotePlayers[data.id];
-       
+        movingPlayer.facing = data.f;
         if(data.dead === true){
              movingPlayer.dead = true;
             if(movingPlayer && movingPlayer.alive){
@@ -151,7 +155,7 @@ WizardBall.play.prototype = {
         movingPlayer.facing = data.f;
         if(movingPlayer.targetPosition) {
 
-            movingPlayer.characterController();
+            //movingPlayer.characterController();
             movingPlayer.lastMoveTime = WizardBall.game.time.now;
 
             if(data.x == movingPlayer.targetPosition.x && data.y == movingPlayer.targetPosition.y) {
@@ -178,10 +182,10 @@ WizardBall.play.prototype = {
         this.game.physics.arcade.collide([this.player,this.player.ball_group],this.layer,this.collided, null, this);
 
         this.player.body.velocity.x = 0;
-
+        this.updateRemoteAnimations();
         //this.player.handleInput();
         this.player.characterController();
-        this.updateRemoteAnimations();
+        
         this.setEventHandlers();
 
         if(this.checkGameOver()){
@@ -190,16 +194,9 @@ WizardBall.play.prototype = {
     },
 
     updateRemoteAnimations: function(){
-        if(this.facing == "flying_left" || this.facing == "running_left" || this.facing == "throw_left"){
-            this.facing = "idle_left";
-            this.characterController();
-        } else if(this.facing == "flying_right" || this.facing == "running_right" || this.facing == "throw_right"){
-            this.facing = "idle_right";
-            this.characterController();
-        } else if(!(this.facing != "idle_right" && this.facing != "idle_left")){
-            this.facing = "idle_right";
-            this.characterController();                  
-        }
+       for(var i in this.remotePlayers){
+            this.remotePlayers[i].characterController();
+       }
     },
 
     onSocketDisconnect: function() {

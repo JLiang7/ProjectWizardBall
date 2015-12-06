@@ -39,8 +39,9 @@ WizardBall.preload.prototype = {
         this.game.load.image('platform_large',levelData.platforms.flat_large.src_path);
         this.game.load.image('platform_medium',levelData.platforms.flat_medium.src_path);
         this.game.load.image('platform_tile',levelData.platforms.tile.src_path);
-        this.game.load.tilemap('levelOne', 'json/levelOne.json', null, Phaser.Tilemap.TILED_JSON)
-        this.game.load.tilemap('levelTwo', 'json/levelTwo.json', null, Phaser.Tilemap.TILED_JSON)
+        this.game.load.tilemap('levelOne', 'json/levelOne.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('levelTwo', 'json/levelTwo.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.spritesheet('froggy',levelData.memes.froggy, 160,160);
 	},
 
 	loadTransitionEffects : function(){

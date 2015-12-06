@@ -15,6 +15,9 @@
    	  "character_splash" : "images/placeholderSplash.png",
    	  "text_color" : ""
    },
+   "memes": {
+      "froggy" : "images/memes/froggy.png"
+   },
 
    "special":{
          "trans_yellow" : "images/transYellow.png",

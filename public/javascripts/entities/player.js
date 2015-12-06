@@ -107,6 +107,7 @@ Player.prototype.handleInput = function() {
             } else {
                 this.facing = "flying_right";
             }
+          this.running = 0;
         }
    	}
 
@@ -136,7 +137,7 @@ Player.prototype.handleInput = function() {
         if(this.body.velocity.y == 0 && this.running != 0) {
             if (this.facing != "throw_left"||this.facing != "throw_right") {
                 if (this.facing == "running_left" || this.facing == "flying_left" || this.facing == "throw_left") {
-                        this.facing = "idle_left";
+                      this.facing = "idle_left";
                 } else {
                       this.facing = "idle_right";
                   }
@@ -157,13 +158,13 @@ Player.prototype.handleInput = function() {
     if (!leftClick.isDown && this.chargeThrow > MIN_POWER) {
         this.throwBall();
         this.chargeThrow = 0;
-        if(this.facing != "running_left" && this.facing != "throw_left" && this.facing != "flying_left") {
-          this.facing = "idle_right";
-        } else if(this.facing != "running_right" && this.facing != "throw_right" && this.facing != "flying_right") {
-          this.facing = "idle_left" ;
-        }
+        /*if(this.facing == "running_left" || this.facing == "throw_left" || this.facing == "flying_left") {
+          this.facing = "idle_left";
+        } else if(this.facing == "running_right" || this.facing == "throw_right" || this.facing == "flying_right") {
+          this.facing = "idle_right" ;
+        }*/
     }
-    this.characterController();
+    //this.characterController();
 
 };
 

@@ -108,9 +108,13 @@ RemotePlayer.prototype.characterController = function(){
         this.animations.play('right');
   }else
   if(this.facing == "throw_left"){
+            this.animations.stop();
+
         this.animations.play('throwLeft');
   }else
   if(this.facing == "throw_right"){
+            this.animations.stop();
+
         this.animations.play('throwRight');
   }else{
     this.animations.stop();
