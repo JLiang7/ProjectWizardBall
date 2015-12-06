@@ -205,16 +205,11 @@ WizardBall.play.prototype = {
                     this.characterController();
                     
 
-                }else if(!(this.facing != "idle_right" && this.facing != "idle_left")){
-                    this.facing = "idle_right";
-                    this.characterController();
+        }else if(!(this.facing != "idle_right" && this.facing != "idle_left")){
+            this.facing = "idle_right";
+            this.characterController();
                     
-                }
-            
-            
-            
-           //this.remotePlayers[i].characterController();
-        
+        }
     },
 
     onSocketDisconnect: function() {
@@ -263,6 +258,13 @@ WizardBall.play.prototype = {
             //this.game.physics.arcade.moveToAngle(ball, data.speed, data.pointer);
             ball.body.collideWorldBounds = true;
             ball.body.bounce.setTo(.5,.5);
+    },
+
+    checkGameOver: function(data){
+        for(var i in this.remotePlayers){
+            return false;
+        }
+        return true;
     },
 
     onBallDestroy: function(data) {
