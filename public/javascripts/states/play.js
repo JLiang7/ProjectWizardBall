@@ -43,6 +43,8 @@ WizardBall.play.prototype = {
         facing = 'idle';
         jumpTimer = 0;
 
+        catchSound = this.game.add.audio('catch');
+
         
        dead = false;
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -92,6 +94,7 @@ WizardBall.play.prototype = {
 
     handleCollision: function(player,ball){
         if (this.game.time.now < player.catchTime) {
+            catchSound.play();
             player.ballCount++;
             for (var i in this.balls) {
                 if (this.balls[i].ball == ball) {
