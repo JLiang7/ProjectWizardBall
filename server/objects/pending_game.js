@@ -11,6 +11,7 @@ var PendingGame = function() {
  	this.state = "empty"; 
  	this.mapID= ""; 
  	this.bg = "";
+ 	this.meme = false;
  	this.colors = [{colorName: "red", available: true}, {colorName: "green", available: true}, {colorName: "purple", available: true}, {colorName: "yellow", available: true}]; 
 }; 
  

@@ -16,7 +16,9 @@
    	  "text_color" : ""
    },
    "memes": {
-      "froggy" : "images/memes/froggy.png"
+      "froggy" : "images/memes/froggy.png",
+      "quickscope" : "images/memes/quickscope.png",
+      "pepe": "images/memes/pepe.png"
    },
 
    "special":{

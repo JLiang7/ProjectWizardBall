@@ -45,6 +45,7 @@ var Lobby = {
 		lobbies[this.gameID].state = "joinable";
 		lobbies[this.gameID].mapID = data.mapID;
 		lobbies[this.gameID].bg = data.bg;
+		lobbies[this.gameID].meme = data.meme;
 		broadcastStateUpdate(this.gameID,"joinable");
 	},
 
@@ -55,7 +56,7 @@ var Lobby = {
  		this.join(data.gameID); 
  	 
  		pendingGame.addPlayer(this.id); 
- 		this.gameID = data.gameID; 
+ 		this.gameID = data.gameID;
  	 
  		this.emit("show current players", {players: pendingGame.players}); 
  		this.broadcast.to(data.gameID).emit("player joined", {id: this.id, color: pendingGame.players[this.id].color}); 

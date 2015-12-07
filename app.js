@@ -125,9 +125,10 @@ function onStartGame() {
 	
 	for(var i = 0; i < IDs.length; i++) {
 		var playerId = IDs[i];
-		var TILE_SIZE = 40;
+		var TILE_SIZE = 60;
 		var spawnPoint = MapInfo[pendingGame.mapID].spawnLocations[i];
 		var newPlayer = new Player(spawnPoint.x * TILE_SIZE, spawnPoint.y * TILE_SIZE, "down", playerId, pendingGame.players[playerId].color);
+
 		newPlayer.spawnPoint = spawnPoint;
 
 		game.players[playerId] = newPlayer;
@@ -135,7 +136,7 @@ function onStartGame() {
 
 	game.numPlayersAlive = IDs.length;
 
-	io.in(this.gameID).emit("start game on client", {mapID: pendingGame.mapID, players: game.players, bg:pendingGame.bg});
+	io.in(this.gameID).emit("start game on client", {mapID: pendingGame.mapID, players: game.players, bg:pendingGame.bg, meme:pendingGame.meme});
 };
 
 function onGameOver(data) {
@@ -146,7 +147,6 @@ function onGameOver(data) {
 	}
 	game.won = true;
 	game.winnerID = data.winnerID;
-	game.numPlayers = 0;
 	game.gameID = this.gameID;
 };
 

@@ -56,6 +56,7 @@ WizardBall.pendinggame.prototype = {
 		this.numPlayersInGame = 0;
 
 		var style = { font: "40px Arial", fill: "#000000", align: "left"};
+		this.game.add.text(50,100, "AD - Move | W - Jump | Left Click(hold) - Charge/Shoot | Space - Catch", {font:"25px Arial"});
 		this.minPlayerMessage = this.game.add.text(minPlayerMessageOffsetX, minPlayerMessageOffsetY, "Waiting for players...",style);
 		this.minPlayerMessage.visible = false;
 
@@ -157,6 +158,6 @@ WizardBall.pendinggame.prototype = {
 
 	startGame: function(data) {
 		socket.removeAllListeners();
-		WizardBall.game.state.start("Play", true, false, data.mapID, data.players, this.id, data.bg);
+		WizardBall.game.state.start("Play", true, false, data.mapID, data.players, this.id, data.bg, data.meme);
 	}
 }

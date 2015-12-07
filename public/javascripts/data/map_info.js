@@ -1,6 +1,6 @@
 var MapInfo = {
 	levelOne: {
-		spawnLocations: [{x: 1, y: 5}, {x: 10, y: 1}, {x: 3, y: 1}, {x: 12, y: 6}],
+		spawnLocations: [{x: 6, y: 1}, {x: 16, y: 1}, {x: 6, y: 6}, {x: 16, y: 6}],
 		collisionTiles: [127, 361],
 		groundLayer: "Ground",
 		blockLayer: "Blocks",
@@ -9,7 +9,7 @@ var MapInfo = {
 		destructibleTileId: 361
 	},
 	levelTwo: {
-		spawnLocations: [{x: 1, y: 1}, {x: 13, y: 1}, {x: 2, y: 13}, {x: 13, y: 13}],
+		spawnLocations: [{x: 1, y: 1}, {x: 16, y: 1}, {x: 2, y: 7}, {x: 16, y: 7}],
 		collisionTiles: [169, 191],
 		groundLayer: "Ground",
 		blockLayer: "Blocks",

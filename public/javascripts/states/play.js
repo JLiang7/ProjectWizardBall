@@ -21,50 +21,55 @@ WizardBall.play = function(game){
 WizardBall.play.prototype = {
     
     preload: function() {
-        this.game.load.audio('catch','audio/Upgrade.wav');
+        if(this.meme){
+            this.game.load.audio('catch',['audio/horns.mp3', 'audio/horns.ogg']);
+            this.game.load.audio('hit', ['audio/horn.mp3', 'audio/horn.ogg']);
+        }else{
+            this.game.load.audio('catch',['audio/catch.wav','audio/catch.ogg']);
+            this.game.load.audio('hit',['audio/marker.mp3','audio/marker.ogg']);
+        }
     },
 
-    init: function(tilemapName, players, id, bg) {
+    init: function(tilemapName, players, id, bg, meme) {
         this.tilemapName = tilemapName;
         this.players = players;
         this.bg = bg;
         this.playerId = id;
+
+        this.meme = meme;
     },
     
 
     create: function(){
+        this.whistleBlower = false;
         this.remotePlayers = {};
         //this.remotePlayersGroup = this.game.add.physicsGroup();
         this.balls = {};
         //this.ballsGroup = this.game.add.physicsGroup();
-
+        this.MEME_DELAY = 5000;
+        this.memeTime = this.game.time.now + this.MEME_DELAY;
         fireRate = 100;
         nextThrow = 0;
         facing = 'idle';
         jumpTimer = 0;
 
         catchSound = this.game.add.audio('catch');
-
+        hitSound = this.game.add.audio('hit');
         
        dead = false;
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
     //    filter = this.game.add.filter('Plasma',800,600);
         this.level = new Level(this.tilemapName);
         this.level.setBackgroundImage(this.bg,1,true);
-        this.level.setMusic(this.game.add.audio('bgmusic'));
-        this.level.getMusic().play();
+        
+        //this.level.getMusic().play();
 
 
 
         this.game.add.tileSprite(0,0,1280,720,this.level.getBackgroundImage());
 
         this.game.physics.arcade.gravity.y = 300;
-
-        this.froggy = this.game.add.sprite(600,400,"froggy");
-        this.froggy.anchor.setTo(.5, .5);
-        this.froggy.scale.setTo(.5,.5);
-        this.froggy.animations.add('spin',[0,1,2,3,4,5,6,7,8,9], 20, true);
-        this.froggy.animations.play("spin");
+        
 
         //this.player = new Player(500,200,this.playerId,this.game);
 
@@ -103,12 +108,25 @@ WizardBall.play.prototype = {
             player.ballCount++;
             for (var i in this.balls) {
                 if (this.balls[i].ball == ball) {
+                    var tempx = this.balls[i].ball.x;
+                    var tempy = this.balls[i].ball.y;
+                    if(this.meme){
+                        var quickscope = this.game.add.sprite(tempx,tempy,"quickscope");
+                        quickscope.anchor.setTo(.5, .5);
+                        quickscope.scale.setTo(.5,.5);
+                        quickscope.animations.add('shoot',[7,8,9,10,11,12,13,14,15,16,17,18], 21, false);
+                        quickscope.animations.play('shoot');
+                        quickscope.events.onAnimationComplete.add(function(){
+                           quickscope.kill();
+                        }, this);
+                    }
                     socket.emit("ball destroy",{id : this.balls[i].id});
                 }
             }
         } else { 
             player.hp -= 1;
             if (player.hp == 0) {
+                hitSound.play();
                 if (player.id == 'player') {
                     dead = true; 
                 }
@@ -148,6 +166,7 @@ WizardBall.play.prototype = {
             if(movingPlayer && movingPlayer.alive){
                 this.numPlayers --;
                 movingPlayer.kill();
+                hitSound.play();
             }
             return;
         }
@@ -188,8 +207,20 @@ WizardBall.play.prototype = {
         
         this.setEventHandlers();
 
+        if(this.meme && this.game.time.now > this.memeTime){
+            this.memeTime = this.game.time.now + this.MEME_DELAY;
+            var tempx = this.game.rnd.realInRange(20, 1260);
+            var tempy = this.game.rnd.realInRange(20,700);
+            var froggy = this.game.add.sprite(tempx,tempy,"froggy");
+            froggy.anchor.setTo(.5, .5);
+            froggy.scale.setTo(.5,.5);
+            froggy.animations.add('spin',[0,1,2,3,4,5,6,7,8,9], 20, true);
+            froggy.animations.play("spin");
+            
+        }
+
         if(this.checkGameOver()){
-            socket.emit("game over", {});
+            socket.emit("game over", {winnerID: this.id});
         }
     },
 
@@ -250,16 +281,18 @@ WizardBall.play.prototype = {
             if(!this.remotePlayers[i].dead)
                 return false;
         }
-
+        this.whistleBlower = true;
         return true;
     },
 
     onGameOver: function(data){
-        if(data.winnerID == this.id){
-            //console.log("winner");
+        var won = false;
+
+        if(this.whistleBlower){
+            won = true;
         }
 
-        WizardBall.game.state.start("Lobby", true, false, data.gameID);    
+        WizardBall.game.state.start("GameOver", true, false, won, this.meme);    
     },
 
     onBallDestroy: function(data) {

@@ -18,9 +18,7 @@ var WizardBall = WizardBall || {};
  
  WizardBall.lobby.prototype = { 
  	init: function(gameID) { 
- 		if(gameID != 0){
- 			socket.emit("terminate slot", gameID);
- 		}
+ 		
  	}, 
  
  
