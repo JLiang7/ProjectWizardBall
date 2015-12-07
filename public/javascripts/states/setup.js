@@ -23,6 +23,11 @@ WizardBall.setup.prototype = {
 	},
 
 	create: function() {
+		WizardBall.username = document.getElementById('username').value;
+		if(WizardBall.username == ""){
+ 			WizardBall.username = "Unknown";
+ 		}
+
 		this.canPress = true;
 		this.phoneGraphicsAngle = 2;
 		this.stageselectedStageIndex = 0;

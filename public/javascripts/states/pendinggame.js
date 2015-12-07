@@ -37,8 +37,12 @@ WizardBall.pendinggame.prototype = {
 	},
 
 	create: function() {
-		
-		socket.emit("enter pending game", {gameID: this.gameID});
+		WizardBall.username = document.getElementById('username').value;
+		if(WizardBall.username == ""){
+ 			WizardBall.username = "Unknown";
+ 		}
+
+		socket.emit("enter pending game", {gameID: this.gameID, name:WizardBall.username});
 		background = this.game.add.sprite(0,0,'redBar');
 		accent1 = this.game.add.sprite(600,0,'pendingYellowBar');
 		accent2 = this.game.add.sprite(470,0,'pendingGreenBar');
@@ -53,6 +57,7 @@ WizardBall.pendinggame.prototype = {
 		
 		this.characterSquares = this.drawCharacterSquares(4);
 		this.characterImages = [];
+		this.characterNames = [];
 		this.numPlayersInGame = 0;
 
 		var style = { font: "40px Arial", fill: "#000000", align: "left"};
@@ -92,6 +97,8 @@ WizardBall.pendinggame.prototype = {
 		for(var playerId in data.players) {
 			this.characterImages[playerId] = this.game.add.image(this.characterSquares[this.numPlayersInGame].position.x + characterOffsetX, 
 				this.characterSquares[this.numPlayersInGame].position.y + characterOffsetY, 'CharacterSlot', 1 ); // Texture, head+color+.png
+			this.characterNames[playerId] = this.game.add.text(this.characterSquares[this.numPlayersInGame].position.x + characterOffsetX, 
+				this.characterSquares[this.numPlayersInGame].position.y + characterOffsetY, data.players[playerId].username,{font: "20px Arial", align: "center"});
 			this.numPlayersInGame++;
 		}
 
@@ -104,11 +111,15 @@ WizardBall.pendinggame.prototype = {
 
 	playerJoined: function(data) {
 		this.numPlayersInGame++;
+		console.log(data.username);
 		var index = this.numPlayersInGame - 1;
 		//DATA CAHNGED TO CAP id to ID
 		this.characterImages[data.id] = this.game.add.image(this.characterSquares[index].position.x + characterOffsetX,
 		 this.characterSquares[index].position.y + characterOffsetY, 'CharacterSlot', 1); // Texture, head+color+.png
-
+		this.characterNames[data.id] = this.game.add.text(this.characterSquares[index].position.x + characterOffsetX,
+		 this.characterSquares[index].position.y + characterOffsetY, data.username,{font: "20px Arial", align: "center"});
+		//this.characterNames[data.id] = this.game.add.text(this.characterSquares[this.numPlayersInGame].position.x + characterOffsetX, 
+		//	this.characterSquares[this.numPlayersInGame].position.y + characterOffsetY, data.username,{font: "50px Arial"});
 		// Activate start game button if this is the second player to join the this.game.
 		if(this.numPlayersInGame == 2) {
 			this.activateStartGameButton();
@@ -139,6 +150,7 @@ WizardBall.pendinggame.prototype = {
 
 		for(var playerId in this.characterImages) {
 			this.characterImages[playerId].destroy();
+			this.characterNames[playerId].destroy();
 		}
 
 		this.populateCharacterSquares(data);

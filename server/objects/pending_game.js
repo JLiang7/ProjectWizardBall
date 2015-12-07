@@ -38,8 +38,9 @@ PendingGame.prototype = {
  	}, 
  
  
- 	addPlayer : function(id) { 
+ 	addPlayer : function(id, name) { 
  		this.players[id] = {color: this.claimFirstAvailableColor()}; 
+ 		this.players[id] = {username: name};
  	}, 
  
 

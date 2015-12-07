@@ -55,11 +55,12 @@ var Lobby = {
  		this.leave(lobbyID); 
  		this.join(data.gameID); 
  	 
- 		pendingGame.addPlayer(this.id); 
+ 		pendingGame.addPlayer(this.id, data.name);
+
  		this.gameID = data.gameID;
  	 
  		this.emit("show current players", {players: pendingGame.players}); 
- 		this.broadcast.to(data.gameID).emit("player joined", {id: this.id, color: pendingGame.players[this.id].color}); 
+ 		this.broadcast.to(data.gameID).emit("player joined", {id: this.id, color: pendingGame.players[this.id].color, username:data.name}); 
  	 
  		if(pendingGame.getNumPlayers() >= Maps[pendingGame.mapID].spawnLocations.length) { 
  			pendingGame.state = "full"; 

@@ -127,7 +127,7 @@ function onStartGame() {
 		var playerId = IDs[i];
 		var TILE_SIZE = 60;
 		var spawnPoint = MapInfo[pendingGame.mapID].spawnLocations[i];
-		var newPlayer = new Player(spawnPoint.x * TILE_SIZE, spawnPoint.y * TILE_SIZE, "down", playerId, pendingGame.players[playerId].color);
+		var newPlayer = new Player(spawnPoint.x * TILE_SIZE, spawnPoint.y * TILE_SIZE, "down", playerId, pendingGame.players[playerId].color,pendingGame.players[playerId].name);
 
 		newPlayer.spawnPoint = spawnPoint;
 

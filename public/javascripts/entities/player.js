@@ -49,7 +49,7 @@ var Player = function(x, y, id, game) {
 Player.prototype = Object.create(Phaser.Sprite.prototype); 
 
 Player.prototype.throwBall = function() {
-	  if (this.game.time.now > this.nextShot && this.ballCount > 0) {
+	  if (this.game.time.now > this.nextShot && this.ballCount > 0 && !this.dead) {
         this.ballCount--;
         this.nextShot = this.game.time.now + THROW_COOLDOWN;
         this.throwAngle = Phaser.Math.radToDeg(this.game.physics.arcade.angleToPointer(this));

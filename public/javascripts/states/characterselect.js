@@ -28,6 +28,10 @@ WizardBall.charSelect.prototype = {
 	},
 
 	create : function(){
+		WizardBall.username = document.getElementById('username').value;
+ 		if(WizardBall.username == ""){
+ 			WizardBall.username = "Enter a Username in the Lobby";
+ 		}
 		nextClick = 0;
 		enterKey = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 		backSpaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.BACKSPACE);
@@ -47,7 +51,7 @@ WizardBall.charSelect.prototype = {
 		charSplash = this.game.add.sprite(120,40,'characterSplash');
 		charSplash.scale.setTo(.75,.75);
 		accent2 = this.game.add.sprite(0,550, 'accent2');
-		charNameText = this.game.add.text(this.game.world.centerX+100, this.game.world.centerY+100, "Mr. WizardBall",style);
+		charNameText = this.game.add.text(this.game.world.centerX+100, this.game.world.centerY+100, WizardBall.username,style);
 
 		transPurple = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY, 'purpleBar');
 		transRed = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY, 'redBar');

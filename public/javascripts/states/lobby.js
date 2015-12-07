@@ -5,7 +5,7 @@ var WizardBall = WizardBall || {};
  var initialSlotYOffset = 200; 
  var slotXOffset = 40; 
  var lobbySlotDistance = 100; 
- 
+
  
  var textXOffset = 240; 
  var textYOffset = 50; 
@@ -23,6 +23,10 @@ var WizardBall = WizardBall || {};
  
  
  	create: function() { 
+ 		WizardBall.username = document.getElementById('username').value;
+ 		if(WizardBall.username == ""){
+ 			WizardBall.username = "Unknown Name";
+ 		}
  		background = this.game.add.sprite(0,0,'yellowBar');
  		bar = this.game.add.sprite(50,0,'lobbyBar');
  		triangle = this.game.add.sprite(0,350,'lobbyTriangle');
@@ -64,6 +68,7 @@ var WizardBall = WizardBall || {};
 		var style = { font: "50px Arial", fill: "#000000", align: "left"};
  		this.header = this.game.add.text(headerXOffset, headerYOffset, "Lobby",style); 
  		this.header.anchor.setTo(.5, .5);  
+ 		this.game.add.text(1000,100, WizardBall.username, {font: '25px Arial'});
  
  		this.slots = []; 
  		this.labels = []; 

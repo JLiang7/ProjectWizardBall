@@ -1,4 +1,4 @@
-var Player = function(xSpawn, ySpawn, facing, id, color) {
+var Player = function(xSpawn, ySpawn, facing, id, color,username) {
 	this.xSpawn = xSpawn;
 	this.ySpawn = ySpawn;
 	this.dead = false;
@@ -9,6 +9,7 @@ var Player = function(xSpawn, ySpawn, facing, id, color) {
 	this.color = color;
 	this.wins = 0;
 	this.alive = true;
+	this.username = username;
 }
 
 Player.prototype = {

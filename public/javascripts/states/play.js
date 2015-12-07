@@ -131,6 +131,7 @@ WizardBall.play.prototype = {
                     dead = true; 
                 }
                 socket.emit("player hit");
+                player.dead = true;
                 player.kill();
             }
             for (var i in this.balls) {
