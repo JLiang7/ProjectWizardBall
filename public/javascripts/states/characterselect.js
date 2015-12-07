@@ -151,6 +151,7 @@ WizardBall.charSelect.prototype = {
 	},
 
 	lobbyGo : function(){
+		backSpaceKey = {};
 		this.state.start("Lobby");
 	},
 

@@ -1,7 +1,6 @@
 var WizardBall = WizardBall || {};
 
-WizardBall.game = new Phaser.Game(1280 , 720, Phaser.CANVAS, "Wizard Ball");
-socket = io("https://secret-mountain-2394.herokuapp.com");
+WizardBall.game = new Phaser.Game(1280 , 720, Phaser.CANVAS, "Wizard Ball");socket = io("https://secret-mountain-2394.herokuapp.com");
 //socket = io ("http://localhost:3000");
 //game.state.add("Preload", preload);
 WizardBall.username = document.getElementById('username').value;

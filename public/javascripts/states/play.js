@@ -221,6 +221,9 @@ WizardBall.play.prototype = {
         }
 
         if(this.checkGameOver()){
+            this.leftButton = {};
+            this.rightButton = {};
+            this.jumpButton = {};
             socket.emit("game over", {winnerID: this.id});
         }
     },
